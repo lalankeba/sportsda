@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dob
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: phone
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
