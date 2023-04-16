@@ -88,7 +88,7 @@ class FacultyControllerTest {
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
-                                requestFields(fieldWithPath("name").description("Name to be saved for the faculty")),
+                                requestFields(fieldWithPath("name").description("Name to be saved for the faculty. Should be unique throughout the system.")),
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the faculty"))
                                         .and(fieldWithPath("name").description("Name of the faculty"))
@@ -119,7 +119,7 @@ class FacultyControllerTest {
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 pathParameters(parameterWithName("id").description("Id of the faculty that needs to be updated")),
-                                requestFields(fieldWithPath("name").description("Name to be updated for the faculty"))
+                                requestFields(fieldWithPath("name").description("Name to be updated for the faculty. Should be unique throughout the system."))
                                         .and(fieldWithPath("version").description("Version of the existing faculty")),
                                 responseFields(fieldWithPath("id").description("Id of the faculty"))
                                         .and(fieldWithPath("name").description("Updated name of the faculty"))

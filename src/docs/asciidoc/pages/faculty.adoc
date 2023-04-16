@@ -26,7 +26,7 @@ include::{snippets}/get-faculties/http-response.adoc[]
 
 === Add Faculty
 
-You can create a faculty
+You can add a new faculty to the system.
 
 .curl request
 include::{snippets}/add-faculty/curl-request.adoc[]
