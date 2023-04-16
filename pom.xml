@@ -21,6 +21,11 @@
 		<asciidoctor-maven-plugin.version>2.2.1</asciidoctor-maven-plugin.version>
 		<asciidoctorj-pdf.version>2.3.4</asciidoctorj-pdf.version>
 		<modelmapper.version>3.1.1</modelmapper.version>
+
+		<docs.snippets.directory>${project.build.directory}/generated-snippets</docs.snippets.directory>
+		<docs.source.directory>src/docs/asciidoc</docs.source.directory>
+		<source.document.name>sportsda-api.adoc</source.document.name>
+		<docs.output.directory>${project.build.directory}/generated-docs</docs.output.directory>
 	</properties>
 
 	<dependencies>
@@ -80,6 +85,14 @@
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
 				<version>${asciidoctor-maven-plugin.version}</version>
+				<configuration>
+					<sourceDirectory>${docs.source.directory}</sourceDirectory>
+					<sourceDocumentName>${source.document.name}</sourceDocumentName>
+					<outputDirectory>${docs.output.directory}</outputDirectory>
+					<attributes>
+						<snippets>${docs.snippets.directory}</snippets>
+					</attributes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>generate-docs</id>

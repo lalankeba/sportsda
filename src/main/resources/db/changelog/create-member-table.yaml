@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-member
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: member
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: last_name
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: dob
+                  type: date
+                  constraints:
+                    nullable: true
+              - column:
+                  name: nic
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: phone
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: university_email
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: personal_email
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: address
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: district
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false

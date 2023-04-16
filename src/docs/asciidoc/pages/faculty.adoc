@@ -1,0 +1,73 @@
+== Faculty
+This section explains how to communicate with faculty API
+
+=== Get Faculty by ID
+
+You can view existing faculty by id
+
+.curl request
+include::{snippets}/get-faculty/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/get-faculty/path-parameters.adoc[]
+
+.response
+include::{snippets}/get-faculty/http-response.adoc[]
+
+=== Get Faculties
+
+You can view all existing Faculties
+
+.curl request
+include::{snippets}/get-faculties/curl-request.adoc[]
+
+.response
+include::{snippets}/get-faculties/http-response.adoc[]
+
+=== Add Faculty
+
+You can create a faculty
+
+.curl request
+include::{snippets}/add-faculty/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/add-faculty/request-fields.adoc[]
+
+.response
+include::{snippets}/add-faculty/http-response.adoc[]
+
+.Response Description
+include::{snippets}/add-faculty/response-fields.adoc[]
+
+=== Update Faculty
+
+You can update existing faculty
+
+.curl request
+include::{snippets}/update-faculty/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/update-faculty/request-fields.adoc[]
+
+.Path Parameter Description
+include::{snippets}/update-faculty/path-parameters.adoc[]
+
+.response
+include::{snippets}/update-faculty/http-response.adoc[]
+
+.Response Description
+include::{snippets}/update-faculty/response-fields.adoc[]
+
+=== Delete Faculty
+
+You can delete existing faculty by id.
+
+.curl request
+include::{snippets}/delete-faculty/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/delete-faculty/path-parameters.adoc[]
+
+.response
+include::{snippets}/delete-faculty/http-response.adoc[]

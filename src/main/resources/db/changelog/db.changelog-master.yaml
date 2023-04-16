@@ -1,3 +1,7 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/create-user-table.yaml
+      file: db/changelog/create-faculty-table.yaml
+  - include:
+      file: db/changelog/create-department-table.yaml
+  - include:
+      file: db/changelog/create-member-table.yaml
