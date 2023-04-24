@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class FacultyUpdateRequest {
 
-    @NotNull(message = "Name is mandatory")
-    @Size(min = 2, max = 150, message = "Name must be valid value between 2 and 150 characters")
+    @NotNull(message = "{mandatory.faculty.name}")
+    @Size(min = 2, max = 150, message = "{invalid.faculty.name.size}")
     private String name;
 
-    @NotNull(message = "Version cannot be empty")
+    @NotNull(message = "{mandatory.version}")
     private Long version;
 }

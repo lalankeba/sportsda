@@ -1,0 +1,77 @@
+== Department
+This section explains how to communicate with department API
+
+
+=== Get Department by ID
+
+You can view existing department by id
+
+.curl request
+include::{snippets}/get-department/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/get-department/path-parameters.adoc[]
+
+.response
+include::{snippets}/get-department/http-response.adoc[]
+
+
+=== Get Departments
+
+You can view all existing departments
+
+.curl request
+include::{snippets}/get-departments/curl-request.adoc[]
+
+.response
+include::{snippets}/get-departments/http-response.adoc[]
+
+
+=== Add Department
+
+You can add a new department to the system.
+
+.curl request
+include::{snippets}/add-department/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/add-department/request-fields.adoc[]
+
+.response
+include::{snippets}/add-department/http-response.adoc[]
+
+.Response Description
+include::{snippets}/add-department/response-fields.adoc[]
+
+
+=== Update Department
+
+You can update existing department
+
+.curl request
+include::{snippets}/update-department/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/update-department/request-fields.adoc[]
+
+.Path Parameter Description
+include::{snippets}/update-department/path-parameters.adoc[]
+
+.response
+include::{snippets}/update-department/http-response.adoc[]
+
+.Response Description
+include::{snippets}/update-department/response-fields.adoc[]
+
+=== Delete Department
+
+You can delete existing department by id.
+
+.curl request
+include::{snippets}/delete-department/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/delete-department/path-parameters.adoc[]
+
+.response
+include::{snippets}/delete-department/http-response.adoc[]

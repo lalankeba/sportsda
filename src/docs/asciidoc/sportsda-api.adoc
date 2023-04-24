@@ -12,3 +12,5 @@ v1.0, {docdate}
 This project has the back end logic for sports data analyzer system.
 
 include::pages/faculty.adoc[]
+
+include::pages/department.adoc[]

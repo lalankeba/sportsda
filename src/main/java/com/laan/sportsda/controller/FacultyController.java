@@ -2,7 +2,9 @@ package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
+import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.service.DepartmentService;
 import com.laan.sportsda.service.FacultyService;
 import com.laan.sportsda.util.PathUtil;
 import jakarta.validation.Valid;
@@ -22,8 +24,11 @@ public class FacultyController {
 
     private final FacultyService facultyService;
 
-    public FacultyController(FacultyService facultyService) {
+    private final DepartmentService departmentService;
+
+    public FacultyController(FacultyService facultyService, DepartmentService departmentService) {
         this.facultyService = facultyService;
+        this.departmentService = departmentService;
     }
 
     @GetMapping("/{id}")
@@ -64,6 +69,14 @@ public class FacultyController {
         facultyService.deleteFaculty(id);
         logger.info("deleted faculty with id: {}", id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{id}/departments")
+    public ResponseEntity<Object> getDepartmentsByFaculty(@PathVariable("id") String id) {
+        logger.info("getting departments by faculty id: {}", id);
+        List<DepartmentResponse> departmentResponses = departmentService.getDepartmentsByFaculty(id);
+        logger.info("get departments by faculty");
+        return new ResponseEntity<>(departmentResponses, HttpStatus.OK);
     }
 
 }

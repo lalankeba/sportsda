@@ -1,11 +1,14 @@
 package com.laan.sportsda.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
+import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.util.PathUtil;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -16,6 +19,11 @@ import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -23,8 +31,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +46,12 @@ class FacultyControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @BeforeEach
+    void init() throws Exception {
+        deleteAllDepartments();
+        deleteAllFaculties();
+    }
 
     @Test
     void getFaculty() throws Exception {
@@ -61,7 +74,7 @@ class FacultyControllerTest {
         createFaculty("Humanities and Social Sciences");
         createFaculty("Management Studies and Commerce");
 
-        this.mockMvc.perform(get(PathUtil.FACULTIES).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
@@ -77,7 +90,7 @@ class FacultyControllerTest {
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
         facultyAddRequest.setName("Medical Sciences");
 
-        this.mockMvc.perform(post(PathUtil.FACULTIES)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
@@ -101,7 +114,7 @@ class FacultyControllerTest {
     void updateFaculty() throws Exception {
         FacultyResponse facultyResponse = createFaculty("Graduate Studies");
 
-        String updatedName = "Allied Health Sciences";
+        String updatedName = "Engineering";
         FacultyUpdateRequest facultyUpdateRequest = new FacultyUpdateRequest();
         facultyUpdateRequest.setName(updatedName);
         facultyUpdateRequest.setVersion(facultyResponse.getVersion());
@@ -144,6 +157,27 @@ class FacultyControllerTest {
                 );
     }
 
+    @Test
+    void getDepartmentsByFaculty() throws Exception {
+        List<DepartmentResponse> departmentResponses = createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), "Allied Health Sciences");
+        Optional<DepartmentResponse> optionalDepartmentResponse = departmentResponses.stream().findFirst();
+        String facultyId = null;
+        if (optionalDepartmentResponse.isPresent()) {
+            facultyId = optionalDepartmentResponse.get().getFacultyId();
+        }
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}/departments", facultyId).accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(greaterThan(1))))
+                .andExpect(jsonPath("$.[*].name").exists())
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint()),
+                                pathParameters(parameterWithName("id").description("id of the faculty"))
+                        ));
+    }
+
     private FacultyResponse createFaculty(String name) throws Exception {
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
         facultyAddRequest.setName(name);
@@ -155,5 +189,58 @@ class FacultyControllerTest {
 
         byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
         return objectMapper.readValue(responseAsArray, FacultyResponse.class);
+    }
+
+    private void deleteAllDepartments() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(get(PathUtil.DEPARTMENTS)).andReturn();
+        byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
+        List<DepartmentResponse> departmentsResponses = Arrays.asList(objectMapper.readValue(responseAsArray, DepartmentResponse[].class));
+
+        departmentsResponses.forEach(departmentResponse -> {
+            try {
+                this.mockMvc.perform(delete(PathUtil.DEPARTMENTS + "/{id}", departmentResponse.getId()));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void deleteAllFaculties() throws Exception {
+        MvcResult mvcResult = this.mockMvc.perform(get(PathUtil.FACULTIES)).andReturn();
+        byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
+        List<FacultyResponse> facultyResponses = Arrays.asList(objectMapper.readValue(responseAsArray, FacultyResponse[].class));
+
+        if (facultyResponses != null) {
+            facultyResponses.forEach(facultyResponse -> {
+                try {
+                    this.mockMvc.perform(delete(PathUtil.FACULTIES + "/{id}", facultyResponse.getId()));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+    }
+
+    private List<DepartmentResponse> createDepartments(List<String> departmentNames, String facultyName) throws Exception {
+        List<DepartmentResponse> departmentResponses = new ArrayList<>();
+
+        FacultyResponse facultyResponse = createFaculty(facultyName);
+
+        for (String departmentName: departmentNames) {
+            DepartmentAddRequest facultyAddRequest = new DepartmentAddRequest();
+            facultyAddRequest.setName(departmentName);
+            facultyAddRequest.setFacultyId(facultyResponse.getId());
+
+            MvcResult mvcResult = this.mockMvc.perform(post(PathUtil.DEPARTMENTS)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsBytes(facultyAddRequest))
+            ).andReturn();
+
+            byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
+            DepartmentResponse departmentResponse = objectMapper.readValue(responseAsArray, DepartmentResponse.class);
+
+            departmentResponses.add(departmentResponse);
+        }
+        return departmentResponses;
     }
 }
