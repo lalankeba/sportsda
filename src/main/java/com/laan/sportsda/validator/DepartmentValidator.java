@@ -4,6 +4,7 @@ import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.exception.DuplicateElementException;
 import com.laan.sportsda.exception.ElementNotFoundException;
 import com.laan.sportsda.util.MessagesUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
@@ -11,13 +12,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class DepartmentValidator {
 
     private final MessageSource messageSource;
-
-    public DepartmentValidator(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     public void validateNonExistingDepartmentEntity(String id, Optional<DepartmentEntity> optionalDepartmentEntity) {
         if (optionalDepartmentEntity.isEmpty()) {

@@ -57,7 +57,7 @@ class DepartmentControllerTest {
     void getDepartment() throws Exception {
         String id = createDepartment("Community Dental health", "Dental Sciences").getId();
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + "/{id}", id).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + "/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -76,7 +76,7 @@ class DepartmentControllerTest {
     void getDepartments() throws Exception {
         createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), "Allied Health Sciences");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
@@ -164,8 +164,7 @@ class DepartmentControllerTest {
     void deleteDepartment() throws Exception {
         DepartmentResponse facultyResponse = createDepartment("Chemistry", "Applied Sciences");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + "/{id}", facultyResponse.getId())
-                        .accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + "/{id}", facultyResponse.getId()))
                 .andDo(print())
                 .andExpect(status().isAccepted())
                 .andDo(
