@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-member
+      id: create-academic-data
       author: lalanke
       changes:
         - createTable:
-            tableName: member
+            tableName: academic-data
             columns:
               - column:
                   name: id
@@ -13,70 +13,82 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: first_name
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: middle_name
-                  type: varchar(50)
+                  name: al_stream
+                  type: varchar(100)
                   constraints:
                     nullable: true
               - column:
-                  name: last_name
-                  type: varchar(50)
-                  constraints:
-                    nullable: true
-              - column:
-                  name: dob
-                  type: date
-                  constraints:
-                    nullable: true
-              - column:
-                  name: nic
+                  name: al_year
                   type: varchar(20)
                   constraints:
                     nullable: true
               - column:
-                  name: phone
+                  name: z_score
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: subject_combination
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: exam_number
                   type: varchar(20)
                   constraints:
                     nullable: true
               - column:
-                  name: university_email
-                  type: varchar(50)
+                  name: admission_year
+                  type: varchar(20)
                   constraints:
                     nullable: true
               - column:
-                  name: personal_email
-                  type: varchar(50)
+                  name: semester_one_gpa
+                  type: double
                   constraints:
                     nullable: true
               - column:
-                  name: address
-                  type: varchar(200)
+                  name: semester_two_gpa
+                  type: double
                   constraints:
                     nullable: true
               - column:
-                  name: district
-                  type: varchar(50)
+                  name: semester_three_gpa
+                  type: double
                   constraints:
                     nullable: true
               - column:
-                  name: department_id
+                  name: semester_four_gpa
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: semester_five_gpa
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: semester_six_gpa
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: semester_seven_gpa
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: semester_eight_gpa
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: member_id
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_department_id
-                    referencedTableName: department
-                    referencedColumnNames: id
-              - column:
-                  name: role_id
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_role_id
-                    referencedTableName: role
+                    foreignKeyName: fk_member_id
+                    referencedTableName: member
                     referencedColumnNames: id
               - column:
                   name: version

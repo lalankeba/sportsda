@@ -15,6 +15,26 @@ include::{snippets}/get-faculty/path-parameters.adoc[]
 .response
 include::{snippets}/get-faculty/http-response.adoc[]
 
+==== Having Exception
+
+In case you have a exception, it would be like this.
+
+.curl request
+include::{snippets}/get-faculty-with-no-existence/curl-request.adoc[]
+
+.response
+include::{snippets}/get-faculty-with-no-existence/http-response.adoc[]
+
+==== Having Exception in Different Language
+
+You can change the language settings like this.
+
+.curl request
+include::{snippets}/get-faculty-with-no-existence-in-si/curl-request.adoc[]
+
+.response
+include::{snippets}/get-faculty-with-no-existence-in-si/http-response.adoc[]
+
 
 === Get Faculties
 

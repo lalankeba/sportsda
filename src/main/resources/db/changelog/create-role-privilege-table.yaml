@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-role-privilege
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: role_privilege
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_priviege_role_id
+                    referencedTableName: role
+                    referencedColumnNames: id
+              - column:
+                  name: privilege_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_privilege_id
+                    referencedTableName: privilege
+                    referencedColumnNames: id

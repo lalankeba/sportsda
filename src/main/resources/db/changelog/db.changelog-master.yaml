@@ -4,4 +4,12 @@ databaseChangeLog:
   - include:
       file: db/changelog/create-department-table.yaml
   - include:
+      file: db/changelog/create-privilege-table.yaml
+  - include:
+      file: db/changelog/create-role-table.yaml
+  - include:
+      file: db/changelog/create-role-privilege-table.yaml
+  - include:
       file: db/changelog/create-member-table.yaml
+  - include:
+      file: db/changelog/create-academic-data-table.yaml

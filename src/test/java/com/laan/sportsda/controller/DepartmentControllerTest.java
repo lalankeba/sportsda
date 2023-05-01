@@ -60,7 +60,10 @@ class DepartmentControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + "/{id}", id).accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.facultyId").exists())
+                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),
@@ -77,7 +80,10 @@ class DepartmentControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
+                .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
+                .andExpect(jsonPath("$.[*].facultyId").exists())
+                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint())
@@ -88,8 +94,9 @@ class DepartmentControllerTest {
     void addDepartment() throws Exception {
         FacultyResponse facultyResponse = createFaculty("Applied Sciences");
 
+        String departmentName = "Food Science";
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
-        departmentAddRequest.setName("Food Science");
+        departmentAddRequest.setName(departmentName);
         departmentAddRequest.setFacultyId(facultyResponse.getId());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.DEPARTMENTS)
@@ -98,7 +105,10 @@ class DepartmentControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value(containsString(departmentName)))
+                .andExpect(jsonPath("$.facultyId").value(containsString(facultyResponse.getId())))
+                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -131,8 +141,9 @@ class DepartmentControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.id").value(containsString(departmentResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
+                .andExpect(jsonPath("$.facultyId").value(containsString(departmentResponse.getFacultyId())))
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -191,13 +202,13 @@ class DepartmentControllerTest {
     private DepartmentResponse createDepartment(String departmentName, String facultyName) throws Exception {
         FacultyResponse facultyResponse = createFaculty(facultyName);
 
-        DepartmentAddRequest facultyAddRequest = new DepartmentAddRequest();
-        facultyAddRequest.setName(departmentName);
-        facultyAddRequest.setFacultyId(facultyResponse.getId());
+        DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
+        departmentAddRequest.setName(departmentName);
+        departmentAddRequest.setFacultyId(facultyResponse.getId());
 
         MvcResult mvcResult = this.mockMvc.perform(post(PathUtil.DEPARTMENTS)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(facultyAddRequest))
+                .content(objectMapper.writeValueAsBytes(departmentAddRequest))
         ).andReturn();
 
         byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();

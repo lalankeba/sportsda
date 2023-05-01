@@ -1,43 +1,37 @@
 package com.laan.sportsda.service.impl;
 
-import com.laan.sportsda.converter.DepartmentConverter;
 import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.DepartmentUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.entity.FacultyEntity;
+import com.laan.sportsda.mapper.DepartmentMapper;
 import com.laan.sportsda.repository.DepartmentRepository;
 import com.laan.sportsda.repository.FacultyRepository;
 import com.laan.sportsda.service.DepartmentService;
 import com.laan.sportsda.validator.DepartmentValidator;
 import com.laan.sportsda.validator.FacultyValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository departmentRepository;
 
-    private final DepartmentConverter departmentConverter;
+    private final DepartmentMapper departmentMapper;
 
     private final DepartmentValidator departmentValidator;
 
     private final FacultyRepository facultyRepository;
 
     private final FacultyValidator facultyValidator;
-
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository, DepartmentConverter departmentConverter,
-                                 DepartmentValidator departmentValidator, FacultyRepository facultyRepository,
-                                 FacultyValidator facultyValidator) {
-        this.departmentRepository = departmentRepository;
-        this.departmentConverter = departmentConverter;
-        this.departmentValidator = departmentValidator;
-        this.facultyRepository = facultyRepository;
-        this.facultyValidator = facultyValidator;
-    }
 
     @Override
     public DepartmentResponse getDepartment(final String id) {
@@ -46,7 +40,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         DepartmentResponse departmentResponse = null;
         if (optionalDepartmentEntity.isPresent()) {
-            departmentResponse = departmentConverter.convertEntityToResponse(optionalDepartmentEntity.get());
+            departmentResponse = departmentMapper.mapEntityToResponse(optionalDepartmentEntity.get());
         }
         return departmentResponse;
     }
@@ -54,7 +48,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentResponse> getDepartments() {
         List<DepartmentEntity> departmentEntities = departmentRepository.findAll();
-        return departmentConverter.convertEntitiesToResponses(departmentEntities);
+        return departmentMapper.mapEntitiesToResponses(departmentEntities);
     }
 
     @Override
@@ -67,9 +61,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         DepartmentResponse departmentResponse = null;
         if (optionalFacultyEntity.isPresent()) {
-            DepartmentEntity departmentEntity = departmentConverter.convertAddRequestToEntity(departmentAddRequest, optionalFacultyEntity.get());
+            DepartmentEntity departmentEntity = departmentMapper.mapAddRequestToEntity(departmentAddRequest, optionalFacultyEntity.get());
             DepartmentEntity savedDepartmentEntity = departmentRepository.save(departmentEntity);
-            departmentResponse = departmentConverter.convertEntityToResponse(savedDepartmentEntity);
+            departmentResponse = departmentMapper.mapEntityToResponse(savedDepartmentEntity);
         }
 
         return departmentResponse;
@@ -88,9 +82,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         DepartmentResponse departmentResponse = null;
         if (optionalFacultyEntity.isPresent()) {
-            DepartmentEntity departmentEntity = departmentConverter.convertUpdateRequestToEntity(departmentUpdateRequest, id, optionalFacultyEntity.get());
+            DepartmentEntity departmentEntity = departmentMapper.mapUpdateRequestToEntity(departmentUpdateRequest, id, optionalFacultyEntity.get());
             DepartmentEntity updatedDepartmentEntity =  departmentRepository.save(departmentEntity);
-            departmentResponse = departmentConverter.convertEntityToResponse(updatedDepartmentEntity);
+            departmentResponse = departmentMapper.mapEntityToResponse(updatedDepartmentEntity);
         }
 
         return departmentResponse;
@@ -113,7 +107,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentEntities = departmentRepository.findByFacultyEntity(optionalFacultyEntity.get());
         }
 
-        return departmentConverter.convertEntitiesToResponses(departmentEntities);
+        return departmentMapper.mapEntitiesToResponses(departmentEntities);
     }
 
 }

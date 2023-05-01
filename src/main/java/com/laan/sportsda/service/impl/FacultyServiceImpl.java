@@ -1,32 +1,30 @@
 package com.laan.sportsda.service.impl;
 
-import com.laan.sportsda.converter.FacultyConverter;
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.entity.FacultyEntity;
+import com.laan.sportsda.mapper.FacultyMapper;
 import com.laan.sportsda.repository.FacultyRepository;
 import com.laan.sportsda.service.FacultyService;
 import com.laan.sportsda.validator.FacultyValidator;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository facultyRepository;
 
-    private final FacultyConverter facultyConverter;
-
     private final FacultyValidator facultyValidator;
 
-    public FacultyServiceImpl(FacultyRepository facultyRepository, FacultyConverter facultyConverter, FacultyValidator facultyValidator) {
-        this.facultyRepository = facultyRepository;
-        this.facultyConverter = facultyConverter;
-        this.facultyValidator = facultyValidator;
-    }
+    private final FacultyMapper facultyMapper;
 
     @Override
     public FacultyResponse getFaculty(final String id) {
@@ -35,7 +33,7 @@ public class FacultyServiceImpl implements FacultyService {
 
         FacultyResponse facultyResponse = null;
         if (optionalFacultyEntity.isPresent()) {
-            facultyResponse = facultyConverter.convertEntityToResponse(optionalFacultyEntity.get());
+            facultyResponse = facultyMapper.mapEntityToResponse(optionalFacultyEntity.get());
         }
         return facultyResponse;
     }
@@ -43,7 +41,7 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public List<FacultyResponse> getFaculties() {
         List<FacultyEntity> facultyEntities = facultyRepository.findAll();
-        return facultyConverter.convertEntitiesToResponses(facultyEntities);
+        return facultyMapper.mapEntitiesToResponses(facultyEntities);
     }
 
     @Override
@@ -53,9 +51,9 @@ public class FacultyServiceImpl implements FacultyService {
 
         FacultyResponse facultyResponse = null;
         if (optionalFacultyEntity.isEmpty()) {
-            FacultyEntity facultyEntity = facultyConverter.convertAddRequestToEntity(facultyAddRequest);
+            FacultyEntity facultyEntity = facultyMapper.mapAddRequestToEntity(facultyAddRequest);
             FacultyEntity savedFacultyEntity = facultyRepository.save(facultyEntity);
-            facultyResponse = facultyConverter.convertEntityToResponse(savedFacultyEntity);
+            facultyResponse = facultyMapper.mapEntityToResponse(savedFacultyEntity);
         }
         return facultyResponse;
     }
@@ -68,9 +66,9 @@ public class FacultyServiceImpl implements FacultyService {
         Optional<FacultyEntity> optionalFacultyEntityByName = facultyRepository.findByNameAndIdNotContains(facultyUpdateRequest.getName(), id);
         facultyValidator.validateDuplicateFacultyEntity(optionalFacultyEntityByName);
 
-        FacultyEntity facultyEntity = facultyConverter.convertUpdateRequestToEntity(facultyUpdateRequest, id);
+        FacultyEntity facultyEntity = facultyMapper.mapUpdateRequestToEntity(facultyUpdateRequest, id);
         FacultyEntity updatedFacultyEntity =  facultyRepository.save(facultyEntity);
-        return facultyConverter.convertEntityToResponse(updatedFacultyEntity);
+        return facultyMapper.mapEntityToResponse(updatedFacultyEntity);
     }
 
     @Override

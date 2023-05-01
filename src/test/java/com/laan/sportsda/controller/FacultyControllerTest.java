@@ -8,7 +8,6 @@ import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.util.PathUtil;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -47,7 +46,7 @@ class FacultyControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @BeforeEach
+    @AfterEach
     void init() throws Exception {
         deleteAllDepartments();
         deleteAllFaculties();
@@ -57,10 +56,43 @@ class FacultyControllerTest {
     void getFaculty() throws Exception {
         String id = createFaculty("Applied Sciences").getId();
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.version").exists())
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint()),
+                                pathParameters(parameterWithName("id").description("id of the faculty"))
+                        )
+                );
+    }
+
+    @Test
+    void getFacultyWithNoExistence() throws Exception {
+        String id = "invalid_id";
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint()),
+                                pathParameters(parameterWithName("id").description("id of the faculty"))
+                        )
+                );
+    }
+
+    @Test
+    void getFacultyWithNoExistenceInSi() throws Exception {
+        String id = "invalid_id";
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id)
+                        .header("Accept-Language", "si"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),
@@ -74,11 +106,13 @@ class FacultyControllerTest {
         createFaculty("Humanities and Social Sciences");
         createFaculty("Management Studies and Commerce");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
+                .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
+                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint())
@@ -87,8 +121,9 @@ class FacultyControllerTest {
 
     @Test
     void addFaculty() throws Exception {
+        String facultyName= "Medical Sciences";
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
-        facultyAddRequest.setName("Medical Sciences");
+        facultyAddRequest.setName(facultyName);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +131,9 @@ class FacultyControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.name").value(containsString(facultyName)))
+                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -125,7 +162,7 @@ class FacultyControllerTest {
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").exists())
+                .andExpect(jsonPath("$.id").value(containsString(facultyResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
                 .andDo(
                         document("{method-name}",
@@ -145,8 +182,7 @@ class FacultyControllerTest {
     void deleteFaculty() throws Exception {
         FacultyResponse facultyResponse = createFaculty("Designing");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + "/{id}", facultyResponse.getId())
-                        .accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + "/{id}", facultyResponse.getId()))
                 .andDo(print())
                 .andExpect(status().isAccepted())
                 .andDo(
@@ -166,11 +202,14 @@ class FacultyControllerTest {
             facultyId = optionalDepartmentResponse.get().getFacultyId();
         }
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}/departments", facultyId).accept(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}/departments", facultyId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
+                .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
+                .andExpect(jsonPath("$.[*].facultyId").exists())
+                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),
