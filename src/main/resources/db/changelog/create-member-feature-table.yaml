@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-member-feature
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: member-feature
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: time_period
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: value
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: member_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_member-feature_member_id
+                    referencedTableName: member
+                    referencedColumnNames: id
+              - column:
+                  name: feature_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_member-feature_feature_id
+                    referencedTableName: feature
+                    referencedColumnNames: id
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false

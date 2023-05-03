@@ -1,0 +1,35 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-member-sport
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: member-sport
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: added_date_time
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: member_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_member-sport_member_id
+                    referencedTableName: member
+                    referencedColumnNames: id
+              - column:
+                  name: sport_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_member-sport_sport_id
+                    referencedTableName: sport
+                    referencedColumnNames: id

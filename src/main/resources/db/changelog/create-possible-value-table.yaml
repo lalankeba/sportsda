@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-possible-value
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: possible-value
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: attribute_value
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: feature_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_possible_value_feature_id
+                    referencedTableName: feature
+                    referencedColumnNames: id
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false

@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-sport
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: sport
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: 0
+                  constraints:
+                    nullable: false

@@ -13,3 +13,17 @@ databaseChangeLog:
       file: db/changelog/create-member-table.yaml
   - include:
       file: db/changelog/create-academic-data-table.yaml
+  - include:
+      file: db/changelog/create-credential-table.yaml
+  - include:
+      file: db/changelog/create-member-credential-table.yaml
+  - include:
+      file: db/changelog/create-sport-table.yaml
+  - include:
+      file: db/changelog/create-member-sport-table.yaml
+  - include:
+      file: db/changelog/create-feature-table.yaml
+  - include:
+      file: db/changelog/create-possible-value-table.yaml
+  - include:
+      file: db/changelog/create-member-feature-table.yaml
