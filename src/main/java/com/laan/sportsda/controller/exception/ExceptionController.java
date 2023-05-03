@@ -12,6 +12,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class ExceptionController {
     }
 
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
-    public ProblemDetail onException(ObjectOptimisticLockingFailureException exception) {
+    public ProblemDetail onObjectOptimisticLockingFailureException(ObjectOptimisticLockingFailureException exception) {
         logger.error("ObjectOptimisticLockingFailureException occurred. ", exception);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
