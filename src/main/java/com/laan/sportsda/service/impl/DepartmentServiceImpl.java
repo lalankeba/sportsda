@@ -14,6 +14,7 @@ import com.laan.sportsda.validator.FacultyValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +53,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public DepartmentResponse addDepartment(final DepartmentAddRequest departmentAddRequest) {
         Optional<DepartmentEntity> optionalDepartmentEntity = departmentRepository.findByName(departmentAddRequest.getName());
         departmentValidator.validateDuplicateDepartmentEntity(optionalDepartmentEntity);
@@ -70,6 +72,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public DepartmentResponse updateDepartment(final String id, final DepartmentUpdateRequest departmentUpdateRequest) {
         Optional<DepartmentEntity> optionalDepartmentEntity = departmentRepository.findById(id);
         departmentValidator.validateNonExistingDepartmentEntity(id, optionalDepartmentEntity);
@@ -91,6 +94,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    @Transactional
     public void deleteDepartment(final String id) {
         Optional<DepartmentEntity> optionalDepartmentEntity = departmentRepository.findById(id);
         departmentValidator.validateNonExistingDepartmentEntity(id, optionalDepartmentEntity);

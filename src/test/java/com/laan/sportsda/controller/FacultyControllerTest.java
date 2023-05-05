@@ -6,6 +6,7 @@ import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.util.MessagesUtil;
 import com.laan.sportsda.util.PathUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
@@ -45,6 +48,9 @@ class FacultyControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @AfterEach
     void init() throws Exception {
@@ -143,6 +149,73 @@ class FacultyControllerTest {
                                         fieldWithPath("id").description("Created Id for the faculty"))
                                         .and(fieldWithPath("name").description("Name of the faculty"))
                                         .and(fieldWithPath("version").description("Version number").optional())
+                        )
+                );
+    }
+
+    @Test
+    void addFacultyWithNullName() throws Exception {
+        FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
+        facultyAddRequest.setName(null);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(facultyAddRequest))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detail").value(containsString(messageSource.getMessage(MessagesUtil.MANDATORY_FACULTY_NAME, null, LocaleContextHolder.getLocale()))))
+                .andDo(
+                        document("{method-name}",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @Test
+    void addFacultyWithInvalidName() throws Exception {
+        String facultyName= "A";
+        FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
+        facultyAddRequest.setName(facultyName);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(facultyAddRequest))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detail").exists())
+                .andDo(
+                        document("{method-name}",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
+                        )
+                );
+    }
+
+    @Test
+    void addFacultyWithDuplicateName() throws Exception {
+        String facultyName= "Applied Sciences";
+        createFaculty(facultyName);
+
+        FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
+        facultyAddRequest.setName(facultyName);
+
+        String responseMessage = String.format(messageSource.getMessage(MessagesUtil.DUPLICATE_FACULTY_EXCEPTION, null, LocaleContextHolder.getLocale()), facultyName);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(facultyAddRequest))
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detail").exists())
+                .andExpect(jsonPath("$.detail").value(containsString(responseMessage)))
+                .andDo(
+                        document("{method-name}",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint())
                         )
                 );
     }

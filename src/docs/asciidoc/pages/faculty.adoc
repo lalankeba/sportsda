@@ -63,6 +63,36 @@ include::{snippets}/add-faculty/http-response.adoc[]
 .Response Description
 include::{snippets}/add-faculty/response-fields.adoc[]
 
+==== Adding a Faculty with empty name
+
+You will have an exception message when you add a faculty with empty name.
+
+.curl request
+include::{snippets}/add-faculty-with-null-name/curl-request.adoc[]
+
+.response
+include::{snippets}/add-faculty-with-null-name/http-response.adoc[]
+
+==== Adding a Faculty with invalid name
+
+You will have an exception message when you add a faculty with invalid name.
+
+.curl request
+include::{snippets}/add-faculty-with-invalid-name/curl-request.adoc[]
+
+.response
+include::{snippets}/add-faculty-with-invalid-name/http-response.adoc[]
+
+==== Adding a Faculty with duplicate name
+
+You will have an exception message when you add a faculty with duplicate name.
+
+.curl request
+include::{snippets}/add-faculty-with-duplicate-name/curl-request.adoc[]
+
+.response
+include::{snippets}/add-faculty-with-duplicate-name/http-response.adoc[]
+
 
 === Update Faculty
 

@@ -11,6 +11,7 @@ import com.laan.sportsda.validator.FacultyValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
+    @Transactional
     public FacultyResponse addFaculty(final FacultyAddRequest facultyAddRequest) {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findByName(facultyAddRequest.getName());
         facultyValidator.validateDuplicateFacultyEntity(optionalFacultyEntity);
@@ -59,6 +61,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
+    @Transactional
     public FacultyResponse updateFaculty(final String id, final FacultyUpdateRequest facultyUpdateRequest) {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findById(id);
         facultyValidator.validateNonExistingFacultyEntity(id, optionalFacultyEntity);
@@ -72,6 +75,7 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
+    @Transactional
     public void deleteFaculty(final String id) {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findById(id);
         facultyValidator.validateNonExistingFacultyEntity(id, optionalFacultyEntity);
