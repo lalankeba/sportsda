@@ -20,6 +20,7 @@ public interface DepartmentMapper {
 
     @Mapping(target = "name", source = "departmentAddRequest.name")
     @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
+    @Mapping(target = "version", constant = "0L")
     DepartmentEntity mapAddRequestToEntity(DepartmentAddRequest departmentAddRequest, FacultyEntity existingFacultyEntity);
 
     @Mapping(target = "id", source = "departmentId")

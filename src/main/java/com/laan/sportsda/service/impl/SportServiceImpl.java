@@ -70,7 +70,7 @@ public class SportServiceImpl implements SportService {
         sportValidator.validateDuplicateSportEntity(optionalSportEntityByName);
 
         SportEntity sportEntity = sportMapper.mapUpdateRequestToEntity(sportUpdateRequest, id);
-        SportEntity updatedSportEntity =  sportRepository.save(sportEntity);
+        SportEntity updatedSportEntity =  sportRepository.saveAndFlush(sportEntity);
         return sportMapper.mapEntityToResponse(updatedSportEntity);
     }
 

@@ -70,7 +70,7 @@ public class FacultyServiceImpl implements FacultyService {
         facultyValidator.validateDuplicateFacultyEntity(optionalFacultyEntityByName);
 
         FacultyEntity facultyEntity = facultyMapper.mapUpdateRequestToEntity(facultyUpdateRequest, id);
-        FacultyEntity updatedFacultyEntity =  facultyRepository.save(facultyEntity);
+        FacultyEntity updatedFacultyEntity =  facultyRepository.saveAndFlush(facultyEntity);
         return facultyMapper.mapEntityToResponse(updatedFacultyEntity);
     }
 
