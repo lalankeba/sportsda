@@ -4,7 +4,7 @@ databaseChangeLog:
       author: lalanke
       changes:
         - createTable:
-            tableName: member-sport
+            tableName: member_sport
             columns:
               - column:
                   name: id
@@ -22,7 +22,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_member-sport_member_id
+                    foreignKeyName: fk_member_sport_member_id
                     referencedTableName: member
                     referencedColumnNames: id
               - column:
@@ -30,6 +30,6 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_member-sport_sport_id
+                    foreignKeyName: fk_member_sport_sport_id
                     referencedTableName: sport
                     referencedColumnNames: id

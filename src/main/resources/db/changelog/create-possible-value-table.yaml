@@ -4,7 +4,7 @@ databaseChangeLog:
       author: lalanke
       changes:
         - createTable:
-            tableName: possible-value
+            tableName: possible_value
             columns:
               - column:
                   name: id

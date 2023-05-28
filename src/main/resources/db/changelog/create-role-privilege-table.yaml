@@ -25,6 +25,6 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_privilege_id
+                    foreignKeyName: fk_role_privilege_privilege_id
                     referencedTableName: privilege
                     referencedColumnNames: id

@@ -4,7 +4,7 @@ databaseChangeLog:
       author: lalanke
       changes:
         - createTable:
-            tableName: member-feature
+            tableName: member_feature
             columns:
               - column:
                   name: id
@@ -27,7 +27,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_member-feature_member_id
+                    foreignKeyName: fk_member_feature_member_id
                     referencedTableName: member
                     referencedColumnNames: id
               - column:
@@ -35,7 +35,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_member-feature_feature_id
+                    foreignKeyName: fk_member_feature_feature_id
                     referencedTableName: feature
                     referencedColumnNames: id
               - column:

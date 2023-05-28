@@ -5,18 +5,19 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "department")
-public class DepartmentEntity {
+@Table(name = "possible_value")
+public class PossibleValueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String name;
+    @Column(name = "attribute_value")
+    private String attributeValue;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "faculty_id")
-    private FacultyEntity facultyEntity;
+    @JoinColumn(name = "feature_id")
+    private FeatureEntity featureEntity;
 
     @Column(name = "version")
     @Version

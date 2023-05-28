@@ -18,6 +18,7 @@ public interface DepartmentMapper {
 
     List<DepartmentResponse> mapEntitiesToResponses(List<DepartmentEntity> departmentEntities);
 
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "departmentAddRequest.name")
     @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
     @Mapping(target = "version", constant = "0L")

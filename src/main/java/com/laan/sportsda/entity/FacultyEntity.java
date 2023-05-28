@@ -2,7 +2,6 @@ package com.laan.sportsda.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
@@ -10,8 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 public class FacultyEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private String name;

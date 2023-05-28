@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 public class FacultyAddRequest {
 
-    @NotNull(message = "{mandatory.faculty.name}")
-    @Size(min = 2, max = 150, message = "{" + MessagesUtil.INVALID_FACULTY_NAME_SIZE + "}")
+    @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_FACULTY_NAME)
+    @Size(min = 2, max = 150, message = MessagesUtil.AnnotationSupported.INVALID_FACULTY_NAME_SIZE)
     private String name;
 
 }

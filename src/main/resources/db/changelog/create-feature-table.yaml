@@ -18,6 +18,26 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: feature_value_type
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: from_value
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: to_value
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: measurement
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
                   name: sport_id
                   type: varchar(100)
                   constraints:

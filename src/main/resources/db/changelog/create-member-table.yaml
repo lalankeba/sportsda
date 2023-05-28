@@ -67,7 +67,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_department_id
+                    foreignKeyName: fk_member_department_id
                     referencedTableName: department
                     referencedColumnNames: id
               - column:
@@ -75,7 +75,7 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_role_id
+                    foreignKeyName: fk_member_role_id
                     referencedTableName: role
                     referencedColumnNames: id
               - column:

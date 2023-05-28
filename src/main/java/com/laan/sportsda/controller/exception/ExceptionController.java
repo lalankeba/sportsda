@@ -2,6 +2,7 @@ package com.laan.sportsda.controller.exception;
 
 import com.laan.sportsda.exception.DuplicateElementException;
 import com.laan.sportsda.exception.ElementNotFoundException;
+import com.laan.sportsda.exception.InvalidRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,12 @@ public class ExceptionController {
     @ExceptionHandler(DuplicateElementException.class)
     public ProblemDetail onDuplicateElementException(DuplicateElementException exception) {
         logger.error("DuplicateElementException occurred. {}", exception.getMessage());
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ProblemDetail onInvalidRequestException(InvalidRequestException exception) {
+        logger.error("InvalidRequestException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
