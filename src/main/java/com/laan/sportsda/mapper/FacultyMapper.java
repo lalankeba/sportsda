@@ -16,6 +16,8 @@ public interface FacultyMapper {
 
     List<FacultyResponse> mapEntitiesToResponses(List<FacultyEntity> entities);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", constant = "0L")
     FacultyEntity mapAddRequestToEntity(FacultyAddRequest addRequest);
 
     @Mapping(target = "id", source = "facultyId")

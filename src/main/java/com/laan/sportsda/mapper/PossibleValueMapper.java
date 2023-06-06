@@ -17,6 +17,7 @@ public interface PossibleValueMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "attributeValue", source = "value")
+    @Mapping(target = "featureEntity", ignore = true)
     @Mapping(target = "version", constant = "0L")
     PossibleValueEntity mapStringToEntity(String value);
 
