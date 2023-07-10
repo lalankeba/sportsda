@@ -24,7 +24,7 @@ databaseChangeLog:
                     nullable: true
               - column:
                   name: version
-                  type: int
+                  type: bigint
                   defaultValue: 0
                   constraints:
                     nullable: false

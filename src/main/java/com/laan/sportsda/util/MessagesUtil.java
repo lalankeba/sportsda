@@ -35,6 +35,8 @@ public class MessagesUtil {
     public static final String MANDATORY_FEATURE_NAME = "mandatory.feature.name";
     public static final String INVALID_FEATURE_NAME_SIZE = "invalid.feature.name.size";
 
+    public static final String DUPLICATE_MEMBER_EXCEPTION = "duplicate.member.exception";
+
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class AnnotationSupported {
         private static final String START = "{";

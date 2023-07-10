@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-permission-data
+      author: lalanke
+      changes:
+        - insert:
+            tableName: permission
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: description
+                  value: GET_FACULTY
+              - column:
+                  name: version
+                  value: 0
+        - insert:
+            tableName: permission
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: description
+                  value: GET_FACULTIES
+              - column:
+                  name: version
+                  value: 0
+        - insert:
+            tableName: permission
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: description
+                  value: ADD_FACULTY
+              - column:
+                  name: version
+                  value: 0
+        - insert:
+            tableName: permission
+            columns:
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: description
+                  value: UPDATE_FACULTY
+              - column:
+                  name: version
+                  value: 0
+        - insert:
+            tableName: permission
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: description
+                  value: DELETE_FACULTY
+              - column:
+                  name: version
+                  value: 0

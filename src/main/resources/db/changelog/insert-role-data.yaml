@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-role-data
+      author: lalanke
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: ADMIN
+              - column:
+                  name: description
+                  value: Can do all tasks
+              - column:
+                  name: version
+                  value: 0
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: INSTRUCTOR
+              - column:
+                  name: description
+                  value: Can do tasks which an instructor is allowed
+              - column:
+                  name: version
+                  value: 0
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: name
+                  value: STUDENT
+              - column:
+                  name: description
+                  value: Can do basic tasks
+              - column:
+                  name: version
+                  value: 0

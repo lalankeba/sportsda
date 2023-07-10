@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-privilege
+      id: create-permission
       author: lalanke
       changes:
         - createTable:
-            tableName: privilege
+            tableName: permission
             columns:
               - column:
                   name: id
@@ -13,8 +13,8 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(200)
+                  name: description
+                  type: varchar(300)
                   constraints:
                     nullable: false
               - column:

@@ -4,19 +4,17 @@ databaseChangeLog:
   - include:
       file: db/changelog/create-department-table.yaml
   - include:
-      file: db/changelog/create-privilege-table.yaml
+      file: db/changelog/create-permission-table.yaml
   - include:
       file: db/changelog/create-role-table.yaml
   - include:
-      file: db/changelog/create-role-privilege-table.yaml
+      file: db/changelog/create-role-permission-table.yaml
   - include:
       file: db/changelog/create-member-table.yaml
   - include:
       file: db/changelog/create-academic-data-table.yaml
   - include:
-      file: db/changelog/create-credential-table.yaml
-  - include:
-      file: db/changelog/create-member-credential-table.yaml
+      file: db/changelog/create-session-table.yaml
   - include:
       file: db/changelog/create-sport-table.yaml
   - include:
@@ -27,3 +25,13 @@ databaseChangeLog:
       file: db/changelog/create-possible-value-table.yaml
   - include:
       file: db/changelog/create-member-feature-table.yaml
+  - include:
+      file: db/changelog/insert-role-data.yaml
+  - include:
+      file: db/changelog/insert-permission-data.yaml
+  - include:
+      file: db/changelog/insert-role-permission-data.yaml
+  - include:
+      file: db/changelog/insert-faculty-data.yaml
+  - include:
+      file: db/changelog/insert-department-data.yaml

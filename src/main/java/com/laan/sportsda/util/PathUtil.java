@@ -11,5 +11,6 @@ public class PathUtil {
     public static final String DEPARTMENTS = "/departments";
     public static final String SPORTS = "/sports";
     public static final String FEATURES = "/features";
+    public static final String MEMBERS = "/members";
 
 }

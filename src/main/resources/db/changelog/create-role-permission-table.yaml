@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-role-privilege
+      id: create-role-permission
       author: lalanke
       changes:
         - createTable:
-            tableName: role_privilege
+            tableName: role_permission
             columns:
               - column:
                   name: id
@@ -17,14 +17,18 @@ databaseChangeLog:
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_role_priviege_role_id
+                    foreignKeyName: fk_role_permission_role_id
                     referencedTableName: role
                     referencedColumnNames: id
               - column:
-                  name: privilege_id
+                  name: permission_id
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_role_privilege_privilege_id
-                    referencedTableName: privilege
+                    foreignKeyName: fk_role_permission_permission_id
+                    referencedTableName: permission
                     referencedColumnNames: id
+        - addUniqueConstraint:
+            tableName: role_permission
+            constraintName: unique_role_permission_id
+            columnNames: role_id, permission_id

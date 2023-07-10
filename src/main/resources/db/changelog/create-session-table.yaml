@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: create-member-credential
+      id: create-session
       author: lalanke
       changes:
         - createTable:
-            tableName: member_credential
+            tableName: session
             columns:
               - column:
                   name: id
@@ -18,23 +18,36 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
-                  name: logout_time
+                  name: expiry_date_time
                   type: timestamp
                   constraints:
                     nullable: true
+              - column:
+                  name: user_agent
+                  type: varchar(300)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: ip_address
+                  type: varchar(20)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: logout_date_time
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: logged_out
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
               - column:
                   name: member_id
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_member_credential_member_id
+                    foreignKeyName: fk_session_member_id
                     referencedTableName: member
-                    referencedColumnNames: id
-              - column:
-                  name: credential_id
-                  type: varchar(100)
-                  constraints:
-                    nullable: false
-                    foreignKeyName: fk_member_credential_credential_id
-                    referencedTableName: credential
                     referencedColumnNames: id
