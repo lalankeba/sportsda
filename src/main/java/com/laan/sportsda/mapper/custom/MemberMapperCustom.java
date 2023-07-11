@@ -1,4 +1,4 @@
-package com.laan.sportsda.mapper;
+package com.laan.sportsda.mapper.custom;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.MemberResponse;
@@ -6,6 +6,7 @@ import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.entity.PermissionEntity;
 import com.laan.sportsda.entity.RoleEntity;
+import com.laan.sportsda.mapper.MemberMapper;
 import com.laan.sportsda.security.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

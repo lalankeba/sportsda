@@ -4,7 +4,7 @@ import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
 import com.laan.sportsda.entity.*;
-import com.laan.sportsda.mapper.MemberMapperCustom;
+import com.laan.sportsda.mapper.custom.MemberMapperCustom;
 import com.laan.sportsda.mapper.SessionMapper;
 import com.laan.sportsda.repository.DepartmentRepository;
 import com.laan.sportsda.repository.MemberRepository;

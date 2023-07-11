@@ -1,6 +1,6 @@
 package com.laan.sportsda.filter;
 
-import com.laan.sportsda.mapper.MemberMapperCustom;
+import com.laan.sportsda.mapper.custom.MemberMapperCustom;
 import com.laan.sportsda.security.MemberDetails;
 import com.laan.sportsda.service.SessionService;
 import com.laan.sportsda.util.JwtUtil;

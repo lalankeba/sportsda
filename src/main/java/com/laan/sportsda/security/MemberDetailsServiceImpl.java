@@ -1,7 +1,7 @@
 package com.laan.sportsda.security;
 
 import com.laan.sportsda.entity.MemberEntity;
-import com.laan.sportsda.mapper.MemberMapperCustom;
+import com.laan.sportsda.mapper.custom.MemberMapperCustom;
 import com.laan.sportsda.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,6 @@ public class MemberDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByUsername(username);
-        log.info("---------- database call to load user details --------");
         if (optionalMemberEntity.isPresent()) {
             return memberMapperCustom.mapEntityToDetails(optionalMemberEntity.get());
         } else {
