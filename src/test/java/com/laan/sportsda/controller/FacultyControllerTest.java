@@ -69,9 +69,10 @@ class FacultyControllerTest {
 
     @Test
     void getFaculty() throws Exception {
-        String id = testUtils.createFaculty("Applied Sciences").getId();
+        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                 )
                 .andDo(print())
@@ -82,7 +83,15 @@ class FacultyControllerTest {
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),
-                                pathParameters(parameterWithName("id").description("id of the faculty"))
+                                pathParameters(parameterWithName("id").description("id of the faculty")),
+                                responseFields(
+                                        fieldWithPath("id").description("Id for the faculty"))
+                                        .and(fieldWithPath("name").description("Name of the faculty"))
+                                        .and(fieldWithPath("name").description("Name of the faculty"))
+                                        .and(subsectionWithPath("departments").description("List of departments attached to the faculty"))
+                                        .and(fieldWithPath("departments[].id").description("Id of the department"))
+                                        .and(fieldWithPath("departments[].name").description("Name of the department"))
+                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
     }

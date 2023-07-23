@@ -26,6 +26,9 @@ include::{snippets}/get-faculty/path-parameters.adoc[]
 .response
 include::{snippets}/get-faculty/http-response.adoc[]
 
+.Response Description
+include::{snippets}/get-faculty/response-fields.adoc[]
+
 ==== Having Exception
 
 In case you have a exception, it would be like this.

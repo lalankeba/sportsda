@@ -1,6 +1,5 @@
 package com.laan.sportsda.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
@@ -95,20 +94,20 @@ class MemberControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the member"))
                                         .and(fieldWithPath("firstName").description("First name of the member"))
-                                        .and(fieldWithPath("middleName").description("Middle name of the member").optional())
-                                        .and(fieldWithPath("lastName").description("Last name of the member").optional())
-                                        .and(fieldWithPath("username").description("Username of the member").optional())
-                                        .and(fieldWithPath("dateOfBirth").description("Date of birth of the member").optional())
-                                        .and(fieldWithPath("nic").description("NIC of the member").optional())
-                                        .and(fieldWithPath("phone").description("Phone number of the member").optional())
-                                        .and(fieldWithPath("universityEmail").description("University email of the member").optional())
-                                        .and(fieldWithPath("personalEmail").description("Personal email of the member").optional())
-                                        .and(fieldWithPath("address").description("Address of the member").optional())
-                                        .and(fieldWithPath("district").description("District of the member").optional())
-                                        .and(fieldWithPath("accountNonExpired").description("Account non expired of the member").optional())
-                                        .and(fieldWithPath("accountNonLocked").description("Account non locked of the member").optional())
-                                        .and(fieldWithPath("credentialsNonExpired").description("Credentials non expired of the member").optional())
-                                        .and(fieldWithPath("enabled").description("Enabled of the member").optional())
+                                        .and(fieldWithPath("middleName").description("Middle name of the member"))
+                                        .and(fieldWithPath("lastName").description("Last name of the member"))
+                                        .and(fieldWithPath("username").description("Username of the member"))
+                                        .and(fieldWithPath("dateOfBirth").description("Date of birth of the member"))
+                                        .and(fieldWithPath("nic").description("NIC of the member"))
+                                        .and(fieldWithPath("phone").description("Phone number of the member"))
+                                        .and(fieldWithPath("universityEmail").description("University email of the member"))
+                                        .and(fieldWithPath("personalEmail").description("Personal email of the member"))
+                                        .and(fieldWithPath("address").description("Address of the member"))
+                                        .and(fieldWithPath("district").description("District of the member"))
+                                        .and(fieldWithPath("accountNonExpired").description("Account non expired of the member"))
+                                        .and(fieldWithPath("accountNonLocked").description("Account non locked of the member"))
+                                        .and(fieldWithPath("credentialsNonExpired").description("Credentials non expired of the member"))
+                                        .and(fieldWithPath("enabled").description("Enabled of the member"))
                         )
                 );
     }

@@ -1,15 +1,15 @@
 package com.laan.sportsda.utils;
 
-import com.laan.sportsda.dto.request.*;
+import com.laan.sportsda.dto.request.DepartmentAddRequest;
+import com.laan.sportsda.dto.request.FacultyAddRequest;
+import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.RoleAddRequest;
 import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.entity.SessionEntity;
 import com.laan.sportsda.repository.MemberRepository;
 import com.laan.sportsda.repository.SessionRepository;
-import com.laan.sportsda.service.DepartmentService;
-import com.laan.sportsda.service.FacultyService;
-import com.laan.sportsda.service.MemberService;
-import com.laan.sportsda.service.RoleService;
+import com.laan.sportsda.service.*;
 import com.laan.sportsda.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,20 +37,23 @@ public class TestUtils {
 
     private final PropertyUtil propertyUtil;
 
-    public RoleResponse createRole(String roleName, String roleDescription) {
+    private final PermissionService permissionService;
+
+    public RoleResponse createRole(String roleName, String roleDescription, List<String> permissionIds) {
         RoleAddRequest roleAddRequest = new RoleAddRequest();
         roleAddRequest.setName(roleName);
         roleAddRequest.setDescription(roleDescription);
+        roleAddRequest.setPermissionIds(permissionIds);
         return roleService.addRole(roleAddRequest);
     }
 
     public RoleResponse createBasicRole() {
-        return createRole(propertyUtil.getBasicRoleName(), "Sample role description");
+        return createRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
     }
 
     public void deleteAllRoles() {
-        List<RolesResponse> rolesRespons = roleService.getRoles();
-        List<String> ids = rolesRespons.stream().map(RolesResponse::getId).toList();
+        List<RolesResponse> rolesResponses = roleService.getRoles();
+        List<String> ids = rolesResponses.stream().map(RolesResponse::getId).toList();
         ids.forEach(roleService::deleteRole);
     }
 
@@ -77,7 +80,7 @@ public class TestUtils {
     }
 
     public MemberResponse createMember(String firstName, String lastName, String username, String password) {
-        createRole(propertyUtil.getBasicRoleName(), "Sample role description");
+        createRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
         String facultyId = createBasicFaculty().getId();
 
         MemberRegistrationRequest memberRegistrationRequest = new MemberRegistrationRequest();
@@ -119,6 +122,10 @@ public class TestUtils {
         List<MemberEntity> memberEntities = memberRepository.findAll();
         List<String> memberIds = memberEntities.stream().map(MemberEntity::getId).toList();
         memberIds.forEach(memberRepository::deleteById);
+    }
+
+    public List<PermissionResponse> getAllPermissions() {
+        return permissionService.getPermissions();
     }
 
 }

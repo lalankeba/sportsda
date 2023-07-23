@@ -55,7 +55,7 @@ class DepartmentControllerTest {
         FacultyResponse facultyResponse = testUtils.createFaculty("Dental Sciences");
         String id = testUtils.createDepartment("Community Dental health", facultyResponse).getId();
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + "/{id}", id)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                 )
                 .andDo(print())
@@ -140,7 +140,7 @@ class DepartmentControllerTest {
         departmentUpdateRequest.setFacultyId(departmentResponse.getFacultyId());
         departmentUpdateRequest.setVersion(departmentResponse.getVersion());
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.DEPARTMENTS + "/{id}", departmentResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(departmentUpdateRequest))
@@ -171,7 +171,7 @@ class DepartmentControllerTest {
         FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
         DepartmentResponse departmentResponse = testUtils.createDepartment("Chemistry", facultyResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + "/{id}", departmentResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                 )
                 .andDo(print())

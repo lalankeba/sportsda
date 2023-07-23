@@ -1,0 +1,77 @@
+== Roles
+This section explains how to communicate with role API
+
+
+=== Get role by ID
+
+You can view existing role by id
+
+.curl request
+include::{snippets}/get-role/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/get-role/path-parameters.adoc[]
+
+.response
+include::{snippets}/get-role/http-response.adoc[]
+
+.Response Description
+include::{snippets}/get-role/response-fields.adoc[]
+
+=== Get Roles
+
+You can view all existing permissions
+
+.curl request
+include::{snippets}/get-roles/curl-request.adoc[]
+
+.response
+include::{snippets}/get-roles/http-response.adoc[]
+
+
+=== Add Role
+
+You can add a new role to the system.
+
+.curl request
+include::{snippets}/add-role/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/add-role/request-fields.adoc[]
+
+.response
+include::{snippets}/add-role/http-response.adoc[]
+
+.Response Description
+include::{snippets}/add-role/response-fields.adoc[]
+
+
+=== Update Role
+
+You can add a new role to the system.
+
+.curl request
+include::{snippets}/update-role/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/update-role/request-fields.adoc[]
+
+.response
+include::{snippets}/update-role/http-response.adoc[]
+
+.Response Description
+include::{snippets}/update-role/response-fields.adoc[]
+
+
+=== Delete Role
+
+You can delete existing role by id.
+
+.curl request
+include::{snippets}/delete-role/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/delete-role/path-parameters.adoc[]
+
+.response
+include::{snippets}/delete-role/http-response.adoc[]

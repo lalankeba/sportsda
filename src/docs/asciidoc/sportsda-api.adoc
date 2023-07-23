@@ -18,3 +18,5 @@ include::pages/faculty.adoc[]
 include::pages/department.adoc[]
 
 include::pages/permission.adoc[]
+
+include::pages/role.adoc[]
