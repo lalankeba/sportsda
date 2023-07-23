@@ -3,6 +3,8 @@ package com.laan.sportsda.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "faculty")
@@ -13,6 +15,9 @@ public class FacultyEntity {
     private String id;
 
     private String name;
+
+    @OneToMany(mappedBy = "facultyEntity")
+    private List<DepartmentEntity> departmentEntities;
 
     @Column(name = "version")
     @Version

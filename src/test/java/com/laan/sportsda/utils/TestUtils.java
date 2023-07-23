@@ -71,8 +71,8 @@ public class TestUtils {
     }
 
     public void deleteAllFaculties() {
-        List<FacultyResponse> facultyResponses = facultyService.getFaculties();
-        List<String> ids = facultyResponses.stream().map(FacultyResponse::getId).toList();
+        List<FacultiesResponse> facultiesResponses = facultyService.getFaculties();
+        List<String> ids = facultiesResponses.stream().map(FacultiesResponse::getId).toList();
         ids.forEach(facultyService::deleteFaculty);
     }
 

@@ -3,6 +3,7 @@ package com.laan.sportsda.controller;
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
+import com.laan.sportsda.dto.response.FacultiesResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.service.DepartmentService;
 import com.laan.sportsda.service.FacultyService;
@@ -37,9 +38,9 @@ public class FacultyController {
     @GetMapping
     public ResponseEntity<Object> getFaculties() {
         log.info("getting faculties");
-        List<FacultyResponse> facultyResponses = facultyService.getFaculties();
+        List<FacultiesResponse> facultiesResponses = facultyService.getFaculties();
         log.info("get faculties");
-        return new ResponseEntity<>(facultyResponses, HttpStatus.OK);
+        return new ResponseEntity<>(facultiesResponses, HttpStatus.OK);
     }
 
     @PostMapping

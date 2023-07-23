@@ -163,6 +163,7 @@ class FacultyControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the faculty"))
                                         .and(fieldWithPath("name").description("Name of the faculty"))
+                                        .and(fieldWithPath("departments").description("Departments of the faculty"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
@@ -265,6 +266,7 @@ class FacultyControllerTest {
                                         .and(fieldWithPath("version").description("Version of the existing faculty")),
                                 responseFields(fieldWithPath("id").description("Id of the faculty"))
                                         .and(fieldWithPath("name").description("Updated name of the faculty"))
+                                        .and(fieldWithPath("departments").description("Departments of the faculty"))
                                         .and(fieldWithPath("version").description("Updated version number").optional())
                         )
                 );

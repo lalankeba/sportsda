@@ -2,6 +2,7 @@ package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
+import com.laan.sportsda.dto.response.FacultiesResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.mapper.FacultyMapper;
@@ -34,15 +35,15 @@ public class FacultyServiceImpl implements FacultyService {
 
         FacultyResponse facultyResponse = null;
         if (optionalFacultyEntity.isPresent()) {
-            facultyResponse = facultyMapper.mapEntityToResponse(optionalFacultyEntity.get());
+            facultyResponse = facultyMapper.mapEntityToFacultyResponse(optionalFacultyEntity.get());
         }
         return facultyResponse;
     }
 
     @Override
-    public List<FacultyResponse> getFaculties() {
+    public List<FacultiesResponse> getFaculties() {
         List<FacultyEntity> facultyEntities = facultyRepository.findAll();
-        return facultyMapper.mapEntitiesToResponses(facultyEntities);
+        return facultyMapper.mapEntitiesToFacultiesResponses(facultyEntities);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class FacultyServiceImpl implements FacultyService {
         if (optionalFacultyEntity.isEmpty()) {
             FacultyEntity facultyEntity = facultyMapper.mapAddRequestToEntity(facultyAddRequest);
             FacultyEntity savedFacultyEntity = facultyRepository.save(facultyEntity);
-            facultyResponse = facultyMapper.mapEntityToResponse(savedFacultyEntity);
+            facultyResponse = facultyMapper.mapEntityToFacultyResponse(savedFacultyEntity);
         }
         return facultyResponse;
     }
@@ -71,7 +72,7 @@ public class FacultyServiceImpl implements FacultyService {
 
         FacultyEntity facultyEntity = facultyMapper.mapUpdateRequestToEntity(facultyUpdateRequest, id);
         FacultyEntity updatedFacultyEntity =  facultyRepository.saveAndFlush(facultyEntity);
-        return facultyMapper.mapEntityToResponse(updatedFacultyEntity);
+        return facultyMapper.mapEntityToFacultyResponse(updatedFacultyEntity);
     }
 
     @Override
