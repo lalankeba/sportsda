@@ -1,35 +1,34 @@
 databaseChangeLog:
   - changeSet:
-      id: create-role-permission
+      id: create-member-department
       author: lalanke
       changes:
         - createTable:
-            tableName: role_permission
+            tableName: member_department
             columns:
               - column:
                   name: id
-                  autoIncrement: true
-                  type: bigint
+                  type: varchar(100)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: role_id
+                  name: member_id
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_role_permission_role_id
-                    referencedTableName: role
+                    foreignKeyName: fk_member_department_member_id
+                    referencedTableName: member
                     referencedColumnNames: id
               - column:
-                  name: permission_id
+                  name: department_id
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_role_permission_permission_id
-                    referencedTableName: permission
+                    foreignKeyName: fk_member_department_department_id
+                    referencedTableName: department
                     referencedColumnNames: id
         - addUniqueConstraint:
-            tableName: role_permission
-            constraintName: unique_role_permission_id
-            columnNames: role_id, permission_id
+            tableName: member_department
+            constraintName: unique_member_department_id
+            columnNames: member_id, department_id

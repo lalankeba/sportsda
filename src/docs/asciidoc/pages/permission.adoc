@@ -1,0 +1,27 @@
+== Permission
+This section explains how to communicate with permission API
+
+
+=== Get Permission by ID
+
+You can view existing permission by id
+
+.curl request
+include::{snippets}/get-permission/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/get-permission/path-parameters.adoc[]
+
+.response
+include::{snippets}/get-permission/http-response.adoc[]
+
+
+=== Get Permissions
+
+You can view all existing permissions
+
+.curl request
+include::{snippets}/get-permissions/curl-request.adoc[]
+
+.response
+include::{snippets}/get-permissions/http-response.adoc[]

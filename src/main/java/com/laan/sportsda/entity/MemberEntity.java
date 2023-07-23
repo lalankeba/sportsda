@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -65,12 +66,21 @@ public class MemberEntity {
     private Boolean enabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id")
-    private DepartmentEntity departmentEntity;
+    @JoinColumn(name = "faculty_id")
+    private FacultyEntity facultyEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;
+
+    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "member_department",
+            joinColumns = { @JoinColumn(name = "member_id") },
+            inverseJoinColumns = { @JoinColumn(name = "department_id") }
+    )
+    @ToString.Exclude
+    private List<DepartmentEntity> departmentEntities;
 
     @Override
     public String toString() {

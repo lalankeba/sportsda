@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,7 +28,7 @@ public class MemberController {
 
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
+    @PostMapping(PathUtil.REGISTER)
     public ResponseEntity<Object> register(@Valid @RequestBody MemberRegistrationRequest memberRegistrationRequest) {
         log.info("registering new member");
         MemberResponse memberResponse = memberService.registerMember(memberRegistrationRequest);
@@ -35,14 +36,16 @@ public class MemberController {
         return new ResponseEntity<>(memberResponse, HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
+    @PostMapping(PathUtil.LOGIN)
     public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest, HttpServletRequest httpServletRequest) {
         log.info("Login");
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
         );
         if (authentication.isAuthenticated()) {
-            return new ResponseEntity<>(memberService.loginMember(loginRequest.getUsername(), httpServletRequest), HttpStatus.OK);
+            String userAgent = httpServletRequest.getHeader(HttpHeaders.USER_AGENT);
+            String ipAddress = httpServletRequest.getRemoteAddr();
+            return new ResponseEntity<>(memberService.loginMember(loginRequest.getUsername(), userAgent, ipAddress), HttpStatus.OK);
         } else {
             log.warn("Login not successful");
             throw new BadCredentialsException("Invalid user");

@@ -22,7 +22,7 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("/{id}")
+    @GetMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> getDepartment(@PathVariable("id") String id) {
         log.info("getting department for id: {}", id);
         DepartmentResponse departmentResponse = departmentService.getDepartment(id);
@@ -46,7 +46,7 @@ public class DepartmentController {
         return new ResponseEntity<>(departmentResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> updateDepartment(@PathVariable("id") String id, @Valid @RequestBody DepartmentUpdateRequest departmentUpdateRequest) {
         log.info("updating department: {}", id);
         DepartmentResponse departmentResponse = departmentService.updateDepartment(id, departmentUpdateRequest);
@@ -54,7 +54,7 @@ public class DepartmentController {
         return new ResponseEntity<>(departmentResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> deleteDepartment(@PathVariable("id") String id) {
         log.info("deleting department with id: {}", id);
         departmentService.deleteDepartment(id);

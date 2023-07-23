@@ -1,0 +1,47 @@
+== Member
+This section explains how to communicate with member API
+
+
+=== Register member
+
+Members can register themselves by providing minimum details
+
+.curl request
+include::{snippets}/register/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/register/request-fields.adoc[]
+
+.response
+include::{snippets}/register/http-response.adoc[]
+
+.Response Description
+include::{snippets}/register/response-fields.adoc[]
+
+
+=== Login member
+
+Member can login to the system by providing credentials
+
+.curl request
+include::{snippets}/login/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/login/request-fields.adoc[]
+
+.response
+include::{snippets}/login/http-response.adoc[]
+
+.Response Description
+include::{snippets}/login/response-fields.adoc[]
+
+
+=== Logout member
+
+Member can logout from the system
+
+.curl request
+include::{snippets}/logout/curl-request.adoc[]
+
+.response
+include::{snippets}/logout/http-response.adoc[]

@@ -26,7 +26,7 @@ public class FacultyController {
 
     private final DepartmentService departmentService;
 
-    @GetMapping("/{id}")
+    @GetMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> getFaculty(@PathVariable("id") String id) {
         log.info("getting faculty for id: {}", id);
         FacultyResponse facultyResponse = facultyService.getFaculty(id);
@@ -50,7 +50,7 @@ public class FacultyController {
         return new ResponseEntity<>(facultyResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> updateFaculty(@PathVariable("id") String id, @Valid @RequestBody FacultyUpdateRequest facultyUpdateRequest) {
         log.info("updating faculty: {}", id);
         FacultyResponse facultyResponse = facultyService.updateFaculty(id, facultyUpdateRequest);
@@ -58,7 +58,7 @@ public class FacultyController {
         return new ResponseEntity<>(facultyResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> deleteFaculty(@PathVariable("id") String id) {
         log.info("deleting faculty with id: {}", id);
         facultyService.deleteFaculty(id);
@@ -66,7 +66,7 @@ public class FacultyController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{id}/departments")
+    @GetMapping(PathUtil.ID_PLACEHOLDER + "/departments")
     public ResponseEntity<Object> getDepartmentsByFaculty(@PathVariable("id") String id) {
         log.info("getting departments by faculty id: {}", id);
         List<DepartmentResponse> departmentResponses = departmentService.getDepartmentsByFaculty(id);

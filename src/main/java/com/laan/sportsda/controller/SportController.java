@@ -22,7 +22,7 @@ public class SportController {
 
     private final SportService sportService;
 
-    @GetMapping("/{id}")
+    @GetMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> getSport(@PathVariable("id") String id) {
         log.info("getting sport for id: {}", id);
         SportResponse sportResponse = sportService.getSport(id);
@@ -46,7 +46,7 @@ public class SportController {
         return new ResponseEntity<>(sportResponse, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> updateSport(@PathVariable("id") String id, @Valid @RequestBody SportUpdateRequest sportUpdateRequest) {
         log.info("updating sport: {}", id);
         SportResponse sportResponse = sportService.updateSport(id, sportUpdateRequest);
@@ -54,7 +54,7 @@ public class SportController {
         return new ResponseEntity<>(sportResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> deleteSport(@PathVariable("id") String id) {
         log.info("deleting sport with id: {}", id);
         sportService.deleteSport(id);

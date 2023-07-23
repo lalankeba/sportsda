@@ -98,12 +98,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: department_id
+                  name: faculty_id
                   type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_member_department_id
-                    referencedTableName: department
+                    foreignKeyName: fk_member_faculty_id
+                    referencedTableName: faculty
                     referencedColumnNames: id
               - column:
                   name: role_id

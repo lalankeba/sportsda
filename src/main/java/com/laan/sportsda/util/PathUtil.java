@@ -12,5 +12,13 @@ public class PathUtil {
     public static final String SPORTS = "/sports";
     public static final String FEATURES = "/features";
     public static final String MEMBERS = "/members";
+    public static final String PERMISSIONS = "/permissions";
+    public static final String ROLES = "/roles";
+
+    public static final String REGISTER = "/register";
+    public static final String LOGIN = "/login";
+    public static final String LOGOUT = "/logout";
+
+    public static final String ID_PLACEHOLDER = "/{id}";
 
 }

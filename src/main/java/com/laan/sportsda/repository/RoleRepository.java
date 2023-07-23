@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface RoleRepository extends JpaRepository<RoleEntity, String> {
 
     Optional<RoleEntity> findByName(String name);
+    Optional<RoleEntity> findByNameAndIdNotContains(String name, String id);
 }

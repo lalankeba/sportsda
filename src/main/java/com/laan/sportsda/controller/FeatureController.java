@@ -21,7 +21,7 @@ public class FeatureController {
 
     private final FeatureService featureService;
 
-    @GetMapping("/{id}")
+    @GetMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> getFeature(@PathVariable("id") String id) {
         log.info("getting feature for id: {}", id);
         FeatureResponse featureResponse = featureService.getFeature(id);

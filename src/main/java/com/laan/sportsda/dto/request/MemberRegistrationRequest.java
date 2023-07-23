@@ -28,5 +28,5 @@ public class MemberRegistrationRequest {
     private String password;
 
     @NotBlank
-    private String departmentId;
+    private String facultyId;
 }

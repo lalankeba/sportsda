@@ -37,6 +37,15 @@ public class MessagesUtil {
 
     public static final String DUPLICATE_MEMBER_EXCEPTION = "duplicate.member.exception";
 
+    public static final String NO_PERMISSION_EXCEPTION = "no.permission.exception";
+
+    public static final String NO_ROLE_EXCEPTION = "no.role.exception";
+    public static final String DUPLICATE_ROLE_EXCEPTION = "duplicate.role.exception";
+    public static final String MANDATORY_ROLE_NAME = "mandatory.role.name";
+    public static final String INVALID_ROLE_NAME_SIZE = "invalid.role.name.size";
+    public static final String MANDATORY_ROLE_DESCRIPTION = "mandatory.role.description";
+    public static final String INVALID_ROLE_DESCRIPTION_SIZE = "invalid.role.description.size";
+
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class AnnotationSupported {
         private static final String START = "{";
@@ -55,5 +64,12 @@ public class MessagesUtil {
 
         public static final String MANDATORY_FEATURE_NAME = START + MessagesUtil.MANDATORY_FEATURE_NAME + END;
         public static final String INVALID_FEATURE_NAME_SIZE = START + MessagesUtil.INVALID_FEATURE_NAME_SIZE + END;
+
+        public static final String MANDATORY_ROLE_NAME = START + MessagesUtil.MANDATORY_ROLE_NAME + END;
+        public static final String INVALID_ROLE_NAME_SIZE = START + MessagesUtil.INVALID_ROLE_NAME_SIZE + END;
+        public static final String MANDATORY_ROLE_DESCRIPTION = START + MessagesUtil.MANDATORY_ROLE_DESCRIPTION + END;
+        public static final String INVALID_ROLE_DESCRIPTION_SIZE = START + MessagesUtil.INVALID_ROLE_DESCRIPTION_SIZE + END;
+
+
     }
 }

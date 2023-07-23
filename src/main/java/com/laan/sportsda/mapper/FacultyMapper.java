@@ -22,4 +22,8 @@ public interface FacultyMapper {
 
     @Mapping(target = "id", source = "facultyId")
     FacultyEntity mapUpdateRequestToEntity(FacultyUpdateRequest updateRequest, String facultyId);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", constant = "0L")
+    FacultyEntity mapDetailsToEntity(String name);
 }

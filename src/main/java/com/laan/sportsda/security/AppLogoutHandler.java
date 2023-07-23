@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 @Slf4j
 public class AppLogoutHandler implements LogoutHandler {
@@ -31,11 +31,15 @@ public class AppLogoutHandler implements LogoutHandler {
             Optional<SessionEntity> optionalStoredSessionEntity = sessionRepository.findById(id);
             if (optionalStoredSessionEntity.isPresent()) {
                 SessionEntity sessionEntity = optionalStoredSessionEntity.get();
-                sessionEntity.setLoggedOut(true);
-                sessionEntity.setLogoutDateTime(new Date());
-                sessionRepository.save(sessionEntity);
+                if (!sessionEntity.getLoggedOut()) {
+                    sessionEntity.setLoggedOut(true);
+                    sessionEntity.setLogoutDateTime(new Date());
+                    sessionRepository.save(sessionEntity);
 
-                log.info("Saved logout info: {}", sessionEntity);
+                    log.info("Saved logout info: {}", sessionEntity);
+                } else {
+                    log.info("Already logged out. Nothing to save");
+                }
             }
         }
     }

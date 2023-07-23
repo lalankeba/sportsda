@@ -2,10 +2,7 @@ package com.laan.sportsda.mapper.custom;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.MemberResponse;
-import com.laan.sportsda.entity.DepartmentEntity;
-import com.laan.sportsda.entity.MemberEntity;
-import com.laan.sportsda.entity.PermissionEntity;
-import com.laan.sportsda.entity.RoleEntity;
+import com.laan.sportsda.entity.*;
 import com.laan.sportsda.mapper.MemberMapper;
 import com.laan.sportsda.security.MemberDetails;
 import lombok.RequiredArgsConstructor;
@@ -86,7 +83,7 @@ public class MemberMapperCustom {
                 .toList();
     }
 
-    public MemberEntity mapRegistrationRequestToEntity(MemberRegistrationRequest memberRegistrationRequest, RoleEntity roleEntity, DepartmentEntity departmentEntity) {
+    public MemberEntity mapRegistrationRequestToEntity(MemberRegistrationRequest memberRegistrationRequest, RoleEntity roleEntity, FacultyEntity facultyEntity) {
         if (memberRegistrationRequest == null) {
             return null;
         }
@@ -100,7 +97,7 @@ public class MemberMapperCustom {
         memberEntity.setCredentialsNonExpired(true);
         memberEntity.setEnabled(true);
         memberEntity.setRoleEntity(roleEntity);
-        memberEntity.setDepartmentEntity(departmentEntity);
+        memberEntity.setFacultyEntity(facultyEntity);
 
         return memberEntity;
     }

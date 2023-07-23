@@ -3,10 +3,11 @@ package com.laan.sportsda.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.DepartmentUpdateRequest;
-import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
+import com.laan.sportsda.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -47,17 +41,23 @@ class DepartmentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private TestUtils testUtils;
+
     @AfterEach
-    void init() throws Exception {
-        deleteAllDepartments();
-        deleteAllFaculties();
+    void initAfter() {
+        testUtils.deleteAllDepartments();
+        testUtils.deleteAllFaculties();
     }
 
     @Test
     void getDepartment() throws Exception {
-        String id = createDepartment("Community Dental health", "Dental Sciences").getId();
+        FacultyResponse facultyResponse = testUtils.createFaculty("Dental Sciences");
+        String id = testUtils.createDepartment("Community Dental health", facultyResponse).getId();
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + "/{id}", id))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + "/{id}", id)
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
@@ -74,9 +74,12 @@ class DepartmentControllerTest {
 
     @Test
     void getDepartments() throws Exception {
-        createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), "Allied Health Sciences");
+        FacultyResponse facultyResponse = testUtils.createFaculty("Allied Health Sciences");
+        testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS)
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                )
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
@@ -92,7 +95,7 @@ class DepartmentControllerTest {
 
     @Test
     void addDepartment() throws Exception {
-        FacultyResponse facultyResponse = createFaculty("Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
 
         String departmentName = "Food Science";
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
@@ -100,6 +103,7 @@ class DepartmentControllerTest {
         departmentAddRequest.setFacultyId(facultyResponse.getId());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.DEPARTMENTS)
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(departmentAddRequest))
                 )
@@ -127,7 +131,8 @@ class DepartmentControllerTest {
 
     @Test
     void updateDepartment() throws Exception {
-        DepartmentResponse departmentResponse = createDepartment("Zoology", "Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        DepartmentResponse departmentResponse = testUtils.createDepartment("Zoology", facultyResponse);
 
         String updatedName = "Forestry";
         DepartmentUpdateRequest departmentUpdateRequest = new DepartmentUpdateRequest();
@@ -136,6 +141,7 @@ class DepartmentControllerTest {
         departmentUpdateRequest.setVersion(departmentResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.DEPARTMENTS + "/{id}", departmentResponse.getId())
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(departmentUpdateRequest))
                 )
@@ -162,9 +168,12 @@ class DepartmentControllerTest {
 
     @Test
     void deleteDepartment() throws Exception {
-        DepartmentResponse facultyResponse = createDepartment("Chemistry", "Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        DepartmentResponse departmentResponse = testUtils.createDepartment("Chemistry", facultyResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + "/{id}", facultyResponse.getId()))
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + "/{id}", departmentResponse.getId())
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                )
                 .andDo(print())
                 .andExpect(status().isAccepted())
                 .andDo(
@@ -173,86 +182,6 @@ class DepartmentControllerTest {
                                 pathParameters(parameterWithName("id").description("Id of the department that needs to be deleted"))
                         )
                 );
-    }
-
-    private List<DepartmentResponse> createDepartments(List<String> departmentNames, String facultyName) throws Exception {
-        List<DepartmentResponse> departmentResponses = new ArrayList<>();
-
-        FacultyResponse facultyResponse = createFaculty(facultyName);
-
-        for (String departmentName: departmentNames) {
-            DepartmentAddRequest facultyAddRequest = new DepartmentAddRequest();
-            facultyAddRequest.setName(departmentName);
-            facultyAddRequest.setFacultyId(facultyResponse.getId());
-
-            MvcResult mvcResult = this.mockMvc.perform(post(PathUtil.DEPARTMENTS)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsBytes(facultyAddRequest))
-            ).andReturn();
-
-            byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
-            DepartmentResponse departmentResponse = objectMapper.readValue(responseAsArray, DepartmentResponse.class);
-
-            departmentResponses.add(departmentResponse);
-        }
-        return departmentResponses;
-    }
-
-    private DepartmentResponse createDepartment(String departmentName, String facultyName) throws Exception {
-        FacultyResponse facultyResponse = createFaculty(facultyName);
-
-        DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
-        departmentAddRequest.setName(departmentName);
-        departmentAddRequest.setFacultyId(facultyResponse.getId());
-
-        MvcResult mvcResult = this.mockMvc.perform(post(PathUtil.DEPARTMENTS)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(departmentAddRequest))
-        ).andReturn();
-
-        byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
-        return objectMapper.readValue(responseAsArray, DepartmentResponse.class);
-    }
-
-    private FacultyResponse createFaculty(String name) throws Exception {
-        FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
-        facultyAddRequest.setName(name);
-
-        MvcResult mvcResult = this.mockMvc.perform(post(PathUtil.FACULTIES)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(facultyAddRequest))
-        ).andReturn();
-
-        byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
-        return objectMapper.readValue(responseAsArray, FacultyResponse.class);
-    }
-
-    private void deleteAllDepartments() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get(PathUtil.DEPARTMENTS)).andReturn();
-        byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
-        List<DepartmentResponse> departmentsResponses = Arrays.asList(objectMapper.readValue(responseAsArray, DepartmentResponse[].class));
-
-        departmentsResponses.forEach(departmentResponse -> {
-            try {
-                this.mockMvc.perform(delete(PathUtil.DEPARTMENTS + "/{id}", departmentResponse.getId()));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    private void deleteAllFaculties() throws Exception {
-        MvcResult mvcResult = this.mockMvc.perform(get(PathUtil.FACULTIES)).andReturn();
-        byte[] responseAsArray = mvcResult.getResponse().getContentAsByteArray();
-        List<FacultyResponse> facultyResponses = Arrays.asList(objectMapper.readValue(responseAsArray, FacultyResponse[].class));
-
-        facultyResponses.forEach(facultyResponse -> {
-            try {
-                this.mockMvc.perform(delete(PathUtil.FACULTIES + "/{id}", facultyResponse.getId()));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 
 }

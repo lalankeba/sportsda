@@ -21,12 +21,14 @@ public interface DepartmentMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "departmentAddRequest.name")
     @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
+    @Mapping(target = "memberEntities", ignore = true)
     @Mapping(target = "version", constant = "0L")
     DepartmentEntity mapAddRequestToEntity(DepartmentAddRequest departmentAddRequest, FacultyEntity existingFacultyEntity);
 
     @Mapping(target = "id", source = "departmentId")
     @Mapping(target = "name", source = "departmentUpdateRequest.name")
     @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
+    @Mapping(target = "memberEntities", ignore = true)
     @Mapping(target = "version", source = "departmentUpdateRequest.version")
     DepartmentEntity mapUpdateRequestToEntity(DepartmentUpdateRequest departmentUpdateRequest, String departmentId, FacultyEntity existingFacultyEntity);
 

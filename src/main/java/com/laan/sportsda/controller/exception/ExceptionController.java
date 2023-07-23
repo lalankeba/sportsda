@@ -62,7 +62,7 @@ public class ExceptionController {
 
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ProblemDetail onObjectOptimisticLockingFailureException(ObjectOptimisticLockingFailureException exception) {
-        logger.error("ObjectOptimisticLockingFailureException occurred. ", exception);
+        logger.error("ObjectOptimisticLockingFailureException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 

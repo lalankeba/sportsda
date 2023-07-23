@@ -19,7 +19,7 @@ public class RoleEntity {
 
     private String description;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "role_permission",
             joinColumns = { @JoinColumn(name = "role_id") },

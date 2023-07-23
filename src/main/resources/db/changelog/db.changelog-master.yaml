@@ -26,12 +26,14 @@ databaseChangeLog:
   - include:
       file: db/changelog/create-member-feature-table.yaml
   - include:
-      file: db/changelog/insert-role-data.yaml
-  - include:
-      file: db/changelog/insert-permission-data.yaml
-  - include:
-      file: db/changelog/insert-role-permission-data.yaml
-  - include:
-      file: db/changelog/insert-faculty-data.yaml
-  - include:
-      file: db/changelog/insert-department-data.yaml
+      file: db/changelog/create-member-department-table.yaml
+#  - include:
+#      file: db/changelog/insert-role-data.yaml
+#  - include:
+#      file: db/changelog/insert-permission-data.yaml
+#  - include:
+#      file: db/changelog/insert-role-permission-data.yaml
+#  - include:
+#      file: db/changelog/insert-faculty-data.yaml
+#  - include:
+#      file: db/changelog/insert-department-data.yaml

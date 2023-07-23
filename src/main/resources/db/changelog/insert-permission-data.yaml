@@ -12,9 +12,6 @@ databaseChangeLog:
               - column:
                   name: description
                   value: GET_FACULTY
-              - column:
-                  name: version
-                  value: 0
         - insert:
             tableName: permission
             columns:
@@ -24,9 +21,6 @@ databaseChangeLog:
               - column:
                   name: description
                   value: GET_FACULTIES
-              - column:
-                  name: version
-                  value: 0
         - insert:
             tableName: permission
             columns:
@@ -36,9 +30,6 @@ databaseChangeLog:
               - column:
                   name: description
                   value: ADD_FACULTY
-              - column:
-                  name: version
-                  value: 0
         - insert:
             tableName: permission
             columns:
@@ -48,9 +39,6 @@ databaseChangeLog:
               - column:
                   name: description
                   value: UPDATE_FACULTY
-              - column:
-                  name: version
-                  value: 0
         - insert:
             tableName: permission
             columns:
@@ -60,6 +48,3 @@ databaseChangeLog:
               - column:
                   name: description
                   value: DELETE_FACULTY
-              - column:
-                  name: version
-                  value: 0

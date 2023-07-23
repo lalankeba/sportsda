@@ -17,6 +17,7 @@ databaseChangeLog:
                   type: varchar(200)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: description
                   type: varchar(300)

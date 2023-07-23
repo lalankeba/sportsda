@@ -24,8 +24,4 @@ public class PermissionEntity {
     @ToString.Exclude
     private List<RoleEntity> roleEntities;
 
-    @Column(name = "version")
-    @Version
-    private Long version;
-
 }

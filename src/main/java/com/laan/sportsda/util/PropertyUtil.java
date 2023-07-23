@@ -16,4 +16,12 @@ public class PropertyUtil {
     @Value("${jwt.expiration.seconds}")
     private Long jwtExpirySeconds;
 
+    @Value("${app.admin.role.name}")
+    private String adminRoleName;
+
+    @Value("${app.basic.role.name}")
+    private String basicRoleName;
+
+    @Value("${app.basic.faculty.name}")
+    private String basicFacultyName;
 }

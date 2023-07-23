@@ -21,9 +21,6 @@ import java.util.function.Function;
 @Slf4j
 public class JwtUtil {
 
-    private static final String TOKEN_HEADER = "Authorization";
-    private static final String TOKEN_PREFIX = "Bearer ";
-
     private final PropertyUtil propertyUtil;
 
     public String generateToken(final String subject, final String id, final Date issuedAt, final Date expiration, final Map<String, Object> claims) {
@@ -71,10 +68,10 @@ public class JwtUtil {
     }
 
     public String getTokenFromRequest(HttpServletRequest request) {
-        String authHeader = request.getHeader(TOKEN_HEADER);
+        String authHeader = request.getHeader(ConstantsUtil.AUTH_TOKEN_HEADER);
 
-        if (authHeader != null && authHeader.startsWith(TOKEN_PREFIX)) {
-            return authHeader.substring(TOKEN_PREFIX.length());
+        if (authHeader != null && authHeader.startsWith(ConstantsUtil.AUTH_TOKEN_PREFIX)) {
+            return authHeader.substring(ConstantsUtil.AUTH_TOKEN_PREFIX.length());
         }
 
         return null;
