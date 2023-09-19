@@ -11,6 +11,8 @@ v1.0, {docdate}
 == Introduction
 This project has the back end logic for sports data analyzer system.
 
+include::pages/init.adoc[]
+
 include::pages/member.adoc[]
 
 include::pages/faculty.adoc[]
