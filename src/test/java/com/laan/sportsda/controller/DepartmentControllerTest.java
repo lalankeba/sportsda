@@ -5,6 +5,7 @@ import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.DepartmentUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
 import com.laan.sportsda.utils.TestUtils;
@@ -52,8 +53,8 @@ class DepartmentControllerTest {
 
     @Test
     void getDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Dental Sciences");
-        String id = testUtils.createDepartment("Community Dental health", facultyResponse).getId();
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Dental Sciences");
+        String id = testUtils.createDepartment("Community Dental health", facultyShortResponse).getId();
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
@@ -74,8 +75,8 @@ class DepartmentControllerTest {
 
     @Test
     void getDepartments() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Allied Health Sciences");
-        testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Allied Health Sciences");
+        testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyShortResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
@@ -95,12 +96,12 @@ class DepartmentControllerTest {
 
     @Test
     void addDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Applied Sciences");
 
         String departmentName = "Food Science";
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
         departmentAddRequest.setName(departmentName);
-        departmentAddRequest.setFacultyId(facultyResponse.getId());
+        departmentAddRequest.setFacultyId(facultyShortResponse.getId());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.DEPARTMENTS)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
@@ -111,7 +112,7 @@ class DepartmentControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(departmentName)))
-                .andExpect(jsonPath("$.facultyId").value(containsString(facultyResponse.getId())))
+                .andExpect(jsonPath("$.facultyId").value(containsString(facultyShortResponse.getId())))
                 .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
@@ -131,8 +132,8 @@ class DepartmentControllerTest {
 
     @Test
     void updateDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
-        DepartmentResponse departmentResponse = testUtils.createDepartment("Zoology", facultyResponse);
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Applied Sciences");
+        DepartmentResponse departmentResponse = testUtils.createDepartment("Zoology", facultyShortResponse);
 
         String updatedName = "Forestry";
         DepartmentUpdateRequest departmentUpdateRequest = new DepartmentUpdateRequest();
@@ -168,8 +169,8 @@ class DepartmentControllerTest {
 
     @Test
     void deleteDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
-        DepartmentResponse departmentResponse = testUtils.createDepartment("Chemistry", facultyResponse);
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Applied Sciences");
+        DepartmentResponse departmentResponse = testUtils.createDepartment("Chemistry", facultyShortResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")

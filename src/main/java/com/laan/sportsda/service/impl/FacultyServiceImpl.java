@@ -2,7 +2,7 @@ package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
-import com.laan.sportsda.dto.response.FacultiesResponse;
+import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.mapper.FacultyMapper;
@@ -41,24 +41,24 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public List<FacultiesResponse> getFaculties() {
+    public List<FacultyShortResponse> getFaculties() {
         List<FacultyEntity> facultyEntities = facultyRepository.findAll();
-        return facultyMapper.mapEntitiesToFacultiesResponses(facultyEntities);
+        return facultyMapper.mapEntitiesToFacultyShortResponses(facultyEntities);
     }
 
     @Override
     @Transactional
-    public FacultyResponse addFaculty(final FacultyAddRequest facultyAddRequest) {
+    public FacultyShortResponse addFaculty(final FacultyAddRequest facultyAddRequest) {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findByName(facultyAddRequest.getName());
         facultyValidator.validateDuplicateFacultyEntity(optionalFacultyEntity);
 
-        FacultyResponse facultyResponse = null;
+        FacultyShortResponse facultyShortResponse = null;
         if (optionalFacultyEntity.isEmpty()) {
             FacultyEntity facultyEntity = facultyMapper.mapAddRequestToEntity(facultyAddRequest);
             FacultyEntity savedFacultyEntity = facultyRepository.save(facultyEntity);
-            facultyResponse = facultyMapper.mapEntityToFacultyResponse(savedFacultyEntity);
+            facultyShortResponse = facultyMapper.mapEntityToFacultyShortResponse(savedFacultyEntity);
         }
-        return facultyResponse;
+        return facultyShortResponse;
     }
 
     @Override

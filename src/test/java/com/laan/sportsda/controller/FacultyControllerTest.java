@@ -5,6 +5,7 @@ import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.MessagesUtil;
@@ -69,10 +70,10 @@ class FacultyControllerTest {
 
     @Test
     void getFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
-        testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyResponse);
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Applied Sciences");
+        testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyShortResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", facultyResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                 )
                 .andDo(print())
@@ -172,7 +173,6 @@ class FacultyControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the faculty"))
                                         .and(fieldWithPath("name").description("Name of the faculty"))
-                                        .and(fieldWithPath("departments").description("Departments of the faculty"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
@@ -250,21 +250,21 @@ class FacultyControllerTest {
 
     @Test
     void updateFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Graduate Studies");
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Graduate Studies");
 
         String updatedName = "Engineering";
         FacultyUpdateRequest facultyUpdateRequest = new FacultyUpdateRequest();
         facultyUpdateRequest.setName(updatedName);
-        facultyUpdateRequest.setVersion(facultyResponse.getVersion());
+        facultyUpdateRequest.setVersion(facultyShortResponse.getVersion());
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + "/{id}", facultyResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyUpdateRequest))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(containsString(facultyResponse.getId())))
+                .andExpect(jsonPath("$.id").value(containsString(facultyShortResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
                 .andDo(
                         document("{method-name}",
@@ -283,9 +283,9 @@ class FacultyControllerTest {
 
     @Test
     void deleteFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Designing");
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Designing");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + "/{id}", facultyResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
                 )
                 .andDo(print())
@@ -300,8 +300,8 @@ class FacultyControllerTest {
 
     @Test
     void getDepartmentsByFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Allied Health Sciences");
-        List<DepartmentResponse> departmentResponses = testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
+        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Allied Health Sciences");
+        List<DepartmentResponse> departmentResponses = testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyShortResponse);
 
         Optional<DepartmentResponse> optionalDepartmentResponse = departmentResponses.stream().findFirst();
         String facultyId = null;

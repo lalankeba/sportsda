@@ -57,25 +57,25 @@ public class TestUtils {
         ids.forEach(roleService::deleteRole);
     }
 
-    public List<FacultyResponse> createFaculties(List<String> facultyNames) {
-        List<FacultyResponse> facultyResponses = new ArrayList<>();
-        facultyNames.forEach(name -> facultyResponses.add(createFaculty(name)) );
-        return facultyResponses;
+    public List<FacultyShortResponse> createFaculties(List<String> facultyNames) {
+        List<FacultyShortResponse> facultyShortResponses = new ArrayList<>();
+        facultyNames.forEach(name -> facultyShortResponses.add(createFaculty(name)) );
+        return facultyShortResponses;
     }
 
-    public FacultyResponse createFaculty(String name) {
+    public FacultyShortResponse createFaculty(String name) {
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
         facultyAddRequest.setName(name);
         return facultyService.addFaculty(facultyAddRequest);
     }
 
-    public FacultyResponse createBasicFaculty() {
+    public FacultyShortResponse createBasicFaculty() {
         return createFaculty(propertyUtil.getBasicFacultyName());
     }
 
     public void deleteAllFaculties() {
-        List<FacultiesResponse> facultiesResponses = facultyService.getFaculties();
-        List<String> ids = facultiesResponses.stream().map(FacultiesResponse::getId).toList();
+        List<FacultyShortResponse> facultyShortResponses = facultyService.getFaculties();
+        List<String> ids = facultyShortResponses.stream().map(FacultyShortResponse::getId).toList();
         ids.forEach(facultyService::deleteFaculty);
     }
 
@@ -93,16 +93,16 @@ public class TestUtils {
         return memberService.registerMember(memberRegistrationRequest);
     }
 
-    public DepartmentResponse createDepartment(String departmentName, FacultyResponse facultyResponse) {
+    public DepartmentResponse createDepartment(String departmentName, FacultyShortResponse facultyShortResponse) {
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
         departmentAddRequest.setName(departmentName);
-        departmentAddRequest.setFacultyId(facultyResponse.getId());
+        departmentAddRequest.setFacultyId(facultyShortResponse.getId());
         return departmentService.addDepartment(departmentAddRequest);
     }
 
-    public List<DepartmentResponse> createDepartments(List<String> departmentNames, FacultyResponse facultyResponse) {
+    public List<DepartmentResponse> createDepartments(List<String> departmentNames, FacultyShortResponse facultyShortResponse) {
         List<DepartmentResponse> departmentResponses = new ArrayList<>();
-        departmentNames.forEach(name -> departmentResponses.add(createDepartment(name, facultyResponse)) );
+        departmentNames.forEach(name -> departmentResponses.add(createDepartment(name, facultyShortResponse)) );
         return departmentResponses;
     }
 

@@ -3,7 +3,7 @@ package com.laan.sportsda.dto.response;
 import lombok.Data;
 
 @Data
-public class FacultiesResponse {
+public class FacultyShortResponse {
 
     private String id;
 
