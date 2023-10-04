@@ -34,9 +34,9 @@ public class RoleController {
     @GetMapping
     public ResponseEntity<Object> getRoles() {
         log.info("getting roles");
-        List<RolesResponse> rolesRespons = roleService.getRoles();
+        List<RolesResponse> rolesResponse = roleService.getRoles();
         log.info("get roles");
-        return new ResponseEntity<>(rolesRespons, HttpStatus.OK);
+        return new ResponseEntity<>(rolesResponse, HttpStatus.OK);
     }
 
     @PostMapping
