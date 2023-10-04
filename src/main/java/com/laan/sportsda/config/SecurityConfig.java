@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         requestsCustomizer -> requestsCustomizer
                                 .requestMatchers(PathUtil.INIT).permitAll()
-                                .requestMatchers(PathUtil.MEMBERS + PathUtil.REGISTER, PathUtil.MEMBERS +PathUtil.LOGIN).permitAll()
+                                .requestMatchers(PathUtil.MEMBERS + PathUtil.REGISTER, PathUtil.MEMBERS + PathUtil.LOGIN).permitAll()
                                 .requestMatchers(HttpMethod.GET, PathUtil.FACULTIES).permitAll()
 
                                 .requestMatchers(HttpMethod.GET, PathUtil.PERMISSIONS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_PERMISSION.toString())
