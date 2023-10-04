@@ -33,9 +33,9 @@ public class PermissionController {
     @GetMapping
     public ResponseEntity<Object> getPermissions() {
         log.info("getting permissions");
-        List<PermissionResponse> permissionsRespons = permissionService.getPermissions();
+        List<PermissionResponse> permissionsResponse = permissionService.getPermissions();
         log.info("get permissions");
-        return new ResponseEntity<>(permissionsRespons, HttpStatus.OK);
+        return new ResponseEntity<>(permissionsResponse, HttpStatus.OK);
     }
 
 }
