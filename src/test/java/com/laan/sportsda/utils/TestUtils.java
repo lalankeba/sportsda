@@ -79,7 +79,7 @@ public class TestUtils {
         ids.forEach(facultyService::deleteFaculty);
     }
 
-    public MemberResponse createMember(String firstName, String lastName, String username, String password) {
+    public MemberRegistrationResponse createMember(String firstName, String lastName, String username, String password) {
         createRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
         String facultyId = createBasicFaculty().getId();
 

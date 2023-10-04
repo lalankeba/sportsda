@@ -2,7 +2,7 @@ package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
-import com.laan.sportsda.dto.response.MemberResponse;
+import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.entity.RoleEntity;
@@ -49,11 +49,11 @@ public class MemberServiceImpl implements MemberService {
     private final PropertyUtil propertyUtil;
 
     @Override
-    public MemberResponse registerMember(final MemberRegistrationRequest memberRegistrationRequest) {
+    public MemberRegistrationResponse registerMember(final MemberRegistrationRequest memberRegistrationRequest) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByUsername(memberRegistrationRequest.getUsername());
         memberValidator.validateDuplicateMemberEntity(optionalMemberEntity);
 
-        MemberResponse memberResponse = null;
+        MemberRegistrationResponse memberRegistrationResponse = null;
         if (optionalMemberEntity.isEmpty()) {
             Optional<RoleEntity> optionalRoleEntity = roleRepository.findByName(propertyUtil.getBasicRoleName());
             if (optionalRoleEntity.isPresent()) {
@@ -64,7 +64,7 @@ public class MemberServiceImpl implements MemberService {
                     MemberEntity memberEntity = memberMapperCustom.mapRegistrationRequestToEntity(memberRegistrationRequest, roleEntity, facultyEntity);
 
                     MemberEntity savedMemberEntity = memberRepository.save(memberEntity);
-                    memberResponse = memberMapperCustom.mapEntityToResponse(savedMemberEntity);
+                    memberRegistrationResponse = memberMapperCustom.mapEntityToRegistrationResponse(savedMemberEntity);
                 } else {
                     String msg = String.format("Necessary faculty for the id: %s is not present. So can't register the member", memberRegistrationRequest.getFacultyId());
                     log.error("Error occurred. {}", msg);
@@ -76,7 +76,7 @@ public class MemberServiceImpl implements MemberService {
                 throw new InvalidRequestException(msg);
             }
         }
-        return memberResponse;
+        return memberRegistrationResponse;
     }
 
     @Override

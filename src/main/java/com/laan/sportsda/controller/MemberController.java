@@ -2,6 +2,7 @@ package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
 import com.laan.sportsda.service.MemberService;
 import com.laan.sportsda.util.PathUtil;
@@ -31,9 +32,9 @@ public class MemberController {
     @PostMapping(PathUtil.REGISTER)
     public ResponseEntity<Object> register(@Valid @RequestBody MemberRegistrationRequest memberRegistrationRequest) {
         log.info("registering new member");
-        MemberResponse memberResponse = memberService.registerMember(memberRegistrationRequest);
+        MemberRegistrationResponse memberRegistrationResponse = memberService.registerMember(memberRegistrationRequest);
         log.info("registered new member");
-        return new ResponseEntity<>(memberResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(memberRegistrationResponse, HttpStatus.CREATED);
     }
 
     @PostMapping(PathUtil.LOGIN)
