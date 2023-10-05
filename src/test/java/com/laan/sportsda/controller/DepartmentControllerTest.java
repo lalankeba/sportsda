@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.DepartmentUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
-import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
