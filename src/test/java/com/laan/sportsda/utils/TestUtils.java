@@ -1,9 +1,6 @@
 package com.laan.sportsda.utils;
 
-import com.laan.sportsda.dto.request.DepartmentAddRequest;
-import com.laan.sportsda.dto.request.FacultyAddRequest;
-import com.laan.sportsda.dto.request.MemberRegistrationRequest;
-import com.laan.sportsda.dto.request.RoleAddRequest;
+import com.laan.sportsda.dto.request.*;
 import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.entity.SessionEntity;
@@ -30,6 +27,8 @@ public class TestUtils {
     private final DepartmentService departmentService;
 
     private final MemberService memberService;
+
+    private final SportService sportService;
 
     private final MemberRepository memberRepository;
 
@@ -126,6 +125,18 @@ public class TestUtils {
 
     public List<PermissionResponse> getAllPermissions() {
         return permissionService.getPermissions();
+    }
+
+    public SportResponse createSport(String name) {
+        SportAddRequest sportAddRequest = new SportAddRequest();
+        sportAddRequest.setName(name);
+        return sportService.addSport(sportAddRequest);
+    }
+
+    public void deleteAllSports() {
+        List<SportResponse> sportResponses = sportService.getSports();
+        List<String> ids = sportResponses.stream().map(SportResponse::getId).toList();
+        ids.forEach(sportService::deleteSport);
     }
 
 }

@@ -22,3 +22,5 @@ include::pages/department.adoc[]
 include::pages/permission.adoc[]
 
 include::pages/role.adoc[]
+
+include::pages/sport.adoc[]

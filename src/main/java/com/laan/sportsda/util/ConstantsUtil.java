@@ -8,4 +8,5 @@ public class ConstantsUtil {
 
     public static final String AUTH_TOKEN_HEADER = "Authorization";
     public static final String AUTH_TOKEN_PREFIX = "Bearer ";
+    public static final String TOKEN_VALUE_SAMPLE = "<token_data>";
 }

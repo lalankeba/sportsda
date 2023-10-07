@@ -1,0 +1,80 @@
+== Sport
+This section explains how to communicate with sport API
+
+
+=== Get Sport by ID
+
+You can view existing sport by id
+
+.curl request
+include::{snippets}/get-sport/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/get-sport/path-parameters.adoc[]
+
+.response
+include::{snippets}/get-sport/http-response.adoc[]
+
+
+=== Get Sports
+
+You can view all existing Sports
+
+.curl request
+include::{snippets}/get-sports/curl-request.adoc[]
+
+.response
+include::{snippets}/get-sports/http-response.adoc[]
+
+
+
+=== Add Sport
+
+You can add a new sport to the system.
+
+.curl request
+include::{snippets}/add-sport/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/add-sport/request-fields.adoc[]
+
+.response
+include::{snippets}/add-sport/http-response.adoc[]
+
+.Response Description
+include::{snippets}/add-sport/response-fields.adoc[]
+
+
+
+=== Update Sport
+
+You can update existing sport
+
+.curl request
+include::{snippets}/update-sport/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/update-sport/request-fields.adoc[]
+
+.Path Parameter Description
+include::{snippets}/update-sport/path-parameters.adoc[]
+
+.response
+include::{snippets}/update-sport/http-response.adoc[]
+
+.Response Description
+include::{snippets}/update-sport/response-fields.adoc[]
+
+
+=== Delete Sport
+
+You can delete existing sport by id.
+
+.curl request
+include::{snippets}/delete-sport/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/delete-sport/path-parameters.adoc[]
+
+.response
+include::{snippets}/delete-sport/http-response.adoc[]
