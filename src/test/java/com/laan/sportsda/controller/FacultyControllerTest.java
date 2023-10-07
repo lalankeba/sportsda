@@ -72,7 +72,7 @@ class FacultyControllerTest {
         testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyShortResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -100,7 +100,7 @@ class FacultyControllerTest {
         String id = "invalid_id";
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isNotFound())
@@ -117,7 +117,7 @@ class FacultyControllerTest {
         String id = "invalid_id";
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .header(HttpHeaders.ACCEPT_LANGUAGE, "si")
                 )
                 .andDo(print())
@@ -154,7 +154,7 @@ class FacultyControllerTest {
         facultyAddRequest.setName(facultyName);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
@@ -182,7 +182,7 @@ class FacultyControllerTest {
         facultyAddRequest.setName(null);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
@@ -204,7 +204,7 @@ class FacultyControllerTest {
         facultyAddRequest.setName(facultyName);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
@@ -230,7 +230,7 @@ class FacultyControllerTest {
         String responseMessage = String.format(messageSource.getMessage(MessagesUtil.DUPLICATE_FACULTY_EXCEPTION, null, LocaleContextHolder.getLocale()), facultyName);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
@@ -256,7 +256,7 @@ class FacultyControllerTest {
         facultyUpdateRequest.setVersion(facultyShortResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyUpdateRequest))
                 )
@@ -284,7 +284,7 @@ class FacultyControllerTest {
         FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Designing");
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isAccepted())
@@ -308,7 +308,7 @@ class FacultyControllerTest {
         }
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}/departments", facultyId)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())

@@ -40,7 +40,7 @@ class PermissionControllerTest {
         PermissionEntity permissionEntity = permissionRepository.findByDescription(PermissionDescription.ADD_DEPARTMENT).orElse(null);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.PERMISSIONS + "/{id}", permissionEntity.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -59,7 +59,7 @@ class PermissionControllerTest {
     @Test
     void getPermissions() throws Exception {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.PERMISSIONS)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())

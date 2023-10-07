@@ -3,8 +3,6 @@ package com.laan.sportsda.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.RoleAddRequest;
 import com.laan.sportsda.dto.request.RoleUpdateRequest;
-import com.laan.sportsda.dto.response.DepartmentResponse;
-import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.dto.response.PermissionResponse;
 import com.laan.sportsda.dto.response.RoleResponse;
 import com.laan.sportsda.util.ConstantsUtil;
@@ -66,7 +64,7 @@ class RoleControllerTest {
         RoleResponse roleResponse = testUtils.createRole("Moderator", "Can moderate tasks", permissionIds);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -91,7 +89,7 @@ class RoleControllerTest {
         testUtils.createRole("Helper", "Can help to moderate tasks", null);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.ROLES)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -116,7 +114,7 @@ class RoleControllerTest {
         roleAddRequest.setPermissionIds(permissionIds);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.ROLES)
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(roleAddRequest))
                 )
@@ -159,7 +157,7 @@ class RoleControllerTest {
         roleUpdateRequest.setVersion(roleResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(roleUpdateRequest))
                 )
@@ -195,7 +193,7 @@ class RoleControllerTest {
         RoleResponse roleResponse = testUtils.createRole("Moderator", "Can moderate tasks", permissionIds);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
-                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + "<token_data>")
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
                 .andExpect(status().isAccepted())

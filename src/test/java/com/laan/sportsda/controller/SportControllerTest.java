@@ -1,10 +1,8 @@
 package com.laan.sportsda.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.laan.sportsda.dto.request.*;
-import com.laan.sportsda.dto.response.FacultyShortResponse;
-import com.laan.sportsda.dto.response.PermissionResponse;
-import com.laan.sportsda.dto.response.RoleResponse;
+import com.laan.sportsda.dto.request.SportAddRequest;
+import com.laan.sportsda.dto.request.SportUpdateRequest;
 import com.laan.sportsda.dto.response.SportResponse;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
@@ -20,9 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
