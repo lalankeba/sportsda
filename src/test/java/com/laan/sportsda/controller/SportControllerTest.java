@@ -136,7 +136,7 @@ class SportControllerTest {
         sportUpdateRequest.setName(updatedName);
         sportUpdateRequest.setVersion(sportResponse.getVersion());
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.SPORTS + "/{id}", sportResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(sportUpdateRequest))
@@ -164,7 +164,7 @@ class SportControllerTest {
     void deleteSport() throws Exception {
         SportResponse sportResponse = testUtils.createSport("Chess");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.SPORTS + "/{id}", sportResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())

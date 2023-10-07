@@ -71,7 +71,7 @@ class FacultyControllerTest {
         FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Applied Sciences");
         testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyShortResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
@@ -99,7 +99,7 @@ class FacultyControllerTest {
     void getFacultyWithNoExistence() throws Exception {
         String id = "invalid_id";
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
@@ -116,7 +116,7 @@ class FacultyControllerTest {
     void getFacultyWithNoExistenceInSi() throws Exception {
         String id = "invalid_id";
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}", id)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .header(HttpHeaders.ACCEPT_LANGUAGE, "si")
                 )
@@ -255,7 +255,7 @@ class FacultyControllerTest {
         facultyUpdateRequest.setName(updatedName);
         facultyUpdateRequest.setVersion(facultyShortResponse.getVersion());
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyUpdateRequest))
@@ -283,7 +283,7 @@ class FacultyControllerTest {
     void deleteFaculty() throws Exception {
         FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Designing");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + "/{id}", facultyShortResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
@@ -307,7 +307,7 @@ class FacultyControllerTest {
             facultyId = optionalDepartmentResponse.get().getFacultyId();
         }
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + "/{id}/departments", facultyId)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER + "/departments", facultyId)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
