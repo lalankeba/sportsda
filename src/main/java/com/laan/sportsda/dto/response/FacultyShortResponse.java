@@ -9,5 +9,4 @@ public class FacultyShortResponse {
 
     private String name;
 
-    private Long version;
 }

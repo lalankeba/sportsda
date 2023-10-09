@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
-import com.laan.sportsda.dto.response.FacultyShortResponse;
+import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.MessagesUtil;
 import com.laan.sportsda.util.PathUtil;
@@ -68,10 +68,10 @@ class FacultyControllerTest {
 
     @Test
     void getFaculty() throws Exception {
-        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Applied Sciences");
-        testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyShortResponse);
+        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyResponse);
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyShortResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
@@ -140,7 +140,6 @@ class FacultyControllerTest {
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
                 .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
-                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint())
@@ -171,6 +170,7 @@ class FacultyControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the faculty"))
                                         .and(fieldWithPath("name").description("Name of the faculty"))
+                                        .and(fieldWithPath("departments").description("Departments of the faculty"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
@@ -248,21 +248,21 @@ class FacultyControllerTest {
 
     @Test
     void updateFaculty() throws Exception {
-        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Graduate Studies");
+        FacultyResponse facultyResponse = testUtils.createFaculty("Graduate Studies");
 
         String updatedName = "Engineering";
         FacultyUpdateRequest facultyUpdateRequest = new FacultyUpdateRequest();
         facultyUpdateRequest.setName(updatedName);
-        facultyUpdateRequest.setVersion(facultyShortResponse.getVersion());
+        facultyUpdateRequest.setVersion(facultyResponse.getVersion());
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyShortResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyUpdateRequest))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(containsString(facultyShortResponse.getId())))
+                .andExpect(jsonPath("$.id").value(containsString(facultyResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
                 .andDo(
                         document("{method-name}",
@@ -281,9 +281,9 @@ class FacultyControllerTest {
 
     @Test
     void deleteFaculty() throws Exception {
-        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Designing");
+        FacultyResponse facultyResponse = testUtils.createFaculty("Designing");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyShortResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
@@ -298,8 +298,8 @@ class FacultyControllerTest {
 
     @Test
     void getDepartmentsByFaculty() throws Exception {
-        FacultyShortResponse facultyShortResponse = testUtils.createFaculty("Allied Health Sciences");
-        List<DepartmentResponse> departmentResponses = testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyShortResponse);
+        FacultyResponse facultyResponse = testUtils.createFaculty("Allied Health Sciences");
+        List<DepartmentResponse> departmentResponses = testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
 
         Optional<DepartmentResponse> optionalDepartmentResponse = departmentResponses.stream().findFirst();
         String facultyId = null;
@@ -307,7 +307,7 @@ class FacultyControllerTest {
             facultyId = optionalDepartmentResponse.get().getFacultyId();
         }
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER + "/departments", facultyId)
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER + PathUtil.DEPARTMENTS, facultyId)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andDo(print())
@@ -315,8 +315,6 @@ class FacultyControllerTest {
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
                 .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
-                .andExpect(jsonPath("$.[*].facultyId").exists())
-                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),

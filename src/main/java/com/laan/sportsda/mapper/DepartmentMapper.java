@@ -3,6 +3,7 @@ package com.laan.sportsda.mapper;
 import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.DepartmentUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
+import com.laan.sportsda.dto.response.DepartmentShortResponse;
 import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.entity.FacultyEntity;
 import org.mapstruct.Mapper;
@@ -17,6 +18,8 @@ public interface DepartmentMapper {
     DepartmentResponse mapEntityToResponse(DepartmentEntity departmentEntity);
 
     List<DepartmentResponse> mapEntitiesToResponses(List<DepartmentEntity> departmentEntities);
+
+    List<DepartmentShortResponse> mapEntitiesToShortResponses(List<DepartmentEntity> departmentEntities);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "name", source = "departmentAddRequest.name")

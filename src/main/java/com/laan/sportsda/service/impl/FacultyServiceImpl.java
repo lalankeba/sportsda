@@ -48,17 +48,17 @@ public class FacultyServiceImpl implements FacultyService {
 
     @Override
     @Transactional
-    public FacultyShortResponse addFaculty(final FacultyAddRequest facultyAddRequest) {
+    public FacultyResponse addFaculty(final FacultyAddRequest facultyAddRequest) {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findByName(facultyAddRequest.getName());
         facultyValidator.validateDuplicateFacultyEntity(optionalFacultyEntity);
 
-        FacultyShortResponse facultyShortResponse = null;
+        FacultyResponse facultyResponse = null;
         if (optionalFacultyEntity.isEmpty()) {
             FacultyEntity facultyEntity = facultyMapper.mapAddRequestToEntity(facultyAddRequest);
             FacultyEntity savedFacultyEntity = facultyRepository.save(facultyEntity);
-            facultyShortResponse = facultyMapper.mapEntityToFacultyShortResponse(savedFacultyEntity);
+            facultyResponse = facultyMapper.mapEntityToFacultyResponse(savedFacultyEntity);
         }
-        return facultyShortResponse;
+        return facultyResponse;
     }
 
     @Override

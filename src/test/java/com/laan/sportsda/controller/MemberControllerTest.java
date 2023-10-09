@@ -99,7 +99,6 @@ class MemberControllerTest {
                                         .and(fieldWithPath("faculty").description("Attached faculty of the member"))
                                         .and(fieldWithPath("faculty.id").description("Id of the faculty"))
                                         .and(fieldWithPath("faculty.name").description("Name of the faculty"))
-                                        .and(fieldWithPath("faculty.version").description("Version of the faculty"))
                                         .and(fieldWithPath("accountNonExpired").description("Account non expired of the member"))
                                         .and(fieldWithPath("accountNonLocked").description("Account non locked of the member"))
                                         .and(fieldWithPath("credentialsNonExpired").description("Credentials non expired of the member"))

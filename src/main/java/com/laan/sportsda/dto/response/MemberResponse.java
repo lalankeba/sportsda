@@ -3,6 +3,7 @@ package com.laan.sportsda.dto.response;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class MemberResponse {
@@ -23,4 +24,7 @@ public class MemberResponse {
     private Boolean accountNonLocked;
     private Boolean credentialsNonExpired;
     private Boolean enabled;
+    private FacultyShortResponse faculty;
+    private RoleShortResponse role;
+    private List<DepartmentShortResponse> departments;
 }

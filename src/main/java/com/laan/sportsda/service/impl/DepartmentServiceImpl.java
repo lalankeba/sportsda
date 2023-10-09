@@ -3,6 +3,7 @@ package com.laan.sportsda.service.impl;
 import com.laan.sportsda.dto.request.DepartmentAddRequest;
 import com.laan.sportsda.dto.request.DepartmentUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
+import com.laan.sportsda.dto.response.DepartmentShortResponse;
 import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.mapper.DepartmentMapper;
@@ -102,7 +103,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentResponse> getDepartmentsByFaculty(final String facultyId) {
+    public List<DepartmentShortResponse> getDepartmentsByFaculty(final String facultyId) {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findById(facultyId);
         facultyValidator.validateNonExistingFacultyEntity(facultyId, optionalFacultyEntity);
 
@@ -111,7 +112,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentEntities = departmentRepository.findByFacultyEntity(optionalFacultyEntity.get());
         }
 
-        return departmentMapper.mapEntitiesToResponses(departmentEntities);
+        return departmentMapper.mapEntitiesToShortResponses(departmentEntities);
     }
 
 }

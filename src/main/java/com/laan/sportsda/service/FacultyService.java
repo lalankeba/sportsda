@@ -11,7 +11,7 @@ public interface FacultyService {
 
     FacultyResponse getFaculty(final String id);
     List<FacultyShortResponse> getFaculties();
-    FacultyShortResponse addFaculty(final FacultyAddRequest facultyAddRequest);
+    FacultyResponse addFaculty(final FacultyAddRequest facultyAddRequest);
     FacultyResponse updateFaculty(final String id, final FacultyUpdateRequest facultyUpdateRequest);
     void deleteFaculty(final String id);
 }

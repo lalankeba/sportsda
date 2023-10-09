@@ -3,6 +3,7 @@ package com.laan.sportsda.controller;
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
 import com.laan.sportsda.dto.response.DepartmentResponse;
+import com.laan.sportsda.dto.response.DepartmentShortResponse;
 import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
 import com.laan.sportsda.service.DepartmentService;
@@ -46,9 +47,9 @@ public class FacultyController {
     @PostMapping
     public ResponseEntity<Object> addFaculty(@Valid @RequestBody FacultyAddRequest facultyAddRequest) {
         log.info("adding faculty");
-        FacultyShortResponse facultyShortResponse = facultyService.addFaculty(facultyAddRequest);
+        FacultyResponse facultyResponse = facultyService.addFaculty(facultyAddRequest);
         log.info("added new faculty");
-        return new ResponseEntity<>(facultyShortResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(facultyResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(PathUtil.ID_PLACEHOLDER)
@@ -67,12 +68,12 @@ public class FacultyController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @GetMapping(PathUtil.ID_PLACEHOLDER + "/departments")
+    @GetMapping(PathUtil.ID_PLACEHOLDER + PathUtil.DEPARTMENTS)
     public ResponseEntity<Object> getDepartmentsByFaculty(@PathVariable("id") String id) {
         log.info("getting departments by faculty id: {}", id);
-        List<DepartmentResponse> departmentResponses = departmentService.getDepartmentsByFaculty(id);
+        List<DepartmentShortResponse> departmentShortResponses = departmentService.getDepartmentsByFaculty(id);
         log.info("get departments by faculty");
-        return new ResponseEntity<>(departmentResponses, HttpStatus.OK);
+        return new ResponseEntity<>(departmentShortResponses, HttpStatus.OK);
     }
 
 }

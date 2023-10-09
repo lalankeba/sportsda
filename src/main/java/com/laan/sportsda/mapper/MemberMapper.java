@@ -14,6 +14,9 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MemberMapper {
 
+    @Mapping(target = "faculty", source = "facultyEntity")
+    @Mapping(target = "role", source = "roleEntity")
+    @Mapping(target = "departments", source = "departmentEntities")
     MemberResponse mapEntityToResponse(MemberEntity memberEntity);
 
     @Mapping(target = "faculty", source = "facultyEntity")

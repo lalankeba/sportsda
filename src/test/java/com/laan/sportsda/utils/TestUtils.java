@@ -56,19 +56,19 @@ public class TestUtils {
         ids.forEach(roleService::deleteRole);
     }
 
-    public List<FacultyShortResponse> createFaculties(List<String> facultyNames) {
-        List<FacultyShortResponse> facultyShortResponses = new ArrayList<>();
-        facultyNames.forEach(name -> facultyShortResponses.add(createFaculty(name)) );
-        return facultyShortResponses;
+    public List<FacultyResponse> createFaculties(List<String> facultyNames) {
+        List<FacultyResponse> facultyResponses = new ArrayList<>();
+        facultyNames.forEach(name -> facultyResponses.add(createFaculty(name)) );
+        return facultyResponses;
     }
 
-    public FacultyShortResponse createFaculty(String name) {
+    public FacultyResponse createFaculty(String name) {
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
         facultyAddRequest.setName(name);
         return facultyService.addFaculty(facultyAddRequest);
     }
 
-    public FacultyShortResponse createBasicFaculty() {
+    public FacultyResponse createBasicFaculty() {
         return createFaculty(propertyUtil.getBasicFacultyName());
     }
 
@@ -92,16 +92,16 @@ public class TestUtils {
         return memberService.registerMember(memberRegistrationRequest);
     }
 
-    public DepartmentResponse createDepartment(String departmentName, FacultyShortResponse facultyShortResponse) {
+    public DepartmentResponse createDepartment(String departmentName, FacultyResponse facultyResponse) {
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
         departmentAddRequest.setName(departmentName);
-        departmentAddRequest.setFacultyId(facultyShortResponse.getId());
+        departmentAddRequest.setFacultyId(facultyResponse.getId());
         return departmentService.addDepartment(departmentAddRequest);
     }
 
-    public List<DepartmentResponse> createDepartments(List<String> departmentNames, FacultyShortResponse facultyShortResponse) {
+    public List<DepartmentResponse> createDepartments(List<String> departmentNames, FacultyResponse facultyResponse) {
         List<DepartmentResponse> departmentResponses = new ArrayList<>();
-        departmentNames.forEach(name -> departmentResponses.add(createDepartment(name, facultyShortResponse)) );
+        departmentNames.forEach(name -> departmentResponses.add(createDepartment(name, facultyResponse)) );
         return departmentResponses;
     }
 
