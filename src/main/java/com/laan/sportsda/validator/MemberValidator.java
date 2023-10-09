@@ -2,6 +2,7 @@ package com.laan.sportsda.validator;
 
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.exception.DuplicateElementException;
+import com.laan.sportsda.exception.ElementNotFoundException;
 import com.laan.sportsda.util.MessagesUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -20,6 +21,13 @@ public class MemberValidator {
         if (optionalMemberEntity.isPresent()) {
             String msg = String.format(messageSource.getMessage(MessagesUtil.DUPLICATE_MEMBER_EXCEPTION, null, LocaleContextHolder.getLocale()), optionalMemberEntity.get().getUsername());
             throw new DuplicateElementException(msg);
+        }
+    }
+
+    public void validateNonExistingMemberEntity(String id, Optional<MemberEntity> optionalMemberEntity) {
+        if (optionalMemberEntity.isEmpty()) {
+            String msg = String.format(messageSource.getMessage(MessagesUtil.NO_MEMBER_EXCEPTION, null, LocaleContextHolder.getLocale()), id);
+            throw new ElementNotFoundException(msg);
         }
     }
 }

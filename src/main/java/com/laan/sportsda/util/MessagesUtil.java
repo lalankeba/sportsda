@@ -36,6 +36,7 @@ public class MessagesUtil {
     public static final String INVALID_FEATURE_NAME_SIZE = "invalid.feature.name.size";
 
     public static final String DUPLICATE_MEMBER_EXCEPTION = "duplicate.member.exception";
+    public static final String NO_MEMBER_EXCEPTION = "no.member.exception";
 
     public static final String NO_PERMISSION_EXCEPTION = "no.permission.exception";
 

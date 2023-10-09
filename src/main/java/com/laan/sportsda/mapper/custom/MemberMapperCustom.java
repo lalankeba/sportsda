@@ -3,6 +3,7 @@ package com.laan.sportsda.mapper.custom;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
+import com.laan.sportsda.dto.response.MemberShortResponse;
 import com.laan.sportsda.entity.*;
 import com.laan.sportsda.mapper.MemberMapper;
 import com.laan.sportsda.security.MemberDetails;
@@ -109,5 +110,9 @@ public class MemberMapperCustom {
 
     public MemberRegistrationResponse mapEntityToRegistrationResponse(MemberEntity memberEntity) {
         return memberMapper.mapEntityToRegistrationResponse(memberEntity);
+    }
+
+    public List<MemberShortResponse> mapEntitiesToShortResponses(List<MemberEntity> memberEntities) {
+        return memberMapper.mapEntitiesToShortResponses(memberEntities);
     }
 }

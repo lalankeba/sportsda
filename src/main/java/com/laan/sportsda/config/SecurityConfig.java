@@ -57,6 +57,10 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.ADD_DEPARTMENT.toString())
                                 .requestMatchers(HttpMethod.PUT, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.UPDATE_DEPARTMENT.toString())
                                 .requestMatchers(HttpMethod.DELETE, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.DELETE_DEPARTMENT.toString())
+
+                                .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS).hasAuthority(PermissionDescription.GET_MEMBERS.toString())
+                                .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_MEMBER.toString())
+                                .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS + PathUtil.SELF).hasAuthority(PermissionDescription.GET_MEMBER_SELF.toString())
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -3,6 +3,8 @@ package com.laan.sportsda.service.impl;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
+import com.laan.sportsda.dto.response.MemberResponse;
+import com.laan.sportsda.dto.response.MemberShortResponse;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.entity.RoleEntity;
@@ -92,6 +94,36 @@ public class MemberServiceImpl implements MemberService {
             loginResponse = sessionMapper.mapEntityToLoginResponse(token);
         }
         return loginResponse;
+    }
+
+    @Override
+    public List<MemberShortResponse> getMembers() {
+        List<MemberEntity> memberEntities = memberRepository.findAll();
+        return memberMapperCustom.mapEntitiesToShortResponses(memberEntities);
+    }
+
+    @Override
+    public MemberResponse getMember(final String id) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
+        memberValidator.validateNonExistingMemberEntity(id, optionalMemberEntity);
+
+        MemberResponse memberResponse = null;
+        if (optionalMemberEntity.isPresent()) {
+            memberResponse = memberMapperCustom.mapEntityToResponse(optionalMemberEntity.get());
+        }
+        return memberResponse;
+    }
+
+    @Override
+    public MemberResponse getMemberSelf(final String username) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByUsername(username);
+        memberValidator.validateNonExistingMemberEntity(username, optionalMemberEntity);
+
+        MemberResponse memberResponse = null;
+        if (optionalMemberEntity.isPresent()) {
+            memberResponse = memberMapperCustom.mapEntityToResponse(optionalMemberEntity.get());
+        }
+        return memberResponse;
     }
 
     private SessionEntity createSessionEntity(final String userAgent, final String ipAddress, MemberEntity memberEntity) {
