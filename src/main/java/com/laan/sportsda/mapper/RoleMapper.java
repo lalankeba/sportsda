@@ -4,7 +4,7 @@ import com.laan.sportsda.dto.request.RoleAddRequest;
 import com.laan.sportsda.dto.request.RoleUpdateRequest;
 import com.laan.sportsda.dto.response.PermissionResponse;
 import com.laan.sportsda.dto.response.RoleResponse;
-import com.laan.sportsda.dto.response.RolesResponse;
+import com.laan.sportsda.dto.response.RoleShortResponse;
 import com.laan.sportsda.entity.PermissionEntity;
 import com.laan.sportsda.entity.RoleEntity;
 import org.mapstruct.Mapper;
@@ -22,9 +22,9 @@ public interface RoleMapper {
 
     PermissionResponse mapPermissionEntityToPermissionResponse(PermissionEntity entity);
 
-    RolesResponse mapEntityToRolesResponse(RoleEntity entity);
+    RoleShortResponse mapEntityToRoleShortResponse(RoleEntity entity);
 
-    List<RolesResponse> mapEntitiesToResponses(List<RoleEntity> entities);
+    List<RoleShortResponse> mapEntitiesToShortResponses(List<RoleEntity> entities);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "permissionEntities", source = "permissionIds")
@@ -46,6 +46,4 @@ public interface RoleMapper {
     @Mapping(target = "version", constant = "0L")
     RoleEntity mapDetailsToEntity(String name, String description, List<PermissionEntity> permissionEntities);
 
-    @Mapping(target = "roleEntities", ignore = true)
-    PermissionEntity mapResponseToEntity(PermissionResponse permissionResponse);
 }

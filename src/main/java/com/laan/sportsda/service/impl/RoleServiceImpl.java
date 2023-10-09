@@ -3,7 +3,7 @@ package com.laan.sportsda.service.impl;
 import com.laan.sportsda.dto.request.RoleAddRequest;
 import com.laan.sportsda.dto.request.RoleUpdateRequest;
 import com.laan.sportsda.dto.response.RoleResponse;
-import com.laan.sportsda.dto.response.RolesResponse;
+import com.laan.sportsda.dto.response.RoleShortResponse;
 import com.laan.sportsda.entity.RoleEntity;
 import com.laan.sportsda.mapper.RoleMapper;
 import com.laan.sportsda.repository.RoleRepository;
@@ -41,9 +41,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<RolesResponse> getRoles() {
+    public List<RoleShortResponse> getRoles() {
         List<RoleEntity> roleEntities = roleRepository.findAll();
-        return roleMapper.mapEntitiesToResponses(roleEntities);
+        return roleMapper.mapEntitiesToShortResponses(roleEntities);
     }
 
     @Override

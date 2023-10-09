@@ -51,8 +51,8 @@ public class TestUtils {
     }
 
     public void deleteAllRoles() {
-        List<RolesResponse> rolesResponses = roleService.getRoles();
-        List<String> ids = rolesResponses.stream().map(RolesResponse::getId).toList();
+        List<RoleShortResponse> roleShortResponses = roleService.getRoles();
+        List<String> ids = roleShortResponses.stream().map(RoleShortResponse::getId).toList();
         ids.forEach(roleService::deleteRole);
     }
 

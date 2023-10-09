@@ -3,7 +3,7 @@ package com.laan.sportsda.controller;
 import com.laan.sportsda.dto.request.RoleAddRequest;
 import com.laan.sportsda.dto.request.RoleUpdateRequest;
 import com.laan.sportsda.dto.response.RoleResponse;
-import com.laan.sportsda.dto.response.RolesResponse;
+import com.laan.sportsda.dto.response.RoleShortResponse;
 import com.laan.sportsda.service.RoleService;
 import com.laan.sportsda.util.PathUtil;
 import jakarta.validation.Valid;
@@ -34,9 +34,9 @@ public class RoleController {
     @GetMapping
     public ResponseEntity<Object> getRoles() {
         log.info("getting roles");
-        List<RolesResponse> rolesResponse = roleService.getRoles();
+        List<RoleShortResponse> roleShortResponses = roleService.getRoles();
         log.info("get roles");
-        return new ResponseEntity<>(rolesResponse, HttpStatus.OK);
+        return new ResponseEntity<>(roleShortResponses, HttpStatus.OK);
     }
 
     @PostMapping
