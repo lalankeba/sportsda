@@ -2,10 +2,9 @@ package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
-import com.laan.sportsda.dto.response.DepartmentResponse;
 import com.laan.sportsda.dto.response.DepartmentShortResponse;
-import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.service.DepartmentService;
 import com.laan.sportsda.service.FacultyService;
 import com.laan.sportsda.util.PathUtil;
