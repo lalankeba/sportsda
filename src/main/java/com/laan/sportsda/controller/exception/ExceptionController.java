@@ -82,4 +82,10 @@ public class ExceptionController {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail onException(Exception exception) {
+        log.error("Exception occurred.", exception);
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+    }
+
 }
