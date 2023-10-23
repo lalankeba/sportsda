@@ -26,7 +26,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -58,7 +57,6 @@ class DepartmentControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").exists())
@@ -80,7 +78,6 @@ class DepartmentControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
                 .andExpect(jsonPath("$.[*].id").exists())
@@ -107,7 +104,6 @@ class DepartmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(departmentAddRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(departmentName)))
@@ -145,7 +141,6 @@ class DepartmentControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(departmentUpdateRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(containsString(departmentResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
@@ -174,7 +169,6 @@ class DepartmentControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isAccepted())
                 .andDo(
                         document("{method-name}",

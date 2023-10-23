@@ -11,23 +11,32 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureRestDocs
@@ -44,11 +53,17 @@ class MemberControllerTest {
     private TestUtils testUtils;
 
     @BeforeEach
-    void initBefore() {
+    void initBefore(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         testUtils.deleteAllSessions();
         testUtils.deleteAllMembers();
         testUtils.deleteAllRoles();
         testUtils.deleteAllFaculties();
+
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
+                .apply(documentationConfiguration(restDocumentation))
+                .build();
     }
 
     @AfterEach
@@ -76,7 +91,6 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(memberRegistrationRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.firstName").value(containsString(firstName)))
@@ -110,7 +124,7 @@ class MemberControllerTest {
     @Test
     void login() throws Exception {
         String firstName = "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
-        testUtils.createMember(firstName, lastName, username, password);
+        testUtils.registerMember(firstName, lastName, username, password);
 
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(username);
@@ -120,7 +134,6 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(loginRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.token").exists())
                 .andExpect(jsonPath("$.tokenType").exists())
@@ -140,13 +153,14 @@ class MemberControllerTest {
     @Test
     void logout() throws Exception {
         String firstName = "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
-        LoginResponse loginResponse = loginMember(firstName, lastName, username, password);
+        testUtils.registerMember(firstName, lastName, username, password);
+        LoginResponse loginResponse = loginMember(username, password);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.MEMBERS + PathUtil.LOGOUT)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
                 )
                 .andDo(print())
-                //.andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -155,9 +169,7 @@ class MemberControllerTest {
                 );
     }
 
-    private LoginResponse loginMember(String firstName, String lastName, String username, String password) throws Exception {
-        testUtils.createMember(firstName, lastName, username, password);
-
+    private LoginResponse loginMember(String username, String password) throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(username);
         loginRequest.setPassword(password);

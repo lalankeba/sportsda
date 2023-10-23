@@ -33,7 +33,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -74,7 +73,6 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").exists())
@@ -102,7 +100,6 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andDo(
                         document("{method-name}",
@@ -120,7 +117,6 @@ class FacultyControllerTest {
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .header(HttpHeaders.ACCEPT_LANGUAGE, "si")
                 )
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andDo(
                         document("{method-name}",
@@ -135,7 +131,6 @@ class FacultyControllerTest {
         testUtils.createFaculties(Arrays.asList("Humanities and Social Sciences", "Management Studies and Commerce"));
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
                 .andExpect(jsonPath("$.[*].id").exists())
@@ -157,7 +152,6 @@ class FacultyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(facultyName)))
@@ -186,7 +180,6 @@ class FacultyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.detail").value(containsString(messageSource.getMessage(MessagesUtil.MANDATORY_FACULTY_NAME, null, LocaleContextHolder.getLocale()))))
                 .andDo(
@@ -208,7 +201,6 @@ class FacultyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.detail").exists())
                 .andDo(
@@ -234,7 +226,6 @@ class FacultyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.detail").exists())
                 .andExpect(jsonPath("$.detail").value(containsString(responseMessage)))
@@ -260,7 +251,6 @@ class FacultyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(facultyUpdateRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(containsString(facultyResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
@@ -286,7 +276,6 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isAccepted())
                 .andDo(
                         document("{method-name}",
@@ -310,7 +299,6 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER + PathUtil.DEPARTMENTS, facultyId)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
                 .andExpect(jsonPath("$.[*].id").exists())

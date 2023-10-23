@@ -27,7 +27,6 @@ class IndexControllerTest {
     @Test
     void init() throws Exception {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.INIT))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("{method-name}",
@@ -40,7 +39,6 @@ class IndexControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.INIT)
                         .header(HttpHeaders.ACCEPT_LANGUAGE, "si")
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(
                         document("{method-name}",

@@ -28,7 +28,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,7 +65,6 @@ class RoleControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.description").exists())
@@ -91,7 +89,6 @@ class RoleControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.ROLES)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].description").exists())
@@ -118,7 +115,6 @@ class RoleControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(roleAddRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(roleName)))
@@ -161,7 +157,6 @@ class RoleControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(roleUpdateRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(updatedRoleName)))
@@ -195,7 +190,6 @@ class RoleControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
-                .andDo(print())
                 .andExpect(status().isAccepted())
                 .andDo(
                         document("{method-name}",
