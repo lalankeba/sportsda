@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
+
 @RestController
 @RequestMapping(PathUtil.INIT)
 @RequiredArgsConstructor
@@ -25,6 +27,6 @@ public class IndexController {
         log.info("initializing request received");
         String message = messageSource.getMessage(MessagesUtil.WELCOME_MESSAGE, null, LocaleContextHolder.getLocale());
         log.info("initialized status: {}", message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        return new ResponseEntity<>(Collections.singletonMap("message", message), HttpStatus.OK);
     }
 }
