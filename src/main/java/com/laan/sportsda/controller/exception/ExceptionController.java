@@ -3,8 +3,7 @@ package com.laan.sportsda.controller.exception;
 import com.laan.sportsda.exception.DuplicateElementException;
 import com.laan.sportsda.exception.ElementNotFoundException;
 import com.laan.sportsda.exception.InvalidRequestException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,25 +19,24 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.Optional;
 
 @RestControllerAdvice
+@Slf4j
 public class ExceptionController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ExceptionController.class);
 
     @ExceptionHandler(ElementNotFoundException.class)
     public ProblemDetail onElementNotFoundException(ElementNotFoundException exception) {
-        logger.error("ElementNotFoundException occurred. {}", exception.getMessage());
+        log.error("ElementNotFoundException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 
     @ExceptionHandler(DuplicateElementException.class)
     public ProblemDetail onDuplicateElementException(DuplicateElementException exception) {
-        logger.error("DuplicateElementException occurred. {}", exception.getMessage());
+        log.error("DuplicateElementException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler(InvalidRequestException.class)
     public ProblemDetail onInvalidRequestException(InvalidRequestException exception) {
-        logger.error("InvalidRequestException occurred. {}", exception.getMessage());
+        log.error("InvalidRequestException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
@@ -50,37 +48,37 @@ public class ExceptionController {
             message = optionalFieldError.get().getDefaultMessage();
             message = (message == null) ? "" : message;
         }
-        logger.error("MethodArgumentNotValidException occurred. {}", message);
+        log.error("MethodArgumentNotValidException occurred. {}", message);
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, message);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ProblemDetail onHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException exception) {
-        logger.error("HttpRequestMethodNotSupportedException occurred. {}", exception.getMessage());
+        log.error("HttpRequestMethodNotSupportedException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler(ObjectOptimisticLockingFailureException.class)
     public ProblemDetail onObjectOptimisticLockingFailureException(ObjectOptimisticLockingFailureException exception) {
-        logger.error("ObjectOptimisticLockingFailureException occurred. {}", exception.getMessage());
+        log.error("ObjectOptimisticLockingFailureException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail onHttpMessageNotReadableException(HttpMessageNotReadableException exception) {
-        logger.error("HttpMessageNotReadableException occurred. {}", exception.getMessage());
+        log.error("HttpMessageNotReadableException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ProblemDetail onAuthenticationException(AuthenticationException exception) {
-        logger.error("AuthenticationException occurred. {}", exception.getMessage());
+        log.error("AuthenticationException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
     }
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ProblemDetail onHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
-        logger.error("HttpMediaTypeNotSupportedException occurred. {}", exception.getMessage());
+        log.error("HttpMediaTypeNotSupportedException occurred. {}", exception.getMessage());
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
     }
 
