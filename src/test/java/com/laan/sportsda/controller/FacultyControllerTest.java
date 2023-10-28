@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -67,7 +68,7 @@ class FacultyControllerTest {
 
     @Test
     void getFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
         testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
@@ -150,6 +151,7 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
                 .andExpect(status().isCreated())
@@ -178,6 +180,7 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
                 .andExpect(status().isBadRequest())
@@ -199,6 +202,7 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
                 .andExpect(status().isBadRequest())
@@ -214,7 +218,7 @@ class FacultyControllerTest {
     @Test
     void addFacultyWithDuplicateName() throws Exception {
         String facultyName = "Applied Sciences";
-        testUtils.createFaculty(facultyName);
+        testUtils.addFaculty(facultyName);
 
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
         facultyAddRequest.setName(facultyName);
@@ -224,6 +228,7 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.FACULTIES)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
                         .content(objectMapper.writeValueAsBytes(facultyAddRequest))
                 )
                 .andExpect(status().isBadRequest())
@@ -239,7 +244,7 @@ class FacultyControllerTest {
 
     @Test
     void updateFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Graduate Studies");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Graduate Studies");
 
         String updatedName = "Engineering";
         FacultyUpdateRequest facultyUpdateRequest = new FacultyUpdateRequest();
@@ -249,11 +254,14 @@ class FacultyControllerTest {
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding(StandardCharsets.UTF_8)
                         .content(objectMapper.writeValueAsBytes(facultyUpdateRequest))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(containsString(facultyResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
+                .andExpect(jsonPath("$.version").exists())
+                .andExpect(jsonPath("$.version").value(not(facultyResponse.getVersion())))
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -271,7 +279,7 @@ class FacultyControllerTest {
 
     @Test
     void deleteFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Designing");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Designing");
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -287,7 +295,7 @@ class FacultyControllerTest {
 
     @Test
     void getDepartmentsByFaculty() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Allied Health Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Allied Health Sciences");
         List<DepartmentResponse> departmentResponses = testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
 
         Optional<DepartmentResponse> optionalDepartmentResponse = departmentResponses.stream().findFirst();

@@ -2,8 +2,8 @@ package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.FacultyAddRequest;
 import com.laan.sportsda.dto.request.FacultyUpdateRequest;
-import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.dto.response.FacultyResponse;
+import com.laan.sportsda.dto.response.FacultyShortResponse;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.mapper.FacultyMapper;
 import com.laan.sportsda.repository.FacultyRepository;

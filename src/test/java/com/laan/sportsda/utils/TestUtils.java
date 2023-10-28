@@ -58,18 +58,18 @@ public class TestUtils {
 
     public List<FacultyResponse> createFaculties(List<String> facultyNames) {
         List<FacultyResponse> facultyResponses = new ArrayList<>();
-        facultyNames.forEach(name -> facultyResponses.add(createFaculty(name)) );
+        facultyNames.forEach(name -> facultyResponses.add(addFaculty(name)) );
         return facultyResponses;
     }
 
-    public FacultyResponse createFaculty(String name) {
+    public FacultyResponse addFaculty(String name) {
         FacultyAddRequest facultyAddRequest = new FacultyAddRequest();
         facultyAddRequest.setName(name);
         return facultyService.addFaculty(facultyAddRequest);
     }
 
     public FacultyResponse createBasicFaculty() {
-        return createFaculty(propertyUtil.getBasicFacultyName());
+        return addFaculty(propertyUtil.getBasicFacultyName());
     }
 
     public void deleteAllFaculties() {

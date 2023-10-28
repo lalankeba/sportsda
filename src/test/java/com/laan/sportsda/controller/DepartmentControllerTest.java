@@ -51,7 +51,7 @@ class DepartmentControllerTest {
 
     @Test
     void getDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Dental Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Dental Sciences");
         String id = testUtils.createDepartment("Community Dental health", facultyResponse).getId();
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, id)
@@ -72,7 +72,7 @@ class DepartmentControllerTest {
 
     @Test
     void getDepartments() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Allied Health Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Allied Health Sciences");
         testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS)
@@ -92,7 +92,7 @@ class DepartmentControllerTest {
 
     @Test
     void addDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
 
         String departmentName = "Food Science";
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
@@ -127,7 +127,7 @@ class DepartmentControllerTest {
 
     @Test
     void updateDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
         DepartmentResponse departmentResponse = testUtils.createDepartment("Zoology", facultyResponse);
 
         String updatedName = "Forestry";
@@ -163,7 +163,7 @@ class DepartmentControllerTest {
 
     @Test
     void deleteDepartment() throws Exception {
-        FacultyResponse facultyResponse = testUtils.createFaculty("Applied Sciences");
+        FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
         DepartmentResponse departmentResponse = testUtils.createDepartment("Chemistry", facultyResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
