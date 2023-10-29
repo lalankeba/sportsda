@@ -76,8 +76,8 @@ class MemberControllerTest {
 
     @Test
     void register() throws Exception {
-        testUtils.createBasicRole();
-        String facultyId = testUtils.createBasicFaculty().getId();
+        testUtils.addBasicRole();
+        String facultyId = testUtils.addBasicFaculty().getId();
 
         String firstName = "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
         MemberRegistrationRequest memberRegistrationRequest = new MemberRegistrationRequest();

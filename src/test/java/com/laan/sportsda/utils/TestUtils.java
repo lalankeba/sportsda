@@ -38,7 +38,7 @@ public class TestUtils {
 
     private final PermissionService permissionService;
 
-    public RoleResponse createRole(String roleName, String roleDescription, List<String> permissionIds) {
+    public RoleResponse addRole(String roleName, String roleDescription, List<String> permissionIds) {
         RoleAddRequest roleAddRequest = new RoleAddRequest();
         roleAddRequest.setName(roleName);
         roleAddRequest.setDescription(roleDescription);
@@ -46,8 +46,8 @@ public class TestUtils {
         return roleService.addRole(roleAddRequest);
     }
 
-    public RoleResponse createBasicRole() {
-        return createRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
+    public RoleResponse addBasicRole() {
+        return addRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
     }
 
     public void deleteAllRoles() {
@@ -56,7 +56,7 @@ public class TestUtils {
         ids.forEach(roleService::deleteRole);
     }
 
-    public List<FacultyResponse> createFaculties(List<String> facultyNames) {
+    public List<FacultyResponse> addFaculties(List<String> facultyNames) {
         List<FacultyResponse> facultyResponses = new ArrayList<>();
         facultyNames.forEach(name -> facultyResponses.add(addFaculty(name)) );
         return facultyResponses;
@@ -68,7 +68,7 @@ public class TestUtils {
         return facultyService.addFaculty(facultyAddRequest);
     }
 
-    public FacultyResponse createBasicFaculty() {
+    public FacultyResponse addBasicFaculty() {
         return addFaculty(propertyUtil.getBasicFacultyName());
     }
 
@@ -79,8 +79,8 @@ public class TestUtils {
     }
 
     public MemberRegistrationResponse registerMember(String firstName, String lastName, String username, String password) {
-        createRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
-        String facultyId = createBasicFaculty().getId();
+        addRole(propertyUtil.getBasicRoleName(), "Sample role description", null);
+        String facultyId = addBasicFaculty().getId();
 
         MemberRegistrationRequest memberRegistrationRequest = new MemberRegistrationRequest();
         memberRegistrationRequest.setFirstName(firstName);
@@ -92,16 +92,16 @@ public class TestUtils {
         return memberService.registerMember(memberRegistrationRequest);
     }
 
-    public DepartmentResponse createDepartment(String departmentName, FacultyResponse facultyResponse) {
+    public DepartmentResponse addDepartment(String departmentName, FacultyResponse facultyResponse) {
         DepartmentAddRequest departmentAddRequest = new DepartmentAddRequest();
         departmentAddRequest.setName(departmentName);
         departmentAddRequest.setFacultyId(facultyResponse.getId());
         return departmentService.addDepartment(departmentAddRequest);
     }
 
-    public List<DepartmentResponse> createDepartments(List<String> departmentNames, FacultyResponse facultyResponse) {
+    public List<DepartmentResponse> addDepartments(List<String> departmentNames, FacultyResponse facultyResponse) {
         List<DepartmentResponse> departmentResponses = new ArrayList<>();
-        departmentNames.forEach(name -> departmentResponses.add(createDepartment(name, facultyResponse)) );
+        departmentNames.forEach(name -> departmentResponses.add(addDepartment(name, facultyResponse)) );
         return departmentResponses;
     }
 
@@ -127,7 +127,7 @@ public class TestUtils {
         return permissionService.getPermissions();
     }
 
-    public SportResponse createSport(String name) {
+    public SportResponse addSport(String name) {
         SportAddRequest sportAddRequest = new SportAddRequest();
         sportAddRequest.setName(name);
         return sportService.addSport(sportAddRequest);

@@ -52,7 +52,7 @@ class DepartmentControllerTest {
     @Test
     void getDepartment() throws Exception {
         FacultyResponse facultyResponse = testUtils.addFaculty("Dental Sciences");
-        String id = testUtils.createDepartment("Community Dental health", facultyResponse).getId();
+        String id = testUtils.addDepartment("Community Dental health", facultyResponse).getId();
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, id)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -73,7 +73,7 @@ class DepartmentControllerTest {
     @Test
     void getDepartments() throws Exception {
         FacultyResponse facultyResponse = testUtils.addFaculty("Allied Health Sciences");
-        testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
+        testUtils.addDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.DEPARTMENTS)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -128,7 +128,7 @@ class DepartmentControllerTest {
     @Test
     void updateDepartment() throws Exception {
         FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
-        DepartmentResponse departmentResponse = testUtils.createDepartment("Zoology", facultyResponse);
+        DepartmentResponse departmentResponse = testUtils.addDepartment("Zoology", facultyResponse);
 
         String updatedName = "Forestry";
         DepartmentUpdateRequest departmentUpdateRequest = new DepartmentUpdateRequest();
@@ -164,7 +164,7 @@ class DepartmentControllerTest {
     @Test
     void deleteDepartment() throws Exception {
         FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
-        DepartmentResponse departmentResponse = testUtils.createDepartment("Chemistry", facultyResponse);
+        DepartmentResponse departmentResponse = testUtils.addDepartment("Chemistry", facultyResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)

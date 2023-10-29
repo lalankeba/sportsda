@@ -69,7 +69,7 @@ class FacultyControllerTest {
     @Test
     void getFaculty() throws Exception {
         FacultyResponse facultyResponse = testUtils.addFaculty("Applied Sciences");
-        testUtils.createDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyResponse);
+        testUtils.addDepartments(Arrays.asList("Computer Science", "Statistics", "Food Science"), facultyResponse);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER, facultyResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -129,7 +129,7 @@ class FacultyControllerTest {
 
     @Test
     void getFaculties() throws Exception {
-        testUtils.createFaculties(Arrays.asList("Humanities and Social Sciences", "Management Studies and Commerce"));
+        testUtils.addFaculties(Arrays.asList("Humanities and Social Sciences", "Management Studies and Commerce"));
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.FACULTIES))
                 .andExpect(status().isOk())
@@ -296,7 +296,7 @@ class FacultyControllerTest {
     @Test
     void getDepartmentsByFaculty() throws Exception {
         FacultyResponse facultyResponse = testUtils.addFaculty("Allied Health Sciences");
-        List<DepartmentResponse> departmentResponses = testUtils.createDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
+        List<DepartmentResponse> departmentResponses = testUtils.addDepartments(Arrays.asList("Nursing and Midwifery", "Medical Laboratory Sciences"), facultyResponse);
 
         Optional<DepartmentResponse> optionalDepartmentResponse = departmentResponses.stream().findFirst();
         String facultyId = null;

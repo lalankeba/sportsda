@@ -60,7 +60,7 @@ class RoleControllerTest {
     void getRole() throws Exception {
         List<PermissionResponse> permissionResponses = testUtils.getAllPermissions();
         List<String> permissionIds = permissionResponses.stream().map(PermissionResponse::getId).limit(3).toList();
-        RoleResponse roleResponse = testUtils.createRole("Moderator", "Can moderate tasks", permissionIds);
+        RoleResponse roleResponse = testUtils.addRole("Moderator", "Can moderate tasks", permissionIds);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -83,8 +83,8 @@ class RoleControllerTest {
 
     @Test
     void getRoles() throws Exception {
-        testUtils.createRole("Moderator", "Can moderate tasks", null);
-        testUtils.createRole("Helper", "Can help to moderate tasks", null);
+        testUtils.addRole("Moderator", "Can moderate tasks", null);
+        testUtils.addRole("Helper", "Can help to moderate tasks", null);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.ROLES)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -142,7 +142,7 @@ class RoleControllerTest {
     @Test
     void updateRole() throws Exception {
         List<PermissionResponse> permissionResponses = testUtils.getAllPermissions();
-        RoleResponse roleResponse = testUtils.createRole("Moderator", "Can moderate tasks", null);
+        RoleResponse roleResponse = testUtils.addRole("Moderator", "Can moderate tasks", null);
 
         String updatedRoleName = "Higher Moderator", updatedRoleDescription = "Can moderate many more tasks";
         List<String> updatedPermissionIds = permissionResponses.stream().map(PermissionResponse::getId).skip(1).limit(3).toList();
@@ -185,7 +185,7 @@ class RoleControllerTest {
     void deleteRole() throws Exception {
         List<PermissionResponse> permissionResponses = testUtils.getAllPermissions();
         List<String> permissionIds = permissionResponses.stream().map(PermissionResponse::getId).limit(2).toList();
-        RoleResponse roleResponse = testUtils.createRole("Moderator", "Can moderate tasks", permissionIds);
+        RoleResponse roleResponse = testUtils.addRole("Moderator", "Can moderate tasks", permissionIds);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)

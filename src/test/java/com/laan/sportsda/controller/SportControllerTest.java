@@ -55,7 +55,7 @@ class SportControllerTest {
 
     @Test
     void getSport() throws Exception {
-        SportResponse sportResponse = testUtils.createSport("Badminton");
+        SportResponse sportResponse = testUtils.addSport("Badminton");
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -78,8 +78,8 @@ class SportControllerTest {
 
     @Test
     void getSports() throws Exception {
-        testUtils.createSport("Cricket");
-        testUtils.createSport("Carrom");
+        testUtils.addSport("Cricket");
+        testUtils.addSport("Carrom");
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.SPORTS)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -125,7 +125,7 @@ class SportControllerTest {
 
     @Test
     void updateSport() throws Exception {
-        SportResponse sportResponse = testUtils.createSport("Soccer");
+        SportResponse sportResponse = testUtils.addSport("Soccer");
 
         String updatedName = "Football";
         SportUpdateRequest sportUpdateRequest = new SportUpdateRequest();
@@ -157,7 +157,7 @@ class SportControllerTest {
 
     @Test
     void deleteSport() throws Exception {
-        SportResponse sportResponse = testUtils.createSport("Chess");
+        SportResponse sportResponse = testUtils.addSport("Chess");
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
