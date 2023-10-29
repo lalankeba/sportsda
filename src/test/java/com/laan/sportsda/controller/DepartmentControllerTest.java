@@ -133,7 +133,6 @@ class DepartmentControllerTest {
         String updatedName = "Forestry";
         DepartmentUpdateRequest departmentUpdateRequest = new DepartmentUpdateRequest();
         departmentUpdateRequest.setName(updatedName);
-        departmentUpdateRequest.setFacultyId(departmentResponse.getFacultyId());
         departmentUpdateRequest.setVersion(departmentResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER, departmentResponse.getId())
@@ -145,17 +144,18 @@ class DepartmentControllerTest {
                 .andExpect(jsonPath("$.id").value(containsString(departmentResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
                 .andExpect(jsonPath("$.facultyId").value(containsString(departmentResponse.getFacultyId())))
+                .andExpect(jsonPath("$.version").exists())
+                .andExpect(jsonPath("$.version").value(not(departmentResponse.getVersion())))
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 pathParameters(parameterWithName("id").description("Id of the department that needs to be updated")),
                                 requestFields(fieldWithPath("name").description("Name to be updated for the department. Should be unique throughout the system."))
-                                        .and(fieldWithPath("facultyId").description("Updated faculty id of the existing department"))
                                         .and(fieldWithPath("version").description("Version of the existing department")),
                                 responseFields(fieldWithPath("id").description("Id of the department"))
                                         .and(fieldWithPath("name").description("Updated name of the department"))
-                                        .and(fieldWithPath("facultyId").description("Updated faculty id of the department"))
+                                        .and(fieldWithPath("facultyId").description("Faculty id of the department"))
                                         .and(fieldWithPath("version").description("Updated version number").optional())
                         )
                 );

@@ -81,12 +81,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<DepartmentEntity> optionalDepartmentEntityByName = departmentRepository.findByNameAndIdNotContains(departmentUpdateRequest.getName(), id);
         departmentValidator.validateDuplicateDepartmentEntity(optionalDepartmentEntityByName);
 
-        Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findById(departmentUpdateRequest.getFacultyId());
-        facultyValidator.validateNonExistingFacultyEntity(departmentUpdateRequest.getFacultyId(), optionalFacultyEntity);
-
         DepartmentResponse departmentResponse = null;
-        if (optionalFacultyEntity.isPresent()) {
-            DepartmentEntity departmentEntity = departmentMapper.mapUpdateRequestToEntity(departmentUpdateRequest, id, optionalFacultyEntity.get());
+        if (optionalDepartmentEntity.isPresent()) {
+            DepartmentEntity existingDepartmentEntity = optionalDepartmentEntity.get();
+            DepartmentEntity departmentEntity = departmentMapper.mapUpdateRequestToEntity(departmentUpdateRequest, id, existingDepartmentEntity.getFacultyEntity());
             DepartmentEntity updatedDepartmentEntity =  departmentRepository.saveAndFlush(departmentEntity);
             departmentResponse = departmentMapper.mapEntityToResponse(updatedDepartmentEntity);
         }

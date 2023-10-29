@@ -13,9 +13,6 @@ public class DepartmentUpdateRequest {
     @Size(min = 2, max = 150, message = MessagesUtil.AnnotationSupported.INVALID_DEPARTMENT_NAME_SIZE)
     private String name;
 
-    @NotBlank(message = MessagesUtil.AnnotationSupported.MANDATORY_FACULTY_ID)
-    private String facultyId;
-
     @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_VERSION)
     private Long version;
 }
