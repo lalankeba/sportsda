@@ -1,9 +1,13 @@
 package com.laan.sportsda.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "possible_value")
 public class PossibleValueEntity {
@@ -17,6 +21,7 @@ public class PossibleValueEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feature_id")
+    @ToString.Exclude
     private FeatureEntity featureEntity;
 
 }

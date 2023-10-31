@@ -1,11 +1,15 @@
 package com.laan.sportsda.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "faculty")
 public class FacultyEntity {
@@ -17,6 +21,7 @@ public class FacultyEntity {
     private String name;
 
     @OneToMany(mappedBy = "facultyEntity")
+    @ToString.Exclude
     private List<DepartmentEntity> departmentEntities;
 
     @Column(name = "version")

@@ -2,12 +2,15 @@ package com.laan.sportsda.entity;
 
 import com.laan.sportsda.enums.PermissionDescription;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "permission")
 public class PermissionEntity {

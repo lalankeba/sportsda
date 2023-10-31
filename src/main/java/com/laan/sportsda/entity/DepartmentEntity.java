@@ -1,12 +1,15 @@
 package com.laan.sportsda.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "department")
 public class DepartmentEntity {
@@ -19,6 +22,7 @@ public class DepartmentEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faculty_id")
+    @ToString.Exclude
     private FacultyEntity facultyEntity;
 
     @ManyToMany(mappedBy = "departmentEntities")
