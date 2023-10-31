@@ -18,14 +18,15 @@ public interface PossibleValueMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "attributeValue", source = "value")
     @Mapping(target = "featureEntity", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     PossibleValueEntity mapStringToEntity(String value);
 
     List<PossibleValueEntity> mapStringsToEntities(List<String> values);
 
     default List<PossibleValueEntity> mapStringsAndEntityToEntities(List<String> values, FeatureEntity featureEntity) {
         List<PossibleValueEntity> possibleValueEntities = mapStringsToEntities(values);
-        possibleValueEntities.forEach(pve -> pve.setFeatureEntity(featureEntity));
+        if (possibleValueEntities != null) {
+            possibleValueEntities.forEach(pve -> pve.setFeatureEntity(featureEntity));
+        }
         return possibleValueEntities;
     }
 

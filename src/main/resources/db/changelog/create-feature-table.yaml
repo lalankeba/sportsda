@@ -23,12 +23,12 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: from_value
+                  name: min_value
                   type: varchar(200)
                   constraints:
                     nullable: true
               - column:
-                  name: to_value
+                  name: max_value
                   type: varchar(200)
                   constraints:
                     nullable: true

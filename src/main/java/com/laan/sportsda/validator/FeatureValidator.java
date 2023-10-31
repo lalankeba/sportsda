@@ -1,6 +1,7 @@
 package com.laan.sportsda.validator;
 
 import com.laan.sportsda.dto.request.FeatureAddRequest;
+import com.laan.sportsda.dto.request.FeatureUpdateRequest;
 import com.laan.sportsda.entity.FeatureEntity;
 import com.laan.sportsda.enums.FeatureValueType;
 import com.laan.sportsda.exception.DuplicateElementException;
@@ -12,6 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -35,20 +37,43 @@ public class FeatureValidator {
     }
 
     public void validateFeatureAddRequestWithTypeAndValues(FeatureAddRequest featureAddRequest) {
-        if (featureAddRequest.getFeatureValueType() == FeatureValueType.DECIMAL || featureAddRequest.getFeatureValueType() == FeatureValueType.INTEGER) {
-            if (featureAddRequest.getFromValue() == null) {
-                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_FROM_VALUE_EXCEPTION, null, LocaleContextHolder.getLocale()));
+        validateAttributesOnValueType(featureAddRequest.getFeatureValueType(), featureAddRequest.getMinValue(), featureAddRequest.getMaxValue(), featureAddRequest.getMeasurement(), featureAddRequest.getPossibleValues());
+    }
+
+    public void validateFeatureUpdateRequestWithTypeAndValues(FeatureUpdateRequest featureUpdateRequest) {
+        validateAttributesOnValueType(featureUpdateRequest.getFeatureValueType(), featureUpdateRequest.getMinValue(), featureUpdateRequest.getMaxValue(), featureUpdateRequest.getMeasurement(), featureUpdateRequest.getPossibleValues());
+    }
+
+    private void validateAttributesOnValueType(FeatureValueType featureValueType, String minValue, String maxValue, String measurement, List<String> possibleValues) {
+        if (featureValueType == FeatureValueType.DECIMAL || featureValueType == FeatureValueType.INTEGER) {
+            if (minValue == null) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_MIN_VALUE_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType);
                 throw new InvalidRequestException(msg);
-            } else if (featureAddRequest.getToValue() == null) {
-                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_TO_VALUE_EXCEPTION, null, LocaleContextHolder.getLocale()));
+            } else if (maxValue == null) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_MAX_VALUE_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType);
                 throw new InvalidRequestException(msg);
-            } else if (featureAddRequest.getMeasurement() == null) {
-                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_MEASUREMENT_EXCEPTION, null, LocaleContextHolder.getLocale()));
+            } else if (measurement == null) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_MEASUREMENT_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType);
+                throw new InvalidRequestException(msg);
+            } else if (possibleValues != null && !possibleValues.isEmpty()) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.INVALID_ATTRIBUTES_FOR_VALUE_TYPE_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType, "possibleValues");
                 throw new InvalidRequestException(msg);
             }
-        } else if (featureAddRequest.getFeatureValueType() == FeatureValueType.FIXED_VALUE && (featureAddRequest.getPossibleValues() == null || featureAddRequest.getPossibleValues().isEmpty())) {
-            String msg = String.format(messageSource.getMessage(MessagesUtil.NO_POSSIBLE_VALUES_EXCEPTION, null, LocaleContextHolder.getLocale()));
-            throw new InvalidRequestException(msg);
+        } else if (featureValueType == FeatureValueType.FIXED_VALUE) {
+            if (possibleValues == null || possibleValues.isEmpty()) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.NO_POSSIBLE_VALUES_EXCEPTION, null, LocaleContextHolder.getLocale()));
+                throw new InvalidRequestException(msg);
+            } else if (minValue != null) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.INVALID_ATTRIBUTES_FOR_VALUE_TYPE_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType, "minValue");
+                throw new InvalidRequestException(msg);
+            } else if (maxValue != null) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.INVALID_ATTRIBUTES_FOR_VALUE_TYPE_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType, "maxValue");
+                throw new InvalidRequestException(msg);
+            } else if (measurement != null) {
+                String msg = String.format(messageSource.getMessage(MessagesUtil.INVALID_ATTRIBUTES_FOR_VALUE_TYPE_EXCEPTION, null, LocaleContextHolder.getLocale()), featureValueType, "measurement");
+                throw new InvalidRequestException(msg);
+            }
         }
     }
+
 }

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface FeatureRepository extends JpaRepository<FeatureEntity, String> {
 
     Optional<FeatureEntity> findByNameAndSportEntity(String name, SportEntity sportEntity);
+    Optional<FeatureEntity> findByNameAndSportEntityAndIdNotContains(String name, SportEntity sportEntity, String id);
 }

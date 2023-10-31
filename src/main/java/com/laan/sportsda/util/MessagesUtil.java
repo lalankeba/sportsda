@@ -28,9 +28,10 @@ public class MessagesUtil {
 
     public static final String NO_FEATURE_EXCEPTION = "no.feature.exception";
     public static final String DUPLICATE_FEATURE_EXCEPTION = "duplicate.feature.exception";
-    public static final String NO_FROM_VALUE_EXCEPTION = "no.from.value.exception";
-    public static final String NO_TO_VALUE_EXCEPTION = "no.to.value.exception";
+    public static final String NO_MIN_VALUE_EXCEPTION = "no.min.value.exception";
+    public static final String NO_MAX_VALUE_EXCEPTION = "no.max.value.exception";
     public static final String NO_MEASUREMENT_EXCEPTION = "no.measurement.exception";
+    public static final String INVALID_ATTRIBUTES_FOR_VALUE_TYPE_EXCEPTION = "invalid.attributes.for.value.type.exception";
     public static final String NO_POSSIBLE_VALUES_EXCEPTION = "no.possible.values.exception";
     public static final String MANDATORY_FEATURE_NAME = "mandatory.feature.name";
     public static final String INVALID_FEATURE_NAME_SIZE = "invalid.feature.name.size";

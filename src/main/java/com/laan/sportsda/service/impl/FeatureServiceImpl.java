@@ -1,8 +1,8 @@
 package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.FeatureAddRequest;
+import com.laan.sportsda.dto.request.FeatureUpdateRequest;
 import com.laan.sportsda.dto.response.FeatureResponse;
-import com.laan.sportsda.dto.response.PossibleValueResponse;
 import com.laan.sportsda.entity.FeatureEntity;
 import com.laan.sportsda.entity.PossibleValueEntity;
 import com.laan.sportsda.entity.SportEntity;
@@ -49,10 +49,6 @@ public class FeatureServiceImpl implements FeatureService {
         FeatureResponse featureResponse = null;
         if (optionalFeatureEntity.isPresent()) {
             featureResponse = featureMapper.mapEntityToResponse(optionalFeatureEntity.get());
-
-            List<PossibleValueEntity> possibleValueEntities = possibleValueRepository.findByFeatureEntity(optionalFeatureEntity.get());
-            List<PossibleValueResponse> possibleValueResponses = possibleValueMapper.mapEntitiesToResponses(possibleValueEntities);
-            featureResponse.setPossibleValues(possibleValueResponses);
         }
         return featureResponse;
     }
@@ -80,14 +76,45 @@ public class FeatureServiceImpl implements FeatureService {
                 featureValidator.validateFeatureAddRequestWithTypeAndValues(featureAddRequest);
 
                 FeatureEntity featureEntity = featureMapper.mapAddRequestToEntity(featureAddRequest, sportEntity);
+                List<PossibleValueEntity> possibleValueEntities = possibleValueMapper.mapStringsAndEntityToEntities(featureAddRequest.getPossibleValues(), featureEntity);
+                featureEntity.setPossibleValueEntities(possibleValueEntities);
+
                 FeatureEntity savedFeatureEntity = featureRepository.save(featureEntity);
-
-                List<PossibleValueEntity> possibleValueEntities = possibleValueMapper.mapStringsAndEntityToEntities(featureAddRequest.getPossibleValues(), savedFeatureEntity);
-                List<PossibleValueEntity> savedPossibleValueEntities = possibleValueRepository.saveAll(possibleValueEntities);
-
                 featureResponse = featureMapper.mapEntityToResponse(savedFeatureEntity);
-                List<PossibleValueResponse> possibleValueResponses = possibleValueMapper.mapEntitiesToResponses(savedPossibleValueEntities);
-                featureResponse.setPossibleValues(possibleValueResponses);
+            }
+        }
+
+        return featureResponse;
+    }
+
+    @Override
+    @Transactional
+    public FeatureResponse updateFeature(final String id, final FeatureUpdateRequest featureUpdateRequest) {
+        Optional<FeatureEntity> optionalFeatureEntity = featureRepository.findById(id);
+        featureValidator.validateNonExistingFeatureEntity(id, optionalFeatureEntity);
+
+        FeatureResponse featureResponse = null;
+
+        if (optionalFeatureEntity.isPresent()) {
+            FeatureEntity existingFeatureEntity = optionalFeatureEntity.get();
+            SportEntity sportEntity = existingFeatureEntity.getSportEntity();
+
+            Optional<FeatureEntity> optionalFeatureEntityByName = featureRepository.findByNameAndSportEntityAndIdNotContains(featureUpdateRequest.getName(), sportEntity, id);
+            featureValidator.validateDuplicateFeatureEntity(optionalFeatureEntityByName, sportEntity.getName());
+
+            if (optionalFeatureEntityByName.isEmpty()) {
+                featureValidator.validateFeatureUpdateRequestWithTypeAndValues(featureUpdateRequest);
+
+                if (existingFeatureEntity.getPossibleValueEntities() != null) {
+                    possibleValueRepository.deleteAll(existingFeatureEntity.getPossibleValueEntities());
+                }
+
+                FeatureEntity featureEntity = featureMapper.mapUpdateRequestToEntity(featureUpdateRequest, id, sportEntity);
+                List<PossibleValueEntity> possibleValueEntities = possibleValueMapper.mapStringsAndEntityToEntities(featureUpdateRequest.getPossibleValues(), featureEntity);
+                featureEntity.setPossibleValueEntities(possibleValueEntities);
+
+                FeatureEntity updatedFeatureEntity = featureRepository.saveAndFlush(featureEntity);
+                featureResponse = featureMapper.mapEntityToResponse(updatedFeatureEntity);
             }
         }
 

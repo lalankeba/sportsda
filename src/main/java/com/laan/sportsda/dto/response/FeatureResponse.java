@@ -14,9 +14,9 @@ public class FeatureResponse {
 
     private FeatureValueType featureValueType;
 
-    private String fromValue;
+    private String minValue;
 
-    private String toValue;
+    private String maxValue;
 
     private String measurement;
 

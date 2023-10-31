@@ -2,9 +2,15 @@ package com.laan.sportsda.entity;
 
 import com.laan.sportsda.enums.FeatureValueType;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "feature")
 public class FeatureEntity {
@@ -19,19 +25,25 @@ public class FeatureEntity {
     @Enumerated(EnumType.STRING)
     private FeatureValueType featureValueType;
 
-    @Column(name = "from_value")
-    private String fromValue;
+    @Column(name = "min_value")
+    private String minValue;
 
-    @Column(name = "to_value")
-    private String toValue;
+    @Column(name = "max_value")
+    private String maxValue;
 
     private String measurement;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sport_id")
+    @ToString.Exclude
     private SportEntity sportEntity;
+
+    @OneToMany(mappedBy = "featureEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<PossibleValueEntity> possibleValueEntities;
 
     @Column(name = "version")
     @Version
     private Long version;
+
 }

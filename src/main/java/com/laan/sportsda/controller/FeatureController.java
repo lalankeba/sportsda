@@ -1,6 +1,7 @@
 package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.FeatureAddRequest;
+import com.laan.sportsda.dto.request.FeatureUpdateRequest;
 import com.laan.sportsda.dto.response.FeatureResponse;
 import com.laan.sportsda.service.FeatureService;
 import com.laan.sportsda.util.PathUtil;
@@ -43,5 +44,13 @@ public class FeatureController {
         FeatureResponse featureResponse = featureService.addFeature(featureAddRequest);
         log.info("added new feature");
         return new ResponseEntity<>(featureResponse, HttpStatus.CREATED);
+    }
+
+    @PutMapping(PathUtil.ID_PLACEHOLDER)
+    public ResponseEntity<Object> updateFeature(@PathVariable("id") String id, @Valid @RequestBody FeatureUpdateRequest featureUpdateRequest) {
+        log.info("updating feature for the id: {}", id);
+        FeatureResponse featureResponse = featureService.updateFeature(id, featureUpdateRequest);
+        log.info("updated feature");
+        return new ResponseEntity<>(featureResponse, HttpStatus.OK);
     }
 }

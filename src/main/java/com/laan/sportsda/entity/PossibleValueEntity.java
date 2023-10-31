@@ -19,7 +19,4 @@ public class PossibleValueEntity {
     @JoinColumn(name = "feature_id")
     private FeatureEntity featureEntity;
 
-    @Column(name = "version")
-    @Version
-    private Long version;
 }

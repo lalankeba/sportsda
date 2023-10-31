@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class FeatureAddRequest {
+public class FeatureUpdateRequest {
 
     @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_FEATURE_NAME)
     @Size(min = 2, max = 150, message = MessagesUtil.AnnotationSupported.INVALID_FEATURE_NAME_SIZE)
@@ -23,7 +23,7 @@ public class FeatureAddRequest {
     private String measurement;
     private List<String> possibleValues;
 
-    @NotNull
-    private String sportId;
+    @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_VERSION)
+    private Long version;
 
 }

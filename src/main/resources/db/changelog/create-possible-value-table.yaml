@@ -25,9 +25,3 @@ databaseChangeLog:
                     foreignKeyName: fk_possible_value_feature_id
                     referencedTableName: feature
                     referencedColumnNames: id
-              - column:
-                  name: version
-                  type: int
-                  defaultValue: 0
-                  constraints:
-                    nullable: false

@@ -9,5 +9,4 @@ public class PossibleValueResponse {
 
     private String attributeValue;
 
-    private Long version;
 }
