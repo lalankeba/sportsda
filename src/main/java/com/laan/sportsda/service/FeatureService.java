@@ -12,4 +12,5 @@ public interface FeatureService {
     List<FeatureResponse> getFeatures();
     FeatureResponse addFeature(final FeatureAddRequest featureAddRequest);
     FeatureResponse updateFeature(final String id, final FeatureUpdateRequest featureUpdateRequest);
+    void deleteFeature(final String id);
 }

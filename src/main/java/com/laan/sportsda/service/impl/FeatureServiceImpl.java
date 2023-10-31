@@ -120,4 +120,12 @@ public class FeatureServiceImpl implements FeatureService {
 
         return featureResponse;
     }
+
+    @Override
+    @Transactional
+    public void deleteFeature(final String id) {
+        Optional<FeatureEntity> optionalFeatureEntity = featureRepository.findById(id);
+        featureValidator.validateNonExistingFeatureEntity(id, optionalFeatureEntity);
+        featureRepository.deleteById(id);
+    }
 }

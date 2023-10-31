@@ -53,4 +53,12 @@ public class FeatureController {
         log.info("updated feature");
         return new ResponseEntity<>(featureResponse, HttpStatus.OK);
     }
+
+    @DeleteMapping(PathUtil.ID_PLACEHOLDER)
+    public ResponseEntity<Object> deleteFeature(@PathVariable("id") String id) {
+        log.info("deleting feature with id: {}", id);
+        featureService.deleteFeature(id);
+        log.info("deleted feature with id: {}", id);
+        return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
 }
