@@ -3,6 +3,7 @@ package com.laan.sportsda.service.impl;
 import com.laan.sportsda.dto.request.SportAddRequest;
 import com.laan.sportsda.dto.request.SportUpdateRequest;
 import com.laan.sportsda.dto.response.SportResponse;
+import com.laan.sportsda.dto.response.SportShortResponse;
 import com.laan.sportsda.entity.SportEntity;
 import com.laan.sportsda.mapper.SportMapper;
 import com.laan.sportsda.repository.SportRepository;
@@ -40,9 +41,9 @@ public class SportServiceImpl implements SportService {
     }
 
     @Override
-    public List<SportResponse> getSports() {
+    public List<SportShortResponse> getSports() {
         List<SportEntity> sportEntities = sportRepository.findAll();
-        return sportMapper.mapEntitiesToResponses(sportEntities);
+        return sportMapper.mapEntitiesToShortResponses(sportEntities);
     }
 
     @Override

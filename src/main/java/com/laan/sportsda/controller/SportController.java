@@ -3,6 +3,7 @@ package com.laan.sportsda.controller;
 import com.laan.sportsda.dto.request.SportAddRequest;
 import com.laan.sportsda.dto.request.SportUpdateRequest;
 import com.laan.sportsda.dto.response.SportResponse;
+import com.laan.sportsda.dto.response.SportShortResponse;
 import com.laan.sportsda.service.SportService;
 import com.laan.sportsda.util.PathUtil;
 import jakarta.validation.Valid;
@@ -33,9 +34,9 @@ public class SportController {
     @GetMapping
     public ResponseEntity<Object> getSports() {
         log.info("getting sports");
-        List<SportResponse> sportResponses = sportService.getSports();
+        List<SportShortResponse> sportShortResponses = sportService.getSports();
         log.info("get sports");
-        return new ResponseEntity<>(sportResponses, HttpStatus.OK);
+        return new ResponseEntity<>(sportShortResponses, HttpStatus.OK);
     }
 
     @PostMapping

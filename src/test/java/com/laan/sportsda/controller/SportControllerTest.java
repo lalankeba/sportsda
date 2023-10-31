@@ -71,6 +71,7 @@ class SportControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Id for the sport"))
                                         .and(fieldWithPath("name").description("Name of the sport"))
+                                        .and(fieldWithPath("features").description("Features of the sport"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
@@ -118,6 +119,7 @@ class SportControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the sport"))
                                         .and(fieldWithPath("name").description("Name of the sport"))
+                                        .and(fieldWithPath("features").description("Features of the sport"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
@@ -150,6 +152,7 @@ class SportControllerTest {
                                         .and(fieldWithPath("version").description("Version of the existing sport")),
                                 responseFields(fieldWithPath("id").description("Id of the sport"))
                                         .and(fieldWithPath("name").description("Updated name of the sport"))
+                                        .and(fieldWithPath("features").description("Features of the sport"))
                                         .and(fieldWithPath("version").description("Updated version number").optional())
                         )
                 );

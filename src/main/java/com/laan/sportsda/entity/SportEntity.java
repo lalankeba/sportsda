@@ -1,9 +1,15 @@
 package com.laan.sportsda.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
 @Entity
 @Table(name = "sport")
 public class SportEntity {
@@ -13,6 +19,10 @@ public class SportEntity {
     private String id;
 
     private String name;
+
+    @OneToMany(mappedBy = "sportEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<FeatureEntity> featureEntities;
 
     @Column(name = "version")
     @Version

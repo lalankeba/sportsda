@@ -134,8 +134,8 @@ public class TestUtils {
     }
 
     public void deleteAllSports() {
-        List<SportResponse> sportResponses = sportService.getSports();
-        List<String> ids = sportResponses.stream().map(SportResponse::getId).toList();
+        List<SportShortResponse> sportShortResponses = sportService.getSports();
+        List<String> ids = sportShortResponses.stream().map(SportShortResponse::getId).toList();
         ids.forEach(sportService::deleteSport);
     }
 
