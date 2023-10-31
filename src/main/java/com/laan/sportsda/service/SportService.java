@@ -11,7 +11,7 @@ public interface SportService {
 
     SportResponse getSport(final String id);
     List<SportShortResponse> getSports();
-    SportResponse addSport(final SportAddRequest sportAddRequest);
-    SportResponse updateSport(final String id, final SportUpdateRequest sportUpdateRequest);
+    SportShortResponse addSport(final SportAddRequest sportAddRequest);
+    SportShortResponse updateSport(final String id, final SportUpdateRequest sportUpdateRequest);
     void deleteSport(final String id);
 }

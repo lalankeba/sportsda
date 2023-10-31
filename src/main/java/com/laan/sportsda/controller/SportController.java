@@ -42,17 +42,17 @@ public class SportController {
     @PostMapping
     public ResponseEntity<Object> addSport(@Valid @RequestBody SportAddRequest sportAddRequest) {
         log.info("adding sport");
-        SportResponse sportResponse = sportService.addSport(sportAddRequest);
+        SportShortResponse sportShortResponse = sportService.addSport(sportAddRequest);
         log.info("added new sport");
-        return new ResponseEntity<>(sportResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(sportShortResponse, HttpStatus.CREATED);
     }
 
     @PutMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> updateSport(@PathVariable("id") String id, @Valid @RequestBody SportUpdateRequest sportUpdateRequest) {
         log.info("updating sport: {}", id);
-        SportResponse sportResponse = sportService.updateSport(id, sportUpdateRequest);
+        SportShortResponse sportShortResponse = sportService.updateSport(id, sportUpdateRequest);
         log.info("updated sport");
-        return new ResponseEntity<>(sportResponse, HttpStatus.OK);
+        return new ResponseEntity<>(sportShortResponse, HttpStatus.OK);
     }
 
     @DeleteMapping(PathUtil.ID_PLACEHOLDER)

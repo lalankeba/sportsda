@@ -48,22 +48,22 @@ public class SportServiceImpl implements SportService {
 
     @Override
     @Transactional
-    public SportResponse addSport(final SportAddRequest sportAddRequest) {
+    public SportShortResponse addSport(final SportAddRequest sportAddRequest) {
         Optional<SportEntity> optionalSportEntity = sportRepository.findByName(sportAddRequest.getName());
         sportValidator.validateDuplicateSportEntity(optionalSportEntity);
 
-        SportResponse sportResponse = null;
+        SportShortResponse sportShortResponse = null;
         if (optionalSportEntity.isEmpty()) {
             SportEntity sportEntity = sportMapper.mapAddRequestToEntity(sportAddRequest);
             SportEntity savedSportEntity = sportRepository.save(sportEntity);
-            sportResponse = sportMapper.mapEntityToResponse(savedSportEntity);
+            sportShortResponse = sportMapper.mapEntityToShortResponse(savedSportEntity);
         }
-        return sportResponse;
+        return sportShortResponse;
     }
 
     @Override
     @Transactional
-    public SportResponse updateSport(final String id, final SportUpdateRequest sportUpdateRequest) {
+    public SportShortResponse updateSport(final String id, final SportUpdateRequest sportUpdateRequest) {
         Optional<SportEntity> optionalSportEntity = sportRepository.findById(id);
         sportValidator.validateNonExistingSportEntity(id, optionalSportEntity);
 
@@ -72,7 +72,7 @@ public class SportServiceImpl implements SportService {
 
         SportEntity sportEntity = sportMapper.mapUpdateRequestToEntity(sportUpdateRequest, id);
         SportEntity updatedSportEntity =  sportRepository.saveAndFlush(sportEntity);
-        return sportMapper.mapEntityToResponse(updatedSportEntity);
+        return sportMapper.mapEntityToShortResponse(updatedSportEntity);
     }
 
     @Override

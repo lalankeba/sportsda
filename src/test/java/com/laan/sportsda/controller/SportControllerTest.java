@@ -3,7 +3,7 @@ package com.laan.sportsda.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.SportAddRequest;
 import com.laan.sportsda.dto.request.SportUpdateRequest;
-import com.laan.sportsda.dto.response.SportResponse;
+import com.laan.sportsda.dto.response.SportShortResponse;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
 import com.laan.sportsda.utils.TestUtils;
@@ -55,9 +55,9 @@ class SportControllerTest {
 
     @Test
     void getSport() throws Exception {
-        SportResponse sportResponse = testUtils.addSport("Badminton");
+        SportShortResponse sportShortResponse = testUtils.addSport("Badminton");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andExpect(status().isOk())
@@ -119,7 +119,6 @@ class SportControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the sport"))
                                         .and(fieldWithPath("name").description("Name of the sport"))
-                                        .and(fieldWithPath("features").description("Features of the sport"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
@@ -127,20 +126,20 @@ class SportControllerTest {
 
     @Test
     void updateSport() throws Exception {
-        SportResponse sportResponse = testUtils.addSport("Soccer");
+        SportShortResponse sportShortResponse = testUtils.addSport("Soccer");
 
         String updatedName = "Football";
         SportUpdateRequest sportUpdateRequest = new SportUpdateRequest();
         sportUpdateRequest.setName(updatedName);
-        sportUpdateRequest.setVersion(sportResponse.getVersion());
+        sportUpdateRequest.setVersion(sportShortResponse.getVersion());
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(sportUpdateRequest))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(containsString(sportResponse.getId())))
+                .andExpect(jsonPath("$.id").value(containsString(sportShortResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
                 .andExpect(jsonPath("$.version").exists())
                 .andDo(
@@ -152,7 +151,6 @@ class SportControllerTest {
                                         .and(fieldWithPath("version").description("Version of the existing sport")),
                                 responseFields(fieldWithPath("id").description("Id of the sport"))
                                         .and(fieldWithPath("name").description("Updated name of the sport"))
-                                        .and(fieldWithPath("features").description("Features of the sport"))
                                         .and(fieldWithPath("version").description("Updated version number").optional())
                         )
                 );
@@ -160,9 +158,9 @@ class SportControllerTest {
 
     @Test
     void deleteSport() throws Exception {
-        SportResponse sportResponse = testUtils.addSport("Chess");
+        SportShortResponse sportShortResponse = testUtils.addSport("Chess");
 
-        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportResponse.getId())
+        this.mockMvc.perform(RestDocumentationRequestBuilders.delete(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
                 )
                 .andExpect(status().isAccepted())

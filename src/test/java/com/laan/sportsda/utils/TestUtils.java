@@ -127,7 +127,7 @@ public class TestUtils {
         return permissionService.getPermissions();
     }
 
-    public SportResponse addSport(String name) {
+    public SportShortResponse addSport(String name) {
         SportAddRequest sportAddRequest = new SportAddRequest();
         sportAddRequest.setName(name);
         return sportService.addSport(sportAddRequest);
