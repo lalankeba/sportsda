@@ -1,0 +1,81 @@
+== Feature
+This section explains how to communicate with feature API
+
+
+=== Get Feature by ID
+
+You can view existing feature by id
+
+.curl request
+include::{snippets}/get-feature/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/get-feature/path-parameters.adoc[]
+
+.response
+include::{snippets}/get-feature/http-response.adoc[]
+
+
+
+=== Get Features
+
+You can view all existing Features
+
+.curl request
+include::{snippets}/get-features/curl-request.adoc[]
+
+.response
+include::{snippets}/get-features/http-response.adoc[]
+
+
+
+=== Add Feature
+
+You can add a new feature to the system.
+
+.curl request
+include::{snippets}/add-feature/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/add-feature/request-fields.adoc[]
+
+.response
+include::{snippets}/add-feature/http-response.adoc[]
+
+.Response Description
+include::{snippets}/add-feature/response-fields.adoc[]
+
+
+
+=== Update Feature
+
+You can update existing feature
+
+.curl request
+include::{snippets}/update-feature/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/update-feature/request-fields.adoc[]
+
+.Path Parameter Description
+include::{snippets}/update-feature/path-parameters.adoc[]
+
+.response
+include::{snippets}/update-feature/http-response.adoc[]
+
+.Response Description
+include::{snippets}/update-feature/response-fields.adoc[]
+
+
+=== Delete Feature
+
+You can delete existing feature by id.
+
+.curl request
+include::{snippets}/delete-feature/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/delete-feature/path-parameters.adoc[]
+
+.response
+include::{snippets}/delete-feature/http-response.adoc[]

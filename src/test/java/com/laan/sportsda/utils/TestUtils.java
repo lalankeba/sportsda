@@ -4,6 +4,7 @@ import com.laan.sportsda.dto.request.*;
 import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.entity.MemberEntity;
 import com.laan.sportsda.entity.SessionEntity;
+import com.laan.sportsda.enums.FeatureValueType;
 import com.laan.sportsda.repository.MemberRepository;
 import com.laan.sportsda.repository.SessionRepository;
 import com.laan.sportsda.service.*;
@@ -29,6 +30,8 @@ public class TestUtils {
     private final MemberService memberService;
 
     private final SportService sportService;
+
+    private final FeatureService featureService;
 
     private final MemberRepository memberRepository;
 
@@ -137,6 +140,26 @@ public class TestUtils {
         List<SportShortResponse> sportShortResponses = sportService.getSports();
         List<String> ids = sportShortResponses.stream().map(SportShortResponse::getId).toList();
         ids.forEach(sportService::deleteSport);
+    }
+
+    public FeatureResponse addFeatureWithNumericValue(String name, FeatureValueType featureValueType, String minValue, String maxValue, String measurement, String sportId) {
+        FeatureAddRequest featureAddRequest = new FeatureAddRequest();
+        featureAddRequest.setName(name);
+        featureAddRequest.setFeatureValueType(featureValueType);
+        featureAddRequest.setMinValue(minValue);
+        featureAddRequest.setMaxValue(maxValue);
+        featureAddRequest.setMeasurement(measurement);
+        featureAddRequest.setSportId(sportId);
+        return featureService.addFeature(featureAddRequest);
+    }
+
+    public FeatureResponse addFeatureWithFixedValues(String name, List<String> possibleValues, String sportId) {
+        FeatureAddRequest featureAddRequest = new FeatureAddRequest();
+        featureAddRequest.setName(name);
+        featureAddRequest.setFeatureValueType(FeatureValueType.FIXED_VALUE);
+        featureAddRequest.setPossibleValues(possibleValues);
+        featureAddRequest.setSportId(sportId);
+        return featureService.addFeature(featureAddRequest);
     }
 
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.SportAddRequest;
 import com.laan.sportsda.dto.request.SportUpdateRequest;
 import com.laan.sportsda.dto.response.SportShortResponse;
+import com.laan.sportsda.enums.FeatureValueType;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
 import com.laan.sportsda.utils.TestUtils;
@@ -18,6 +19,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Arrays;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -56,6 +59,9 @@ class SportControllerTest {
     @Test
     void getSport() throws Exception {
         SportShortResponse sportShortResponse = testUtils.addSport("Badminton");
+        testUtils.addFeatureWithNumericValue("Height", FeatureValueType.INTEGER, "50", "200", "cm", sportShortResponse.getId());
+        testUtils.addFeatureWithNumericValue("Weight", FeatureValueType.DECIMAL, "30", "200", "kg", sportShortResponse.getId());
+        testUtils.addFeatureWithFixedValues("Game Type", Arrays.asList("Single", "Double", "Mix double"), sportShortResponse.getId());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -71,7 +77,10 @@ class SportControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Id for the sport"))
                                         .and(fieldWithPath("name").description("Name of the sport"))
-                                        .and(fieldWithPath("features").description("Features of the sport"))
+                                        .and(subsectionWithPath("features").description("Features of the sport"))
+                                        .and(fieldWithPath("features[].id").description("Id of the feature"))
+                                        .and(fieldWithPath("features[].name").description("Name of the feature"))
+                                        .and(fieldWithPath("features[].featureValueType").description("Value type of the feature"))
                                         .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
