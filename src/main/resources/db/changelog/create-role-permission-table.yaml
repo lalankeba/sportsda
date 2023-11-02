@@ -7,13 +7,6 @@ databaseChangeLog:
             tableName: role_permission
             columns:
               - column:
-                  name: id
-                  autoIncrement: true
-                  type: bigint
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: role_id
                   type: varchar(100)
                   constraints:
@@ -29,7 +22,7 @@ databaseChangeLog:
                     foreignKeyName: fk_role_permission_permission_id
                     referencedTableName: permission
                     referencedColumnNames: id
-        - addUniqueConstraint:
-            tableName: role_permission
-            constraintName: unique_role_permission_id
+        - addPrimaryKey:
+            constraintName: pk_role_permission
             columnNames: role_id, permission_id
+            tableName: role_permission

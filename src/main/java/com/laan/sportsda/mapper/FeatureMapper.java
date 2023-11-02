@@ -25,6 +25,7 @@ public interface FeatureMapper {
     @Mapping(target = "name", source = "featureAddRequest.name")
     @Mapping(target = "sportEntity", source = "existingSportEntity")
     @Mapping(target = "possibleValueEntities", ignore = true)
+    @Mapping(target = "memberFeatureEntities", ignore = true)
     @Mapping(target = "version", constant = "0L")
     FeatureEntity mapAddRequestToEntity(FeatureAddRequest featureAddRequest, SportEntity existingSportEntity);
 
@@ -36,6 +37,7 @@ public interface FeatureMapper {
     @Mapping(target = "name", source = "featureUpdateRequest.name")
     @Mapping(target = "sportEntity", source = "existingSportEntity")
     @Mapping(target = "possibleValueEntities", ignore = true)
+    @Mapping(target = "memberFeatureEntities", ignore = true)
     @Mapping(target = "version", source = "featureUpdateRequest.version")
     FeatureEntity mapUpdateRequestToEntity(FeatureUpdateRequest featureUpdateRequest, String featureId, SportEntity existingSportEntity);
 }

@@ -7,12 +7,6 @@ databaseChangeLog:
             tableName: member_department
             columns:
               - column:
-                  name: id
-                  type: varchar(100)
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: member_id
                   type: varchar(100)
                   constraints:
@@ -28,7 +22,7 @@ databaseChangeLog:
                     foreignKeyName: fk_member_department_department_id
                     referencedTableName: department
                     referencedColumnNames: id
-        - addUniqueConstraint:
-            tableName: member_department
-            constraintName: unique_member_department_id
+        - addPrimaryKey:
+            constraintName: pk_member_department
             columnNames: member_id, department_id
+            tableName: member_department

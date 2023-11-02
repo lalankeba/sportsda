@@ -8,7 +8,8 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: varchar(100)
+                  type: bigint
+                  autoIncrement: true
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -38,9 +39,7 @@ databaseChangeLog:
                     foreignKeyName: fk_member_feature_feature_id
                     referencedTableName: feature
                     referencedColumnNames: id
-              - column:
-                  name: version
-                  type: int
-                  defaultValue: 0
-                  constraints:
-                    nullable: false
+        - addUniqueConstraint:
+            tableName: member_feature
+            constraintName: unique_member_feature_combination
+            columnNames: member_id, feature_id, time_period

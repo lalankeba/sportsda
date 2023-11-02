@@ -24,6 +24,10 @@ public class SportEntity {
     @ToString.Exclude
     private List<FeatureEntity> featureEntities;
 
+    @ManyToMany(mappedBy = "sportEntities")
+    @ToString.Exclude
+    private List<MemberEntity> memberEntities;
+
     @Column(name = "version")
     @Version
     private Long version;

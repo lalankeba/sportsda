@@ -75,7 +75,7 @@ public class MemberEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity roleEntity;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "member_department",
             joinColumns = { @JoinColumn(name = "member_id") },
@@ -83,6 +83,18 @@ public class MemberEntity {
     )
     @ToString.Exclude
     private List<DepartmentEntity> departmentEntities;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "member_sport",
+            joinColumns = { @JoinColumn(name = "member_id") },
+            inverseJoinColumns = { @JoinColumn(name = "sport_id") }
+    )
+    @ToString.Exclude
+    private List<SportEntity> sportEntities;
+
+    @OneToMany(mappedBy = "memberEntity")
+    private List<MemberFeatureEntity> memberFeatureEntities;
 
     @Override
     public String toString() {
