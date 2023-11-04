@@ -19,6 +19,7 @@ public class PathUtil {
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/logout";
     public static final String SELF = "/self";
+    public static final String PLAY_SPORT = "/play-sport";
 
     public static final String ID_PLACEHOLDER = "/{id}";
 

@@ -1,11 +1,9 @@
 package com.laan.sportsda.mapper;
 
-import com.laan.sportsda.dto.response.FacultyShortResponse;
-import com.laan.sportsda.dto.response.MemberRegistrationResponse;
-import com.laan.sportsda.dto.response.MemberResponse;
-import com.laan.sportsda.dto.response.MemberShortResponse;
+import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.entity.FacultyEntity;
 import com.laan.sportsda.entity.MemberEntity;
+import com.laan.sportsda.entity.SportEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -17,6 +15,7 @@ public interface MemberMapper {
     @Mapping(target = "faculty", source = "facultyEntity")
     @Mapping(target = "role", source = "roleEntity")
     @Mapping(target = "departments", source = "departmentEntities")
+    @Mapping(target = "sports", source = "sportEntities")
     MemberResponse mapEntityToResponse(MemberEntity memberEntity);
 
     @Mapping(target = "faculty", source = "facultyEntity")
@@ -27,4 +26,8 @@ public interface MemberMapper {
     List<MemberShortResponse> mapEntitiesToShortResponses(List<MemberEntity> memberEntities);
 
     MemberShortResponse mapEntityToShortResponse(MemberEntity memberEntity);
+
+    SportShortResponse mapEntityToShortResponse(SportEntity sportEntity);
+
+    List<SportShortResponse> mapEntitiesToSportShortResponses(List<SportEntity> sportEntities);
 }

@@ -84,4 +84,14 @@ public class MemberController {
         log.info("Get member self");
         return new ResponseEntity<>(memberResponse, HttpStatus.OK);
     }
+
+    @PostMapping(PathUtil.PLAY_SPORT + PathUtil.ID_PLACEHOLDER)
+    public ResponseEntity<Object> playSport(@PathVariable("id") String sportId, HttpServletRequest httpServletRequest) {
+        log.info("Member plays sport: {}", sportId);
+        String token = jwtUtil.getTokenFromRequest(httpServletRequest);
+        String username = jwtUtil.extractUsername(token);
+        MemberResponse memberResponse = memberService.playSport(sportId, username);
+        log.info("Member played sport");
+        return new ResponseEntity<>(memberResponse, HttpStatus.OK);
+    }
 }

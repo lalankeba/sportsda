@@ -22,11 +22,6 @@ databaseChangeLog:
                     foreignKeyName: fk_member_sport_sport_id
                     referencedTableName: sport
                     referencedColumnNames: id
-              - column:
-                  name: added_date_time
-                  type: timestamp
-                  constraints:
-                    nullable: true
         - addPrimaryKey:
             constraintName: pk_member_sport
             columnNames: member_id, sport_id

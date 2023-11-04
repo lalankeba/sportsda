@@ -5,24 +5,20 @@ import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
 import com.laan.sportsda.dto.response.MemberShortResponse;
-import com.laan.sportsda.entity.FacultyEntity;
-import com.laan.sportsda.entity.MemberEntity;
-import com.laan.sportsda.entity.RoleEntity;
-import com.laan.sportsda.entity.SessionEntity;
+import com.laan.sportsda.entity.*;
 import com.laan.sportsda.exception.InvalidRequestException;
 import com.laan.sportsda.mapper.SessionMapper;
 import com.laan.sportsda.mapper.custom.MemberMapperCustom;
-import com.laan.sportsda.repository.FacultyRepository;
-import com.laan.sportsda.repository.MemberRepository;
-import com.laan.sportsda.repository.RoleRepository;
-import com.laan.sportsda.repository.SessionRepository;
+import com.laan.sportsda.repository.*;
 import com.laan.sportsda.service.MemberService;
 import com.laan.sportsda.util.JwtUtil;
 import com.laan.sportsda.util.PropertyUtil;
 import com.laan.sportsda.validator.MemberValidator;
+import com.laan.sportsda.validator.SportValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -42,11 +38,15 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberValidator memberValidator;
 
+    private final SportValidator sportValidator;
+
     private final JwtUtil jwtUtil;
 
     private final SessionMapper sessionMapper;
 
     private final SessionRepository sessionRepository;
+
+    private final SportRepository sportRepository;
 
     private final PropertyUtil propertyUtil;
 
@@ -122,6 +122,33 @@ public class MemberServiceImpl implements MemberService {
         MemberResponse memberResponse = null;
         if (optionalMemberEntity.isPresent()) {
             memberResponse = memberMapperCustom.mapEntityToResponse(optionalMemberEntity.get());
+        }
+        return memberResponse;
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse playSport(final String sportId, final String username) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByUsername(username);
+        memberValidator.validateNonExistingMemberEntity(username, optionalMemberEntity);
+
+        Optional<SportEntity> optionalSportEntity = sportRepository.findById(sportId);
+        sportValidator.validateNonExistingSportEntity(sportId, optionalSportEntity);
+
+        MemberResponse memberResponse = null;
+        if (optionalMemberEntity.isPresent() && optionalSportEntity.isPresent()) {
+            MemberEntity memberEntity = optionalMemberEntity.get();
+            SportEntity sportEntity = optionalSportEntity.get();
+
+            List<SportEntity> sportEntities = memberEntity.getSportEntities();
+            List<SportEntity> existingSportEntitiesById = sportEntities.stream().filter(se -> se.getId().equals(sportEntity.getId())).toList();
+
+            if (existingSportEntitiesById.isEmpty()) { // only add if the sport is new
+                sportEntities.add(sportEntity);
+            }
+
+            MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
+            memberResponse = memberMapperCustom.mapEntityToResponse(updatedMemberEntity);
         }
         return memberResponse;
     }

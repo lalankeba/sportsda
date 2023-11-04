@@ -19,4 +19,6 @@ public interface MemberService {
     MemberResponse getMember(final String id);
 
     MemberResponse getMemberSelf(final String username);
+
+    MemberResponse playSport(final String sportId, final String username);
 }
