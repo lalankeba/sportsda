@@ -1,8 +1,10 @@
 package com.laan.sportsda.dto.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class DepartmentShortResponse {
 
     private String id;

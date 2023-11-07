@@ -1,9 +1,11 @@
 package com.laan.sportsda.dto.response;
 
 import com.laan.sportsda.enums.PermissionDescription;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class PermissionResponse {
 
     private String id;

@@ -1,11 +1,13 @@
 package com.laan.sportsda.dto.response;
 
 import com.laan.sportsda.enums.FeatureValueType;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class FeatureResponse {
 
     private String id;
