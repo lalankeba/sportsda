@@ -45,3 +45,14 @@ include::{snippets}/logout/curl-request.adoc[]
 
 .response
 include::{snippets}/logout/http-response.adoc[]
+
+
+=== Get Members
+
+You can view all existing members
+
+.curl request
+include::{snippets}/get-members/curl-request.adoc[]
+
+.response
+include::{snippets}/get-members/http-response.adoc[]
