@@ -3,9 +3,11 @@ package com.laan.sportsda.dto.request;
 import com.laan.sportsda.util.MessagesUtil;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class DepartmentAddRequest {
 
     @NotBlank(message = MessagesUtil.AnnotationSupported.MANDATORY_DEPARTMENT_NAME)

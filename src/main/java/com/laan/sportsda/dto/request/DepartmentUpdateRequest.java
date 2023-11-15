@@ -4,9 +4,11 @@ import com.laan.sportsda.util.MessagesUtil;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class DepartmentUpdateRequest {
 
     @NotBlank(message = MessagesUtil.AnnotationSupported.MANDATORY_DEPARTMENT_NAME)
