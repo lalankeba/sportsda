@@ -22,7 +22,7 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AppInitConfig implements ApplicationRunner {
+public class AppInitRunner implements ApplicationRunner {
 
     private final PermissionRepository permissionRepository;
 
@@ -100,6 +100,12 @@ public class AppInitConfig implements ApplicationRunner {
             RoleEntity adminRoleEntity = roleMapper.mapDetailsToEntity(adminRoleName, "Can do all tasks", permissionRepository.findAll());
             RoleEntity savedAdminRoleEntity = roleRepository.save(adminRoleEntity);
             savedRoleEntities.add(savedAdminRoleEntity);
+        } else {
+            RoleEntity existingRoleEntity = optionalRoleEntity.get();
+            List<PermissionEntity> permissionEntities = permissionRepository.findAll();
+            existingRoleEntity.setPermissionEntities(permissionEntities);
+            RoleEntity updatedAdminRoleEntity = roleRepository.save(existingRoleEntity);
+            savedRoleEntities.add(updatedAdminRoleEntity);
         }
 
         return savedRoleEntities;
