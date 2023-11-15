@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
+import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.PermissionResponse;
 import com.laan.sportsda.enums.PermissionDescription;
 import com.laan.sportsda.util.ConstantsUtil;
@@ -26,6 +27,7 @@ import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfig
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -195,7 +197,6 @@ class MemberControllerTest {
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThan(1))))
                 .andExpect(jsonPath("$.[*].id").exists())
@@ -208,12 +209,61 @@ class MemberControllerTest {
                         ));
     }
 
+    @Test
+    void getMember() throws Exception {
+        PermissionResponse permissionResponse = testUtils.getPermission(PermissionDescription.GET_MEMBER);
+        List<String> permissionIds = Collections.singletonList(permissionResponse.getId());
+        testUtils.addBasicRole(permissionIds);
+        String facultyId = testUtils.addBasicFaculty().getId();
+        String firstName= "Mary", lastName = "Anne", username = "john.doe@testing.com", password = "abcd1234";
+        testUtils.registerMember("John", "Doe", username, password, facultyId);
+        MemberRegistrationResponse memberRegistrationResponse = testUtils.registerMember(firstName, lastName, "mary.anne@testing.com", "efgh4321", facultyId);
+
+        LoginResponse loginResponse = loginMember(username, password);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.MEMBERS + PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER, memberRegistrationResponse.getId())
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.firstName").value(containsString(firstName)))
+                .andExpect(jsonPath("$.lastName").value(containsString(lastName)))
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint())
+                        ));
+    }
+
+    @Test
+    void getCurrentMember() throws Exception {
+        testUtils.addBasicRole(null);
+        String facultyId = testUtils.addBasicFaculty().getId();
+        String firstName= "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
+        testUtils.registerMember(firstName, lastName, username, password, facultyId);
+
+        LoginResponse loginResponse = loginMember(username, password);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.MEMBERS + PathUtil.CURRENT)
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.firstName").value(containsString(firstName)))
+                .andExpect(jsonPath("$.lastName").value(containsString(lastName)))
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint())
+                        ));
+    }
+
     private LoginResponse loginMember(String username, String password) throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(username);
         loginRequest.setPassword(password);
 
-        MvcResult mvcResult = this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.MEMBERS + PathUtil.LOGIN)
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.post(PathUtil.MEMBERS + PathUtil.LOGIN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsBytes(loginRequest))
         ).andReturn();

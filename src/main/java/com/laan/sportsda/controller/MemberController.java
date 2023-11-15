@@ -67,7 +67,7 @@ public class MemberController {
         return new ResponseEntity<>(memberShortResponses, HttpStatus.OK);
     }
 
-    @GetMapping(PathUtil.ID_PLACEHOLDER)
+    @GetMapping(PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> getMember(@PathVariable("id") String id) {
         log.info("Getting member");
         MemberResponse memberResponse = memberService.getMember(id);
@@ -75,8 +75,8 @@ public class MemberController {
         return new ResponseEntity<>(memberResponse, HttpStatus.OK);
     }
 
-    @GetMapping(PathUtil.SELF)
-    public ResponseEntity<Object> getMemberSelf(HttpServletRequest httpServletRequest) {
+    @GetMapping(PathUtil.CURRENT)
+    public ResponseEntity<Object> getCurrentMember(HttpServletRequest httpServletRequest) {
         log.info("Getting member self");
         String token = jwtUtil.getTokenFromRequest(httpServletRequest);
         String username = jwtUtil.extractUsername(token);
