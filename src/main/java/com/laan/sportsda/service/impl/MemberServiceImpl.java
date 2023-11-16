@@ -7,8 +7,8 @@ import com.laan.sportsda.dto.response.MemberResponse;
 import com.laan.sportsda.dto.response.MemberShortResponse;
 import com.laan.sportsda.entity.*;
 import com.laan.sportsda.exception.InvalidRequestException;
+import com.laan.sportsda.mapper.MemberMapper;
 import com.laan.sportsda.mapper.SessionMapper;
-import com.laan.sportsda.mapper.custom.MemberMapperCustom;
 import com.laan.sportsda.repository.*;
 import com.laan.sportsda.service.MemberService;
 import com.laan.sportsda.util.JwtUtil;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 
-    private final MemberMapperCustom memberMapperCustom;
+    private final MemberMapper memberMapper;
 
     private final RoleRepository roleRepository;
 
@@ -63,10 +63,10 @@ public class MemberServiceImpl implements MemberService {
                 if (optionalFacultyEntity.isPresent()) {
                     RoleEntity roleEntity = optionalRoleEntity.get();
                     FacultyEntity facultyEntity = optionalFacultyEntity.get();
-                    MemberEntity memberEntity = memberMapperCustom.mapRegistrationRequestToEntity(memberRegistrationRequest, roleEntity, facultyEntity);
+                    MemberEntity memberEntity = memberMapper.mapRegistrationRequestToEntity(memberRegistrationRequest, roleEntity, facultyEntity);
 
                     MemberEntity savedMemberEntity = memberRepository.save(memberEntity);
-                    memberRegistrationResponse = memberMapperCustom.mapEntityToRegistrationResponse(savedMemberEntity);
+                    memberRegistrationResponse = memberMapper.mapEntityToRegistrationResponse(savedMemberEntity);
                 } else {
                     String msg = String.format("Necessary faculty for the id: %s is not present. So can't register the member", memberRegistrationRequest.getFacultyId());
                     log.error("Error occurred. {}", msg);
@@ -99,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<MemberShortResponse> getMembers() {
         List<MemberEntity> memberEntities = memberRepository.findAll();
-        return memberMapperCustom.mapEntitiesToShortResponses(memberEntities);
+        return memberMapper.mapEntitiesToShortResponses(memberEntities);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberResponse memberResponse = null;
         if (optionalMemberEntity.isPresent()) {
-            memberResponse = memberMapperCustom.mapEntityToResponse(optionalMemberEntity.get());
+            memberResponse = memberMapper.mapEntityToResponse(optionalMemberEntity.get());
         }
         return memberResponse;
     }
@@ -121,7 +121,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberResponse memberResponse = null;
         if (optionalMemberEntity.isPresent()) {
-            memberResponse = memberMapperCustom.mapEntityToResponse(optionalMemberEntity.get());
+            memberResponse = memberMapper.mapEntityToResponse(optionalMemberEntity.get());
         }
         return memberResponse;
     }
@@ -148,7 +148,7 @@ public class MemberServiceImpl implements MemberService {
             }
 
             MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
-            memberResponse = memberMapperCustom.mapEntityToResponse(updatedMemberEntity);
+            memberResponse = memberMapper.mapEntityToResponse(updatedMemberEntity);
         }
         return memberResponse;
     }

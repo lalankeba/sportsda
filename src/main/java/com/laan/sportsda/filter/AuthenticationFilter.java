@@ -1,6 +1,6 @@
 package com.laan.sportsda.filter;
 
-import com.laan.sportsda.mapper.custom.MemberMapperCustom;
+import com.laan.sportsda.mapper.MemberMapper;
 import com.laan.sportsda.security.MemberDetails;
 import com.laan.sportsda.service.SessionService;
 import com.laan.sportsda.util.JwtUtil;
@@ -28,7 +28,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    private final MemberMapperCustom memberMapperCustom;
+    private final MemberMapper memberMapper;
 
     private final SessionService sessionService;
 
@@ -41,7 +41,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             if (sessionService.validateSessionById(id)) {
                 String username = jwtUtil.extractUsername(token);
                 List<String> permissions = jwtUtil.extractPermissions(token);
-                MemberDetails memberDetails = memberMapperCustom.mapJwtToDetails(username, permissions);
+                MemberDetails memberDetails = memberMapper.mapJwtToDetails(username, permissions);
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDetails, null, memberDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

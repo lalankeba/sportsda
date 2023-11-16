@@ -8,13 +8,13 @@ import java.util.List;
 
 public class MemberDetails implements UserDetails {
 
-    private String username;
-    private String password;
-    private List<GrantedAuthority> authorities;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
+    private final String username;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
+    private final boolean accountNonExpired;
+    private final boolean accountNonLocked;
+    private final boolean credentialsNonExpired;
+    private final boolean enabled;
 
     public MemberDetails(String username, String password, List<GrantedAuthority> authorities, boolean accountNonExpired,
                          boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled) {
