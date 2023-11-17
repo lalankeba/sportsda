@@ -17,7 +17,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -78,6 +81,7 @@ public class AppInitRunner implements ApplicationRunner {
     private List<PermissionEntity> savePermissions() {
         List<PermissionDescription> permissionDescriptions = Arrays.stream(PermissionDescription.values()).toList();
         List<PermissionEntity> savedPermissionEntities = new ArrayList<>();
+        List<String> permissionIdsInEnum = new ArrayList<>();
 
         permissionDescriptions.forEach(permissionDescription -> {
             Optional<PermissionEntity> optionalPermissionEntity = permissionRepository.findByDescription(permissionDescription);
@@ -85,7 +89,20 @@ public class AppInitRunner implements ApplicationRunner {
                 PermissionEntity permissionEntity = permissionMapper.mapEnumToEntity(permissionDescription);
                 PermissionEntity savedPermissionEntity = permissionRepository.save(permissionEntity);
                 savedPermissionEntities.add(savedPermissionEntity);
+                permissionIdsInEnum.add(savedPermissionEntity.getId());
+                log.info("New permission: {} added to the database.", savedPermissionEntity);
+            } else {
+                permissionIdsInEnum.add(optionalPermissionEntity.get().getId());
             }
+        });
+
+        List<String> permissionIdsInDb = permissionRepository.getAllIds();
+        List<String> permissionIdsOnlyInDb = new ArrayList<>(permissionIdsInDb);
+        permissionIdsOnlyInDb.removeAll(permissionIdsInEnum);
+
+        permissionIdsOnlyInDb.forEach(id -> {
+            permissionRepository.deleteByPermissionId(id);
+            log.info("Permission only in database was deleted. Id: {}", id);
         });
 
         return savedPermissionEntities;
