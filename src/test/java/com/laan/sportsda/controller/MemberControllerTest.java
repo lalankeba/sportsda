@@ -30,9 +30,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -273,14 +272,21 @@ class MemberControllerTest {
         LoginResponse loginResponse = loginMember(username, password);
 
         String firstName= "Mary", middleName = "Nik", lastName = "Sanders", nic = "199905271234", phone = "0771234567",
-                universityEmail = "sanders@sjp.ac.lk", address = "123, Nugegoda Place, Wijerama", district = "Colombo";
+                universityEmail = "sanders@sjp.ac.lk", personalEmail = "sandersmary321@gmail.com", address = "123, Nugegoda Place, Wijerama", district = "Colombo";
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2001, 3, 21);
+        Date birthDate = calendar.getTime();
+
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
         memberUpdateRequest.setFirstName(firstName);
         memberUpdateRequest.setMiddleName(middleName);
         memberUpdateRequest.setLastName(lastName);
+        memberUpdateRequest.setDateOfBirth(birthDate);
         memberUpdateRequest.setNic(nic);
         memberUpdateRequest.setPhone(phone);
         memberUpdateRequest.setUniversityEmail(universityEmail);
+        memberUpdateRequest.setPersonalEmail(personalEmail);
         memberUpdateRequest.setAddress(address);
         memberUpdateRequest.setDistrict(district);
         memberUpdateRequest.setFacultyId(facultyResponse.getId());
@@ -300,6 +306,7 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.nic").value(containsString(nic)))
                 .andExpect(jsonPath("$.phone").value(containsString(phone)))
                 .andExpect(jsonPath("$.universityEmail").value(containsString(universityEmail)))
+                .andExpect(jsonPath("$.personalEmail").value(containsString(personalEmail)))
                 .andExpect(jsonPath("$.address").value(containsString(address)))
                 .andExpect(jsonPath("$.username").value(containsString(username)))
                 .andExpect(jsonPath("$.district").value(containsString(district)))
@@ -307,16 +314,16 @@ class MemberControllerTest {
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
-                                requestFields(fieldWithPath("firstName").description("First name to be saved for the member."))
-                                        .and(fieldWithPath("middleName").description("Middle name to be saved for the member."))
-                                        .and(fieldWithPath("lastName").description("Last name to be saved for the member."))
-                                        .and(fieldWithPath("dateOfBirth").description("Date of birth to be saved for the member."))
-                                        .and(fieldWithPath("nic").description("National Identity Card number to be saved for the member."))
-                                        .and(fieldWithPath("phone").description("Phone number to be saved for the member."))
-                                        .and(fieldWithPath("universityEmail").description("University email to be saved for the member."))
-                                        .and(fieldWithPath("personalEmail").description("Personal email to be saved for the member."))
-                                        .and(fieldWithPath("address").description("Address to be saved for the member."))
-                                        .and(fieldWithPath("district").description("District to be saved for the member."))
+                                requestFields(fieldWithPath("firstName").description("First name to be updated for the member."))
+                                        .and(fieldWithPath("middleName").description("Middle name to be updated for the member."))
+                                        .and(fieldWithPath("lastName").description("Last name to be updated for the member."))
+                                        .and(fieldWithPath("dateOfBirth").description("Date of birth to be updated for the member."))
+                                        .and(fieldWithPath("nic").description("National Identity Card number to be updated for the member."))
+                                        .and(fieldWithPath("phone").description("Phone number to be updated for the member."))
+                                        .and(fieldWithPath("universityEmail").description("University email to be updated for the member."))
+                                        .and(fieldWithPath("personalEmail").description("Personal email to be updated for the member."))
+                                        .and(fieldWithPath("address").description("Address to be updated for the member."))
+                                        .and(fieldWithPath("district").description("District to be updated for the member."))
                                         .and(fieldWithPath("facultyId").description("Faculty id which is attached to the member."))
                                         .and(fieldWithPath("departmentIds").description("Department ids which is attached to the member."))
                                         .and(fieldWithPath("version").description("Version of the existing member"))

@@ -87,5 +87,8 @@ You can update the details of logged in member
 .curl request
 include::{snippets}/update-current-member/curl-request.adoc[]
 
+.Request Parameter Description
+include::{snippets}/update-current-member/request-fields.adoc[]
+
 .response
 include::{snippets}/update-current-member/http-response.adoc[]
