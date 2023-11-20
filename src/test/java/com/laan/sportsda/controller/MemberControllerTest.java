@@ -272,11 +272,16 @@ class MemberControllerTest {
 
         LoginResponse loginResponse = loginMember(username, password);
 
-        String firstName= "Mary", middleName = "Nik", lastName = "Sanders", district = "Colombo";
+        String firstName= "Mary", middleName = "Nik", lastName = "Sanders", nic = "199905271234", phone = "0771234567",
+                universityEmail = "sanders@sjp.ac.lk", address = "123, Nugegoda Place, Wijerama", district = "Colombo";
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
         memberUpdateRequest.setFirstName(firstName);
         memberUpdateRequest.setMiddleName(middleName);
         memberUpdateRequest.setLastName(lastName);
+        memberUpdateRequest.setNic(nic);
+        memberUpdateRequest.setPhone(phone);
+        memberUpdateRequest.setUniversityEmail(universityEmail);
+        memberUpdateRequest.setAddress(address);
         memberUpdateRequest.setDistrict(district);
         memberUpdateRequest.setFacultyId(facultyResponse.getId());
         memberUpdateRequest.setDepartmentIds(departmentResponses.stream().map(DepartmentResponse::getId).toList());
@@ -287,12 +292,15 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsBytes(memberUpdateRequest))
                 )
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.firstName").value(containsString(firstName)))
                 .andExpect(jsonPath("$.middleName").value(containsString(middleName)))
                 .andExpect(jsonPath("$.lastName").value(containsString(lastName)))
+                .andExpect(jsonPath("$.nic").value(containsString(nic)))
+                .andExpect(jsonPath("$.phone").value(containsString(phone)))
+                .andExpect(jsonPath("$.universityEmail").value(containsString(universityEmail)))
+                .andExpect(jsonPath("$.address").value(containsString(address)))
                 .andExpect(jsonPath("$.username").value(containsString(username)))
                 .andExpect(jsonPath("$.district").value(containsString(district)))
                 .andDo(
