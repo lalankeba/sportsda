@@ -56,3 +56,36 @@ include::{snippets}/get-members/curl-request.adoc[]
 
 .response
 include::{snippets}/get-members/http-response.adoc[]
+
+
+=== Get Current Member
+
+You can view details of logged in member
+
+.curl request
+include::{snippets}/get-current-member/curl-request.adoc[]
+
+.response
+include::{snippets}/get-current-member/http-response.adoc[]
+
+
+=== View Other Member Details
+
+You can view details of other member
+
+.curl request
+include::{snippets}/get-member/curl-request.adoc[]
+
+.response
+include::{snippets}/get-member/http-response.adoc[]
+
+
+=== Update Current Member
+
+You can update the details of logged in member
+
+.curl request
+include::{snippets}/update-current-member/curl-request.adoc[]
+
+.response
+include::{snippets}/update-current-member/http-response.adoc[]
