@@ -3,9 +3,8 @@ package com.laan.sportsda.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
-import com.laan.sportsda.dto.response.LoginResponse;
-import com.laan.sportsda.dto.response.MemberRegistrationResponse;
-import com.laan.sportsda.dto.response.PermissionResponse;
+import com.laan.sportsda.dto.request.MemberUpdateRequest;
+import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.enums.PermissionDescription;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
@@ -31,6 +30,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,6 +64,7 @@ class MemberControllerTest {
         testUtils.deleteAllSessions();
         testUtils.deleteAllMembers();
         testUtils.deleteAllRoles();
+        testUtils.deleteAllDepartments();
         testUtils.deleteAllFaculties();
 
         mockMvc = MockMvcBuilders
@@ -78,6 +79,7 @@ class MemberControllerTest {
         testUtils.deleteAllSessions();
         testUtils.deleteAllMembers();
         testUtils.deleteAllRoles();
+        testUtils.deleteAllDepartments();
         testUtils.deleteAllFaculties();
     }
 
@@ -256,6 +258,62 @@ class MemberControllerTest {
                         document("{method-name}",
                                 preprocessResponse(prettyPrint())
                         ));
+    }
+
+    @Test
+    void updateCurrentMember() throws Exception {
+        testUtils.addBasicRole(null);
+
+        FacultyResponse facultyResponse = testUtils.addFaculty("Humanities and Social Sciences");
+        List<DepartmentResponse> departmentResponses = testUtils.addDepartments(Arrays.asList("Anthropology", "Economics"), facultyResponse);
+
+        String username = "lucy.gill@testing.com", password = "abcd1234";
+        testUtils.registerMember("Lucy", "Gill", username, password, facultyResponse.getId());
+
+        LoginResponse loginResponse = loginMember(username, password);
+
+        String firstName= "Mary", middleName = "Nik", lastName = "Sanders", district = "Colombo";
+        MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
+        memberUpdateRequest.setFirstName(firstName);
+        memberUpdateRequest.setMiddleName(middleName);
+        memberUpdateRequest.setLastName(lastName);
+        memberUpdateRequest.setDistrict(district);
+        memberUpdateRequest.setFacultyId(facultyResponse.getId());
+        memberUpdateRequest.setDepartmentIds(departmentResponses.stream().map(DepartmentResponse::getId).toList());
+        memberUpdateRequest.setVersion(0L);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.MEMBERS + PathUtil.CURRENT)
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(memberUpdateRequest))
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.firstName").value(containsString(firstName)))
+                .andExpect(jsonPath("$.middleName").value(containsString(middleName)))
+                .andExpect(jsonPath("$.lastName").value(containsString(lastName)))
+                .andExpect(jsonPath("$.username").value(containsString(username)))
+                .andExpect(jsonPath("$.district").value(containsString(district)))
+                .andDo(
+                        document("{method-name}",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
+                                requestFields(fieldWithPath("firstName").description("First name to be saved for the member."))
+                                        .and(fieldWithPath("middleName").description("Middle name to be saved for the member."))
+                                        .and(fieldWithPath("lastName").description("Last name to be saved for the member."))
+                                        .and(fieldWithPath("dateOfBirth").description("Date of birth to be saved for the member."))
+                                        .and(fieldWithPath("nic").description("National Identity Card number to be saved for the member."))
+                                        .and(fieldWithPath("phone").description("Phone number to be saved for the member."))
+                                        .and(fieldWithPath("universityEmail").description("University email to be saved for the member."))
+                                        .and(fieldWithPath("personalEmail").description("Personal email to be saved for the member."))
+                                        .and(fieldWithPath("address").description("Address to be saved for the member."))
+                                        .and(fieldWithPath("district").description("District to be saved for the member."))
+                                        .and(fieldWithPath("facultyId").description("Faculty id which is attached to the member."))
+                                        .and(fieldWithPath("departmentIds").description("Department ids which is attached to the member."))
+                                        .and(fieldWithPath("version").description("Version of the existing member"))
+                        )
+                );
     }
 
     private LoginResponse loginMember(String username, String password) throws Exception {
