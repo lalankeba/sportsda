@@ -30,7 +30,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.hamcrest.Matchers.*;
@@ -275,7 +274,7 @@ class MemberControllerTest {
                 universityEmail = "sanders@sjp.ac.lk", personalEmail = "sandersmary321@gmail.com", address = "123, Nugegoda Place, Wijerama", district = "Colombo";
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2001, 3, 21);
+        calendar.set(2001, Calendar.APRIL, 21);
         Date birthDate = calendar.getTime();
 
         MemberUpdateRequest memberUpdateRequest = new MemberUpdateRequest();
