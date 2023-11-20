@@ -36,7 +36,8 @@ public class FacultyValidator {
     }
 
     public void validateFacultyEntityWithCorrectDepartmentEntities(final FacultyEntity facultyEntity, final List<String> departmentIds) {
-        List<String> departmentIdsInFaculty = facultyEntity.getDepartmentEntities().stream().map(departmentEntity -> departmentEntity.getId()).toList();
+        List<String> departmentIdsInFaculty = facultyEntity.getDepartmentEntities()
+                .stream().map(DepartmentEntity::getId).toList();
 
         List<String> departmentIdsDiff = new ArrayList<>(departmentIds);
         departmentIdsDiff.removeAll(departmentIdsInFaculty);
