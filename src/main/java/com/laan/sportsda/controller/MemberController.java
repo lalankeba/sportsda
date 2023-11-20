@@ -2,6 +2,7 @@ package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
 import com.laan.sportsda.dto.response.MemberShortResponse;
@@ -77,11 +78,21 @@ public class MemberController {
 
     @GetMapping(PathUtil.CURRENT)
     public ResponseEntity<Object> getCurrentMember(HttpServletRequest httpServletRequest) {
-        log.info("Getting member self");
+        log.info("Getting current member");
         String token = jwtUtil.getTokenFromRequest(httpServletRequest);
         String username = jwtUtil.extractUsername(token);
-        MemberResponse memberResponse = memberService.getMemberSelf(username);
-        log.info("Get member self");
+        MemberResponse memberResponse = memberService.getCurrentMember(username);
+        log.info("Get current member");
+        return new ResponseEntity<>(memberResponse, HttpStatus.OK);
+    }
+
+    @PutMapping(PathUtil.CURRENT)
+    public ResponseEntity<Object> updateCurrentMember(@Valid @RequestBody MemberUpdateRequest memberUpdateRequest, HttpServletRequest httpServletRequest) {
+        log.info("Updating current member");
+        String token = jwtUtil.getTokenFromRequest(httpServletRequest);
+        String username = jwtUtil.extractUsername(token);
+        MemberResponse memberResponse = memberService.updateCurrentMember(memberUpdateRequest, username);
+        log.info("Update member");
         return new ResponseEntity<>(memberResponse, HttpStatus.OK);
     }
 

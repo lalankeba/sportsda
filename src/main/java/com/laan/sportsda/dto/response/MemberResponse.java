@@ -30,4 +30,5 @@ public class MemberResponse {
     private RoleShortResponse role;
     private List<DepartmentShortResponse> departments;
     private List<SportShortResponse> sports;
+    private Long version;
 }

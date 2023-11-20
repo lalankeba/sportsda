@@ -1,6 +1,7 @@
 package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
@@ -13,6 +14,7 @@ import com.laan.sportsda.repository.*;
 import com.laan.sportsda.service.MemberService;
 import com.laan.sportsda.util.JwtUtil;
 import com.laan.sportsda.util.PropertyUtil;
+import com.laan.sportsda.validator.FacultyValidator;
 import com.laan.sportsda.validator.MemberValidator;
 import com.laan.sportsda.validator.SportValidator;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +51,10 @@ public class MemberServiceImpl implements MemberService {
     private final SportRepository sportRepository;
 
     private final PropertyUtil propertyUtil;
+
+    private final FacultyValidator facultyValidator;
+
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public MemberRegistrationResponse registerMember(final MemberRegistrationRequest memberRegistrationRequest) {
@@ -115,13 +121,41 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberResponse getMemberSelf(final String username) {
+    public MemberResponse getCurrentMember(final String username) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByUsername(username);
         memberValidator.validateNonExistingMemberEntity(username, optionalMemberEntity);
 
         MemberResponse memberResponse = null;
         if (optionalMemberEntity.isPresent()) {
             memberResponse = memberMapper.mapEntityToResponse(optionalMemberEntity.get());
+        }
+        return memberResponse;
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse updateCurrentMember(final MemberUpdateRequest memberUpdateRequest, final String username) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByUsername(username);
+        memberValidator.validateNonExistingMemberEntity(username, optionalMemberEntity);
+
+        MemberResponse memberResponse = null;
+        if (optionalMemberEntity.isPresent()) {
+            Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findById(memberUpdateRequest.getFacultyId());
+            facultyValidator.validateNonExistingFacultyEntity(memberUpdateRequest.getFacultyId(), optionalFacultyEntity);
+
+            if (optionalFacultyEntity.isPresent()) {
+                MemberEntity memberEntity = optionalMemberEntity.get();
+                FacultyEntity facultyEntity = optionalFacultyEntity.get();
+                List<DepartmentEntity> departmentEntities = null;
+                if (memberUpdateRequest.getDepartmentIds() != null) {
+                    facultyValidator.validateFacultyEntityWithCorrectDepartmentEntities(facultyEntity, memberUpdateRequest.getDepartmentIds());
+                    departmentEntities = departmentRepository.findAllById(memberUpdateRequest.getDepartmentIds());
+                }
+                memberMapper.updateEntityFromUpdateRequest(memberUpdateRequest, facultyEntity, departmentEntities, memberEntity);
+
+                MemberEntity updatedMemberEntity = memberRepository.saveAndFlush(memberEntity);
+                memberResponse = memberMapper.mapEntityToResponse(updatedMemberEntity);
+            }
         }
         return memberResponse;
     }

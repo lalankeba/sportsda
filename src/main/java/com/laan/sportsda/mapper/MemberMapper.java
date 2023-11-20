@@ -1,11 +1,13 @@
 package com.laan.sportsda.mapper;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.entity.*;
 import com.laan.sportsda.security.MemberDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -114,5 +116,20 @@ public abstract class MemberMapper {
     public abstract List<MemberShortResponse> mapEntitiesToShortResponses(List<MemberEntity> memberEntities);
 
     public abstract MemberShortResponse mapEntityToShortResponse(MemberEntity memberEntity);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "accountNonExpired", ignore = true)
+    @Mapping(target = "accountNonLocked", ignore = true)
+    @Mapping(target = "credentialsNonExpired", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "facultyEntity", source = "facultyEntity")
+    @Mapping(target = "departmentEntities", source = "departmentEntities")
+    @Mapping(target = "roleEntity", ignore = true)
+    @Mapping(target = "sportEntities", ignore = true)
+    @Mapping(target = "memberFeatureEntities", ignore = true)
+    @Mapping(target = "version", source = "memberUpdateRequest.version")
+    public abstract void updateEntityFromUpdateRequest(MemberUpdateRequest memberUpdateRequest, FacultyEntity facultyEntity, List<DepartmentEntity> departmentEntities, @MappingTarget MemberEntity memberEntity);
 
 }

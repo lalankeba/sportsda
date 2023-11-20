@@ -61,6 +61,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS).hasAuthority(PermissionDescription.GET_MEMBERS.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS + PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_MEMBER.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS + PathUtil.CURRENT).authenticated()
+                                .requestMatchers(HttpMethod.PUT, PathUtil.MEMBERS + PathUtil.CURRENT).authenticated()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
