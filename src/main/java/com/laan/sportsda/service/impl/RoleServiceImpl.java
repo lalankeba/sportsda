@@ -4,10 +4,13 @@ import com.laan.sportsda.dto.request.RoleAddRequest;
 import com.laan.sportsda.dto.request.RoleUpdateRequest;
 import com.laan.sportsda.dto.response.RoleResponse;
 import com.laan.sportsda.dto.response.RoleShortResponse;
+import com.laan.sportsda.entity.PermissionEntity;
 import com.laan.sportsda.entity.RoleEntity;
 import com.laan.sportsda.mapper.RoleMapper;
+import com.laan.sportsda.repository.PermissionRepository;
 import com.laan.sportsda.repository.RoleRepository;
 import com.laan.sportsda.service.RoleService;
+import com.laan.sportsda.validator.PermissionValidator;
 import com.laan.sportsda.validator.RoleValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +30,10 @@ public class RoleServiceImpl implements RoleService {
     private final RoleValidator roleValidator;
 
     private final RoleMapper roleMapper;
+
+    private final PermissionRepository permissionRepository;
+
+    private final PermissionValidator permissionValidator;
 
     @Override
     public RoleResponse getRole(final String id) {
@@ -52,6 +59,9 @@ public class RoleServiceImpl implements RoleService {
         Optional<RoleEntity> optionalRoleEntity = roleRepository.findByName(roleAddRequest.getName());
         roleValidator.validateDuplicateRoleEntity(optionalRoleEntity);
 
+        List<PermissionEntity> permissionEntities = permissionRepository.findAll();
+        permissionValidator.validateNonExistingPermissionEntities(roleAddRequest.getPermissionIds(), permissionEntities);
+
         RoleResponse roleResponse = null;
         if (optionalRoleEntity.isEmpty()) {
             RoleEntity roleEntity = roleMapper.mapAddRequestToEntity(roleAddRequest);
@@ -69,6 +79,9 @@ public class RoleServiceImpl implements RoleService {
 
         Optional<RoleEntity> optionalRoleEntityByName = roleRepository.findByNameAndIdNotContains(roleUpdateRequest.getName(), id);
         roleValidator.validateDuplicateRoleEntity(optionalRoleEntityByName);
+
+        List<PermissionEntity> permissionEntities = permissionRepository.findAll();
+        permissionValidator.validateNonExistingPermissionEntities(roleUpdateRequest.getPermissionIds(), permissionEntities);
 
         RoleEntity roleEntity = roleMapper.mapUpdateRequestToEntity(roleUpdateRequest, id);
         RoleEntity updatedRoleEntity = roleRepository.saveAndFlush(roleEntity);
