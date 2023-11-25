@@ -1,6 +1,7 @@
 package com.laan.sportsda.service;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberRoleUpdateRequest;
 import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
@@ -24,4 +25,6 @@ public interface MemberService {
     MemberResponse updateCurrentMember(MemberUpdateRequest memberUpdateRequest, String username);
 
     MemberResponse playSport(final String sportId, final String username);
+
+    MemberResponse updateMemberRole(String memberId, MemberRoleUpdateRequest memberRoleUpdateRequest, String currentUsername);
 }

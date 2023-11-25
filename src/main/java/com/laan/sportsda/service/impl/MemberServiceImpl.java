@@ -1,6 +1,7 @@
 package com.laan.sportsda.service.impl;
 
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberRoleUpdateRequest;
 import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.LoginResponse;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
@@ -16,6 +17,7 @@ import com.laan.sportsda.util.JwtUtil;
 import com.laan.sportsda.util.PropertyUtil;
 import com.laan.sportsda.validator.FacultyValidator;
 import com.laan.sportsda.validator.MemberValidator;
+import com.laan.sportsda.validator.RoleValidator;
 import com.laan.sportsda.validator.SportValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +57,8 @@ public class MemberServiceImpl implements MemberService {
     private final FacultyValidator facultyValidator;
 
     private final DepartmentRepository departmentRepository;
+
+    private final RoleValidator roleValidator;
 
     @Override
     public MemberRegistrationResponse registerMember(final MemberRegistrationRequest memberRegistrationRequest) {
@@ -152,6 +156,31 @@ public class MemberServiceImpl implements MemberService {
                     departmentEntities = departmentRepository.findAllById(memberUpdateRequest.getDepartmentIds());
                 }
                 memberMapper.updateEntityFromUpdateRequest(memberUpdateRequest, facultyEntity, departmentEntities, memberEntity);
+
+                MemberEntity updatedMemberEntity = memberRepository.saveAndFlush(memberEntity);
+                memberResponse = memberMapper.mapEntityToResponse(updatedMemberEntity);
+            }
+        }
+        return memberResponse;
+    }
+
+    @Override
+    @Transactional
+    public MemberResponse updateMemberRole(final String memberId, final MemberRoleUpdateRequest memberRoleUpdateRequest, final String currentUsername) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(memberId);
+        memberValidator.validateNonExistingMemberEntity(memberId, optionalMemberEntity);
+        memberValidator.validateSelfChangingMemberEntity(currentUsername, optionalMemberEntity);
+
+        MemberResponse memberResponse = null;
+        if (optionalMemberEntity.isPresent()) {
+            Optional<RoleEntity> optionalRoleEntity = roleRepository.findById(memberRoleUpdateRequest.getRoleId());
+            roleValidator.validateNonExistingRoleEntity(memberRoleUpdateRequest.getRoleId(), optionalRoleEntity);
+
+            if (optionalRoleEntity.isPresent()) {
+                RoleEntity roleEntity = optionalRoleEntity.get();
+                MemberEntity memberEntity = optionalMemberEntity.get();
+
+                memberMapper.updateEntityFromRoleRequest(roleEntity, memberEntity);
 
                 MemberEntity updatedMemberEntity = memberRepository.saveAndFlush(memberEntity);
                 memberResponse = memberMapper.mapEntityToResponse(updatedMemberEntity);

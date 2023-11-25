@@ -39,6 +39,7 @@ public class MessagesUtil {
 
     public static final String DUPLICATE_MEMBER_EXCEPTION = "duplicate.member.exception";
     public static final String NO_MEMBER_EXCEPTION = "no.member.exception";
+    public static final String SELF_CHANGING_MEMBER_EXCEPTION = "self.changing.member.exception";
 
     public static final String NO_PERMISSION_EXCEPTION = "no.permission.exception";
 
@@ -48,6 +49,7 @@ public class MessagesUtil {
     public static final String INVALID_ROLE_NAME_SIZE = "invalid.role.name.size";
     public static final String MANDATORY_ROLE_DESCRIPTION = "mandatory.role.description";
     public static final String INVALID_ROLE_DESCRIPTION_SIZE = "invalid.role.description.size";
+    public static final String MANDATORY_ROLE_ID = "mandatory.role.id";
 
     public static final String MANDATORY_MEMBER_FIRST_NAME = "mandatory.member.first.name";
     public static final String INVALID_MEMBER_FIRST_NAME_SIZE = "invalid.member.first.name.size";
@@ -84,6 +86,7 @@ public class MessagesUtil {
         public static final String INVALID_ROLE_NAME_SIZE = START + MessagesUtil.INVALID_ROLE_NAME_SIZE + END;
         public static final String MANDATORY_ROLE_DESCRIPTION = START + MessagesUtil.MANDATORY_ROLE_DESCRIPTION + END;
         public static final String INVALID_ROLE_DESCRIPTION_SIZE = START + MessagesUtil.INVALID_ROLE_DESCRIPTION_SIZE + END;
+        public static final String MANDATORY_ROLE_ID = START + MessagesUtil.MANDATORY_ROLE_ID + END;
 
         public static final String MANDATORY_MEMBER_FIRST_NAME = START + MessagesUtil.MANDATORY_MEMBER_FIRST_NAME + END;
         public static final String INVALID_MEMBER_FIRST_NAME_SIZE = START + MessagesUtil.INVALID_MEMBER_FIRST_NAME_SIZE + END;

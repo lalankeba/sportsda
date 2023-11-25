@@ -2,6 +2,7 @@ package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberRoleUpdateRequest;
 import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.MemberRegistrationResponse;
 import com.laan.sportsda.dto.response.MemberResponse;
@@ -93,6 +94,16 @@ public class MemberController {
         String username = jwtUtil.extractUsername(token);
         MemberResponse memberResponse = memberService.updateCurrentMember(memberUpdateRequest, username);
         log.info("Update member");
+        return new ResponseEntity<>(memberResponse, HttpStatus.OK);
+    }
+
+    @PatchMapping(PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER)
+    public ResponseEntity<Object> updateMemberRole(@PathVariable("id") String id, @Valid @RequestBody MemberRoleUpdateRequest memberRoleUpdateRequest, HttpServletRequest httpServletRequest) {
+        log.info("Updating member role");
+        String token = jwtUtil.getTokenFromRequest(httpServletRequest);
+        String username = jwtUtil.extractUsername(token);
+        MemberResponse memberResponse = memberService.updateMemberRole(id, memberRoleUpdateRequest, username);
+        log.info("Update member role");
         return new ResponseEntity<>(memberResponse, HttpStatus.OK);
     }
 

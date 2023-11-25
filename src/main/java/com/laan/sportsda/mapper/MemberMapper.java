@@ -132,4 +132,28 @@ public abstract class MemberMapper {
     @Mapping(target = "version", source = "memberUpdateRequest.version")
     public abstract void updateEntityFromUpdateRequest(MemberUpdateRequest memberUpdateRequest, FacultyEntity facultyEntity, List<DepartmentEntity> departmentEntities, @MappingTarget MemberEntity memberEntity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "username", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "firstName", ignore = true)
+    @Mapping(target = "middleName", ignore = true)
+    @Mapping(target = "lastName", ignore = true)
+    @Mapping(target = "dateOfBirth", ignore = true)
+    @Mapping(target = "nic", ignore = true)
+    @Mapping(target = "phone", ignore = true)
+    @Mapping(target = "universityEmail", ignore = true)
+    @Mapping(target = "personalEmail", ignore = true)
+    @Mapping(target = "address", ignore = true)
+    @Mapping(target = "district", ignore = true)
+    @Mapping(target = "accountNonExpired", ignore = true)
+    @Mapping(target = "accountNonLocked", ignore = true)
+    @Mapping(target = "credentialsNonExpired", ignore = true)
+    @Mapping(target = "enabled", ignore = true)
+    @Mapping(target = "facultyEntity", ignore = true)
+    @Mapping(target = "departmentEntities", ignore = true)
+    @Mapping(target = "roleEntity", source = "roleEntity")
+    @Mapping(target = "sportEntities", ignore = true)
+    @Mapping(target = "memberFeatureEntities", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    public abstract void updateEntityFromRoleRequest(RoleEntity roleEntity, @MappingTarget MemberEntity memberEntity);
 }
