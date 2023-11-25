@@ -20,10 +20,10 @@ public interface PermissionMapper {
     @Mapping(target = "roleEntities", ignore = true)
     PermissionEntity mapEnumToEntity(PermissionDescription permissionDescription);
 
-    List<PermissionEntity> mapStringsToPermissionEntities(List<String> values);
+    List<PermissionEntity> mapIdsToPermissionEntities(List<String> permissionIds);
 
-    @Mapping(target = "id", source = "value")
+    @Mapping(target = "id", source = "permissionId")
     @Mapping(target = "description", ignore = true)
     @Mapping(target = "roleEntities", ignore = true)
-    PermissionEntity mapStringToPermissionEntity(String value);
+    PermissionEntity mapIdToPermissionEntity(String permissionId);
 }
