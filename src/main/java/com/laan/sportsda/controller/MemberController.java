@@ -107,7 +107,7 @@ public class MemberController {
         return new ResponseEntity<>(memberResponse, HttpStatus.OK);
     }
 
-    @PostMapping(PathUtil.PLAY_SPORT + PathUtil.ID_PLACEHOLDER)
+    @PostMapping(PathUtil.CURRENT + PathUtil.PLAY_SPORT + PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> playSport(@PathVariable("id") String sportId, HttpServletRequest httpServletRequest) {
         log.info("Member plays sport: {}", sportId);
         String token = jwtUtil.getTokenFromRequest(httpServletRequest);
