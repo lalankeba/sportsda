@@ -3,6 +3,7 @@ package com.laan.sportsda.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.laan.sportsda.dto.request.LoginRequest;
 import com.laan.sportsda.dto.request.MemberRegistrationRequest;
+import com.laan.sportsda.dto.request.MemberRoleUpdateRequest;
 import com.laan.sportsda.dto.request.MemberUpdateRequest;
 import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.enums.PermissionDescription;
@@ -328,6 +329,66 @@ class MemberControllerTest {
                                         .and(fieldWithPath("version").description("Version of the existing member"))
                         )
                 );
+    }
+
+    @Test
+    void updateMemberRole() throws Exception {
+        PermissionResponse permissionResponse = testUtils.getPermission(PermissionDescription.UPDATE_MEMBER_ROLE);
+        List<String> permissionIds = Collections.singletonList(permissionResponse.getId());
+        testUtils.addBasicRole(permissionIds);
+        String facultyId = testUtils.addBasicFaculty().getId();
+
+        String un = "john.doe@testing.com", pw = "abcd1234";
+        testUtils.registerMember("John", "Doe", un, pw, facultyId);
+
+        LoginResponse loginResponse = loginMember(un, pw);
+
+        RoleResponse studentRoleResponse = testUtils.addRole("STUDENT", "Student has limited permissions", null);
+        MemberRoleUpdateRequest memberRoleUpdateRequest = new MemberRoleUpdateRequest();
+        memberRoleUpdateRequest.setRoleId(studentRoleResponse.getId());
+
+        String firstName= "Lucy", lastName = "Anne", username = "lucy.anne@testing.com", password = "abcd1234";
+        MemberRegistrationResponse memberRegistrationResponse = testUtils.registerMember(firstName, lastName, username, password, facultyId);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.patch(PathUtil.MEMBERS + PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER, memberRegistrationResponse.getId())
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(memberRoleUpdateRequest))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.firstName").value(containsString(firstName)))
+                .andExpect(jsonPath("$.lastName").value(containsString(lastName)))
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint())
+                        ));
+    }
+
+    @Test
+    void playSport() throws Exception {
+        testUtils.addBasicRole(null);
+        String facultyId = testUtils.addBasicFaculty().getId();
+        String username = "john.doe@testing.com", password = "abcd1234";
+        testUtils.registerMember("John", "Doe", username, password, facultyId);
+
+        LoginResponse loginResponse = loginMember(username, password);
+
+        String sportName = "Cricket";
+        SportShortResponse sportShortResponse = testUtils.addSport(sportName);
+
+        this.mockMvc.perform(RestDocumentationRequestBuilders.post(PathUtil.MEMBERS + PathUtil.CURRENT + PathUtil.PLAY_SPORT + PathUtil.ID_PLACEHOLDER, sportShortResponse.getId())
+                        .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.sports.[*].id").exists())
+                .andExpect(jsonPath("$.sports.[0].name").value(containsString(sportName)))
+                .andDo(
+                        document("{method-name}",
+                                preprocessResponse(prettyPrint())
+                        ));
     }
 
     private LoginResponse loginMember(String username, String password) throws Exception {
