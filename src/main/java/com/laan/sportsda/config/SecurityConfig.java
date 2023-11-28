@@ -51,6 +51,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST, PathUtil.FACULTIES).hasAuthority(PermissionDescription.ADD_FACULTY.toString())
                                 .requestMatchers(HttpMethod.PUT, PathUtil.FACULTIES).hasAuthority(PermissionDescription.UPDATE_FACULTY.toString())
                                 .requestMatchers(HttpMethod.DELETE, PathUtil.FACULTIES).hasAuthority(PermissionDescription.DELETE_FACULTY.toString())
+                                .requestMatchers(HttpMethod.GET, PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER + PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.GET_DEPARTMENTS.toString())
 
                                 .requestMatchers(HttpMethod.GET, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.GET_DEPARTMENTS.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_DEPARTMENT.toString())
