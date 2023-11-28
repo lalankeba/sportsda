@@ -112,7 +112,7 @@ public class AppInitRunner implements ApplicationRunner {
         List<RoleEntity> savedRoleEntities = new ArrayList<>();
 
         String adminRoleName = propertyUtil.getAdminRoleName();
-        RoleEntity adminRoleEntity = saveRole(adminRoleName, "Has all access", List.of());
+        RoleEntity adminRoleEntity = saveRole(adminRoleName, "Has all access", permissionRepository.findAll());
         savedRoleEntities.add(adminRoleEntity);
 
         String basicRoleName = propertyUtil.getBasicRoleName();
