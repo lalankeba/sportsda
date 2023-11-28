@@ -12,7 +12,6 @@ import com.laan.sportsda.repository.MemberRepository;
 import com.laan.sportsda.repository.PermissionRepository;
 import com.laan.sportsda.repository.SessionRepository;
 import com.laan.sportsda.service.*;
-import com.laan.sportsda.util.PropertyUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -42,8 +41,6 @@ public class TestUtils {
 
     private final SessionRepository sessionRepository;
 
-    private final PropertyUtil propertyUtil;
-
     private final PermissionService permissionService;
 
     private final PermissionRepository permissionRepository;
@@ -56,10 +53,6 @@ public class TestUtils {
         roleAddRequest.setDescription(roleDescription);
         roleAddRequest.setPermissionIds(permissionIds);
         return roleService.addRole(roleAddRequest);
-    }
-
-    public RoleResponse addBasicRole(List<String> permissionIds) {
-        return addRole(propertyUtil.getBasicRoleName(), "Sample role description", permissionIds);
     }
 
     public PermissionResponse getPermission(PermissionDescription permissionDescription) {
@@ -89,10 +82,6 @@ public class TestUtils {
         return facultyService.addFaculty(facultyAddRequest);
     }
 
-    public FacultyResponse addBasicFaculty() {
-        return addFaculty(propertyUtil.getBasicFacultyName());
-    }
-
     public void deleteAllFaculties() {
         List<FacultyShortResponse> facultyShortResponses = facultyService.getFaculties();
         List<String> ids = facultyShortResponses.stream().map(FacultyShortResponse::getId).toList();
@@ -108,6 +97,12 @@ public class TestUtils {
         memberRegistrationRequest.setFacultyId(facultyId);
 
         return memberService.registerMember(memberRegistrationRequest);
+    }
+
+    public MemberResponse updateMemberRole(String memberId, String roleId, String currentUsername) {
+        MemberRoleUpdateRequest ownerRoleUpdateRequest = new MemberRoleUpdateRequest();
+        ownerRoleUpdateRequest.setRoleId(roleId);
+        return memberService.updateMemberRole(memberId, ownerRoleUpdateRequest, currentUsername);
     }
 
     public DepartmentResponse addDepartment(String departmentName, FacultyResponse facultyResponse) {

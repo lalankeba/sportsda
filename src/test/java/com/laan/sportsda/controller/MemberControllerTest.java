@@ -9,6 +9,7 @@ import com.laan.sportsda.dto.response.*;
 import com.laan.sportsda.enums.PermissionDescription;
 import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
+import com.laan.sportsda.util.PropertyUtil;
 import com.laan.sportsda.utils.TestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -58,6 +59,13 @@ class MemberControllerTest {
     @Autowired
     private TestUtils testUtils;
 
+    @Autowired
+    private PropertyUtil propertyUtil;
+
+    private final static String ADMIN_DESCRIPTION = "Admin has all permissions";
+
+    private final static String BASIC_DESCRIPTION = "Student has limited permissions";
+
     @BeforeEach
     void initBefore(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         testUtils.deleteAllSessions();
@@ -84,8 +92,8 @@ class MemberControllerTest {
 
     @Test
     void register() throws Exception {
-        testUtils.addBasicRole(null);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, null);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
 
         String firstName = "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
         MemberRegistrationRequest memberRegistrationRequest = new MemberRegistrationRequest();
@@ -131,8 +139,8 @@ class MemberControllerTest {
 
     @Test
     void login() throws Exception {
-        testUtils.addBasicRole(null);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, null);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
         String firstName = "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
         testUtils.registerMember(firstName, lastName, username, password, facultyId);
 
@@ -162,8 +170,8 @@ class MemberControllerTest {
 
     @Test
     void logout() throws Exception {
-        testUtils.addBasicRole(null);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, null);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
         String firstName = "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
         testUtils.registerMember(firstName, lastName, username, password, facultyId);
 
@@ -186,8 +194,8 @@ class MemberControllerTest {
     void getMembers() throws Exception {
         PermissionResponse permissionResponse = testUtils.getPermission(PermissionDescription.GET_MEMBERS);
         List<String> permissionIds = Collections.singletonList(permissionResponse.getId());
-        testUtils.addBasicRole(permissionIds);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, permissionIds);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
         String username = "john.doe@testing.com", password = "abcd1234";
         testUtils.registerMember("John", "Doe", username, password, facultyId);
         testUtils.registerMember("Mary", "Anne", "mary.anne@testing.com", "efgh4321", facultyId);
@@ -214,8 +222,8 @@ class MemberControllerTest {
     void getMember() throws Exception {
         PermissionResponse permissionResponse = testUtils.getPermission(PermissionDescription.GET_MEMBER);
         List<String> permissionIds = Collections.singletonList(permissionResponse.getId());
-        testUtils.addBasicRole(permissionIds);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, permissionIds);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
         String firstName= "Mary", lastName = "Anne", username = "john.doe@testing.com", password = "abcd1234";
         testUtils.registerMember("John", "Doe", username, password, facultyId);
         MemberRegistrationResponse memberRegistrationResponse = testUtils.registerMember(firstName, lastName, "mary.anne@testing.com", "efgh4321", facultyId);
@@ -238,8 +246,8 @@ class MemberControllerTest {
 
     @Test
     void getCurrentMember() throws Exception {
-        testUtils.addBasicRole(null);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, null);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
         String firstName= "John", lastName = "Doe", username = "john.doe@testing.com", password = "abcd1234";
         testUtils.registerMember(firstName, lastName, username, password, facultyId);
 
@@ -261,7 +269,7 @@ class MemberControllerTest {
 
     @Test
     void updateCurrentMember() throws Exception {
-        testUtils.addBasicRole(null);
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, null);
 
         FacultyResponse facultyResponse = testUtils.addFaculty("Humanities and Social Sciences");
         List<DepartmentResponse> departmentResponses = testUtils.addDepartments(Arrays.asList("Anthropology", "Economics"), facultyResponse);
@@ -333,22 +341,29 @@ class MemberControllerTest {
 
     @Test
     void updateMemberRole() throws Exception {
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
+        // create admin role
         PermissionResponse permissionResponse = testUtils.getPermission(PermissionDescription.UPDATE_MEMBER_ROLE);
         List<String> permissionIds = Collections.singletonList(permissionResponse.getId());
-        testUtils.addBasicRole(permissionIds);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        RoleResponse adminRoleResponse = testUtils.addRole(propertyUtil.getAdminRoleName(), ADMIN_DESCRIPTION, permissionIds);
 
-        String un = "john.doe@testing.com", pw = "abcd1234";
-        testUtils.registerMember("John", "Doe", un, pw, facultyId);
+        // create basic role
+        testUtils.addRole(propertyUtil.getBasicRoleName(), "Student has less permissions", null);
 
-        LoginResponse loginResponse = loginMember(un, pw);
+        String ownerUsername = "john.doe@testing.com", ownerPassword = "abcd1234";
+        MemberRegistrationResponse ownerRegistrationResponse = testUtils.registerMember("John", "Doe", ownerUsername, ownerPassword, facultyId);
 
-        RoleResponse studentRoleResponse = testUtils.addRole("STUDENT", "Student has limited permissions", null);
-        MemberRoleUpdateRequest memberRoleUpdateRequest = new MemberRoleUpdateRequest();
-        memberRoleUpdateRequest.setRoleId(studentRoleResponse.getId());
-
-        String firstName= "Lucy", lastName = "Anne", username = "lucy.anne@testing.com", password = "abcd1234";
+        String firstName= "Lucy", lastName = "Anne", username = "lucy.anne@testing.com", password = "efgh4321";
         MemberRegistrationResponse memberRegistrationResponse = testUtils.registerMember(firstName, lastName, username, password, facultyId);
+
+        testUtils.updateMemberRole(ownerRegistrationResponse.getId(), adminRoleResponse.getId(), username);
+
+        LoginResponse loginResponse = loginMember(ownerUsername, ownerPassword);
+
+        // create new role
+        RoleResponse newRoleResponse = testUtils.addRole("INSTRUCTOR", "Instructor has much permissions", null);
+        MemberRoleUpdateRequest memberRoleUpdateRequest = new MemberRoleUpdateRequest();
+        memberRoleUpdateRequest.setRoleId(newRoleResponse.getId());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.patch(PathUtil.MEMBERS + PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER, memberRegistrationResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
@@ -367,8 +382,8 @@ class MemberControllerTest {
 
     @Test
     void playSport() throws Exception {
-        testUtils.addBasicRole(null);
-        String facultyId = testUtils.addBasicFaculty().getId();
+        testUtils.addRole(propertyUtil.getBasicRoleName(), BASIC_DESCRIPTION, null);
+        String facultyId = testUtils.addFaculty(propertyUtil.getBasicFacultyName()).getId();
         String username = "john.doe@testing.com", password = "abcd1234";
         testUtils.registerMember("John", "Doe", username, password, facultyId);
 
@@ -384,6 +399,7 @@ class MemberControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.sports.[*].id").exists())
+                .andExpect(jsonPath("$.sports.[0].id").value(containsString(sportShortResponse.getId())))
                 .andExpect(jsonPath("$.sports.[0].name").value(containsString(sportName)))
                 .andDo(
                         document("{method-name}",

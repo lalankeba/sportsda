@@ -110,21 +110,28 @@ public class AppInitRunner implements ApplicationRunner {
 
     private List<RoleEntity> saveRoles() {
         List<RoleEntity> savedRoleEntities = new ArrayList<>();
-        String adminRoleName = propertyUtil.getAdminRoleName();
 
-        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByName(adminRoleName);
-        if (optionalRoleEntity.isEmpty()) {
-            RoleEntity adminRoleEntity = roleMapper.mapDetailsToEntity(adminRoleName, "Can do all tasks", permissionRepository.findAll());
-            RoleEntity savedAdminRoleEntity = roleRepository.save(adminRoleEntity);
-            savedRoleEntities.add(savedAdminRoleEntity);
-        } else {
-            RoleEntity existingRoleEntity = optionalRoleEntity.get();
-            List<PermissionEntity> permissionEntities = permissionRepository.findAll();
-            existingRoleEntity.setPermissionEntities(permissionEntities);
-            RoleEntity updatedAdminRoleEntity = roleRepository.save(existingRoleEntity);
-            savedRoleEntities.add(updatedAdminRoleEntity);
-        }
+        String adminRoleName = propertyUtil.getAdminRoleName();
+        RoleEntity adminRoleEntity = saveRole(adminRoleName, "Has all access", List.of());
+        savedRoleEntities.add(adminRoleEntity);
+
+        String basicRoleName = propertyUtil.getBasicRoleName();
+        RoleEntity basicRoleEntity = saveRole(basicRoleName, "Has limited access", List.of());
+        savedRoleEntities.add(basicRoleEntity);
 
         return savedRoleEntities;
+    }
+
+    private RoleEntity saveRole(String roleName, String roleDescription, List<PermissionEntity> permissionEntities) {
+        Optional<RoleEntity> optionalRoleEntity = roleRepository.findByName(roleName);
+
+        if (optionalRoleEntity.isEmpty()) {
+            RoleEntity roleEntity = roleMapper.mapDetailsToEntity(roleName, roleDescription, permissionEntities);
+            return roleRepository.save(roleEntity);
+        } else {
+            RoleEntity existingRoleEntity = optionalRoleEntity.get();
+            existingRoleEntity.setPermissionEntities(permissionEntities);
+            return roleRepository.save(existingRoleEntity);
+        }
     }
 }
