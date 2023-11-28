@@ -39,6 +39,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -376,7 +378,8 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.lastName").value(containsString(lastName)))
                 .andDo(
                         document("{method-name}",
-                                preprocessResponse(prettyPrint())
+                                preprocessResponse(prettyPrint()),
+                                requestFields(fieldWithPath("roleId").description("Role id to be updated for the member."))
                         ));
     }
 
@@ -403,7 +406,8 @@ class MemberControllerTest {
                 .andExpect(jsonPath("$.sports.[0].name").value(containsString(sportName)))
                 .andDo(
                         document("{method-name}",
-                                preprocessResponse(prettyPrint())
+                                preprocessResponse(prettyPrint()),
+                                pathParameters(parameterWithName("id").description("Id of the sport that needs to be played by the member"))
                         ));
     }
 

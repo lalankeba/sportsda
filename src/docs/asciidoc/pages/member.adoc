@@ -92,3 +92,31 @@ include::{snippets}/update-current-member/request-fields.adoc[]
 
 .response
 include::{snippets}/update-current-member/http-response.adoc[]
+
+
+=== Update Member Role
+
+You can update the role of other member
+
+.curl request
+include::{snippets}/update-member-role/curl-request.adoc[]
+
+.Request Parameter Description
+include::{snippets}/update-member-role/request-fields.adoc[]
+
+.response
+include::{snippets}/update-member-role/http-response.adoc[]
+
+
+=== Member Plays Sport
+
+Member plays sport
+
+.curl request
+include::{snippets}/play-sport/curl-request.adoc[]
+
+.Path Parameter Description
+include::{snippets}/play-sport/path-parameters.adoc[]
+
+.response
+include::{snippets}/play-sport/http-response.adoc[]
