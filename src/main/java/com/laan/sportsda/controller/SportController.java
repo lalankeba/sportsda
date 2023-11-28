@@ -2,8 +2,10 @@ package com.laan.sportsda.controller;
 
 import com.laan.sportsda.dto.request.SportAddRequest;
 import com.laan.sportsda.dto.request.SportUpdateRequest;
+import com.laan.sportsda.dto.response.FeatureResponse;
 import com.laan.sportsda.dto.response.SportResponse;
 import com.laan.sportsda.dto.response.SportShortResponse;
+import com.laan.sportsda.service.FeatureService;
 import com.laan.sportsda.service.SportService;
 import com.laan.sportsda.util.PathUtil;
 import jakarta.validation.Valid;
@@ -22,6 +24,8 @@ import java.util.List;
 public class SportController {
 
     private final SportService sportService;
+
+    private final FeatureService featureService;
 
     @GetMapping(PathUtil.ID_PLACEHOLDER)
     public ResponseEntity<Object> getSport(@PathVariable("id") String id) {
@@ -61,6 +65,14 @@ public class SportController {
         sportService.deleteSport(id);
         log.info("deleted sport with id: {}", id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping(PathUtil.ID_PLACEHOLDER + PathUtil.FEATURES)
+    public ResponseEntity<Object> getFeaturesBySport(@PathVariable("id") String id) {
+        log.info("getting features by sport: {}", id);
+        List<FeatureResponse> featureResponses = featureService.getFeaturesBySport(id);
+        log.info("get features by sport");
+        return new ResponseEntity<>(featureResponses, HttpStatus.OK);
     }
 
 }

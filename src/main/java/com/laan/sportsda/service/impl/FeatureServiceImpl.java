@@ -128,4 +128,16 @@ public class FeatureServiceImpl implements FeatureService {
         featureValidator.validateNonExistingFeatureEntity(id, optionalFeatureEntity);
         featureRepository.deleteById(id);
     }
+
+    @Override
+    public List<FeatureResponse> getFeaturesBySport(final String sportId) {
+        Optional<SportEntity> optionalSportEntity = sportRepository.findById(sportId);
+        sportValidator.validateNonExistingSportEntity(sportId, optionalSportEntity);
+
+        List<FeatureEntity> featureEntities = null;
+        if (optionalSportEntity.isPresent()) {
+            featureEntities = featureRepository.findBySportEntity(optionalSportEntity.get());
+        }
+        return featureMapper.mapEntitiesToResponses(featureEntities);
+    }
 }
