@@ -65,6 +65,20 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, PathUtil.MEMBERS + PathUtil.CURRENT).authenticated()
                                 .requestMatchers(HttpMethod.PATCH, PathUtil.MEMBERS + PathUtil.MEMBER + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.UPDATE_MEMBER_ROLE.toString())
                                 .requestMatchers(HttpMethod.POST, PathUtil.MEMBERS + PathUtil.CURRENT + PathUtil.PLAY_SPORT + PathUtil.ID_PLACEHOLDER).authenticated()
+
+                                .requestMatchers(HttpMethod.GET, PathUtil.SPORTS).hasAuthority(PermissionDescription.GET_SPORTS.toString())
+                                .requestMatchers(HttpMethod.GET, PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_SPORT.toString())
+                                .requestMatchers(HttpMethod.POST, PathUtil.SPORTS).hasAuthority(PermissionDescription.ADD_SPORT.toString())
+                                .requestMatchers(HttpMethod.PUT, PathUtil.SPORTS).hasAuthority(PermissionDescription.UPDATE_SPORT.toString())
+                                .requestMatchers(HttpMethod.DELETE, PathUtil.SPORTS).hasAuthority(PermissionDescription.DELETE_SPORT.toString())
+                                .requestMatchers(HttpMethod.GET, PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER + PathUtil.FEATURES).hasAuthority(PermissionDescription.GET_FEATURES.toString())
+
+                                .requestMatchers(HttpMethod.GET, PathUtil.FEATURES).hasAuthority(PermissionDescription.GET_FEATURES.toString())
+                                .requestMatchers(HttpMethod.GET, PathUtil.FEATURES + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_FEATURE.toString())
+                                .requestMatchers(HttpMethod.POST, PathUtil.FEATURES).hasAuthority(PermissionDescription.ADD_FEATURE.toString())
+                                .requestMatchers(HttpMethod.PUT, PathUtil.FEATURES).hasAuthority(PermissionDescription.UPDATE_FEATURE.toString())
+                                .requestMatchers(HttpMethod.DELETE, PathUtil.FEATURES).hasAuthority(PermissionDescription.DELETE_FEATURE.toString())
+
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
