@@ -20,7 +20,6 @@ public class PermissionEntity {
     private String id;
 
     @Column(name = "description")
-    @Enumerated(EnumType.STRING)
     private PermissionDescription description;
 
     @ManyToMany(mappedBy = "permissionEntities")

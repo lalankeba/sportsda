@@ -49,14 +49,14 @@ public class SecurityConfig {
 
                                 .requestMatchers(HttpMethod.GET, PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_FACULTY.toString())
                                 .requestMatchers(HttpMethod.POST, PathUtil.FACULTIES).hasAuthority(PermissionDescription.ADD_FACULTY.toString())
-                                .requestMatchers(HttpMethod.PUT, PathUtil.FACULTIES).hasAuthority(PermissionDescription.UPDATE_FACULTY.toString())
+                                .requestMatchers(HttpMethod.PUT, PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.UPDATE_FACULTY.toString())
                                 .requestMatchers(HttpMethod.DELETE, PathUtil.FACULTIES).hasAuthority(PermissionDescription.DELETE_FACULTY.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.FACULTIES + PathUtil.ID_PLACEHOLDER + PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.GET_DEPARTMENTS.toString())
 
                                 .requestMatchers(HttpMethod.GET, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.GET_DEPARTMENTS.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_DEPARTMENT.toString())
                                 .requestMatchers(HttpMethod.POST, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.ADD_DEPARTMENT.toString())
-                                .requestMatchers(HttpMethod.PUT, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.UPDATE_DEPARTMENT.toString())
+                                .requestMatchers(HttpMethod.PUT, PathUtil.DEPARTMENTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.UPDATE_DEPARTMENT.toString())
                                 .requestMatchers(HttpMethod.DELETE, PathUtil.DEPARTMENTS).hasAuthority(PermissionDescription.DELETE_DEPARTMENT.toString())
 
                                 .requestMatchers(HttpMethod.GET, PathUtil.MEMBERS).hasAuthority(PermissionDescription.GET_MEMBERS.toString())
@@ -69,15 +69,15 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, PathUtil.SPORTS).hasAuthority(PermissionDescription.GET_SPORTS.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_SPORT.toString())
                                 .requestMatchers(HttpMethod.POST, PathUtil.SPORTS).hasAuthority(PermissionDescription.ADD_SPORT.toString())
-                                .requestMatchers(HttpMethod.PUT, PathUtil.SPORTS).hasAuthority(PermissionDescription.UPDATE_SPORT.toString())
-                                .requestMatchers(HttpMethod.DELETE, PathUtil.SPORTS).hasAuthority(PermissionDescription.DELETE_SPORT.toString())
+                                .requestMatchers(HttpMethod.PUT, PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.UPDATE_SPORT.toString())
+                                .requestMatchers(HttpMethod.DELETE, PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.DELETE_SPORT.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER + PathUtil.FEATURES).hasAuthority(PermissionDescription.GET_FEATURES.toString())
 
                                 .requestMatchers(HttpMethod.GET, PathUtil.FEATURES).hasAuthority(PermissionDescription.GET_FEATURES.toString())
                                 .requestMatchers(HttpMethod.GET, PathUtil.FEATURES + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.GET_FEATURE.toString())
                                 .requestMatchers(HttpMethod.POST, PathUtil.FEATURES).hasAuthority(PermissionDescription.ADD_FEATURE.toString())
-                                .requestMatchers(HttpMethod.PUT, PathUtil.FEATURES).hasAuthority(PermissionDescription.UPDATE_FEATURE.toString())
-                                .requestMatchers(HttpMethod.DELETE, PathUtil.FEATURES).hasAuthority(PermissionDescription.DELETE_FEATURE.toString())
+                                .requestMatchers(HttpMethod.PUT, PathUtil.FEATURES + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.UPDATE_FEATURE.toString())
+                                .requestMatchers(HttpMethod.DELETE, PathUtil.FEATURES + PathUtil.ID_PLACEHOLDER).hasAuthority(PermissionDescription.DELETE_FEATURE.toString())
 
                                 .anyRequest().authenticated()
                 )
