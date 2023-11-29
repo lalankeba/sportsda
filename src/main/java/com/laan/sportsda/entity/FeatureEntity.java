@@ -22,7 +22,6 @@ public class FeatureEntity {
     private String name;
 
     @Column(name = "feature_value_type")
-    @Enumerated(EnumType.STRING)
     private FeatureValueType featureValueType;
 
     @Column(name = "min_value")
