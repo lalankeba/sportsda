@@ -14,6 +14,7 @@ public class PathUtil {
     public static final String MEMBERS = "/members";
     public static final String PERMISSIONS = "/permissions";
     public static final String ROLES = "/roles";
+    public static final String COUNTRIES = "/countries";
 
     public static final String REGISTER = "/register";
     public static final String LOGIN = "/login";

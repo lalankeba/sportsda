@@ -24,4 +24,7 @@ public class PropertyUtil {
 
     @Value("${app.basic.faculty.name}")
     private String basicFacultyName;
+
+    @Value("${country.api.base.url}")
+    private String countryApiBaseUrl;
 }
