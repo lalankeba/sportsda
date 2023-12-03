@@ -14,7 +14,7 @@ import java.util.List;
 public interface CountryMapper {
 
     @Mapping(target = "commonName", source = "name.common")
-    @Mapping(target = "officialName", source = "name.common")
+    @Mapping(target = "officialName", source = "name.official")
     @Mapping(target = "capitals", source = "capital")
     @Mapping(target = "flagPng", source = "flags.png")
     @Mapping(target = "flagSvg", source = "flags.svg")
@@ -30,7 +30,7 @@ public interface CountryMapper {
     }
 
     @Mapping(target = "commonName", source = "countryClientResponse.name.common")
-    @Mapping(target = "officialName", source = "countryClientResponse.name.common")
+    @Mapping(target = "officialName", source = "countryClientResponse.name.official")
     @Mapping(target = "capitals", source = "countryClientResponse.capital")
     @Mapping(target = "flagPng", source = "countryClientResponse.flags.png")
     @Mapping(target = "flagSvg", source = "countryClientResponse.flags.svg")
