@@ -1,0 +1,14 @@
+== Country
+This section explains how to communicate with country API
+
+
+=== Get Countries
+
+You can view all existing countries
+
+.curl request
+include::{snippets}/get-countries/curl-request.adoc[]
+
+.response
+include::{snippets}/get-countries/http-response.adoc[]
+

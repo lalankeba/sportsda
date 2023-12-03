@@ -26,3 +26,5 @@ include::pages/role.adoc[]
 include::pages/sport.adoc[]
 
 include::pages/feature.adoc[]
+
+include::pages/country.adoc[]
