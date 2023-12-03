@@ -3,8 +3,6 @@ package com.laan.sportsda.dto.response;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class CountryResponse {
@@ -14,8 +12,13 @@ public class CountryResponse {
     private String cca2;
     private String cca3;
     private String ccn3;
-    private List<String> capital;
+    private String capitals;
     private Long area;
     private Long population;
+    private String region;
+    private String subregion;
+    private String continents;
+    private String flagPng;
+    private String flagSvg;
 
 }

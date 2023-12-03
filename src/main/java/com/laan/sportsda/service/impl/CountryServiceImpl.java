@@ -22,9 +22,16 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<CountryResponse> getCountries() {
+        List<CountryResponse> countryResponses;
         log.info("Requesting country information from external service");
-        List<CountryClientResponse> countryClientResponses = countryClient.getAllCountries();
-        log.info("Response received from external service");
-        return countryMapper.mapClientResponsesToResponses(countryClientResponses);
+        try {
+            List<CountryClientResponse> countryClientResponses = countryClient.getAllCountries();
+            log.info("{} Countries received from external country service", countryClientResponses.size());
+            countryResponses = countryMapper.mapClientResponsesToResponses(countryClientResponses);
+        } catch (Exception e) {
+            log.error("Exception occurred when calling external country service", e);
+            countryResponses = List.of();
+        }
+        return countryResponses;
     }
 }

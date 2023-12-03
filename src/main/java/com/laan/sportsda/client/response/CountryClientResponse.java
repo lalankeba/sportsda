@@ -16,4 +16,8 @@ public class CountryClientResponse {
     private List<String> capital;
     private Long area;
     private Long population;
+    private String region;
+    private String subregion;
+    private List<String> continents;
+    private CountryFlag flags;
 }
