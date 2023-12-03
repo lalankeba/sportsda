@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-country
+      author: lalanke
+      changes:
+        - createTable:
+            tableName: country
+            columns:
+              - column:
+                  name: cca3
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: cca2
+                  type: varchar(10)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: ccn3
+                  type: varchar(10)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: common_name
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: official_name
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: capitals
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: area
+                  type: double
+                  constraints:
+                    nullable: true
+              - column:
+                  name: population
+                  type: bigint
+                  constraints:
+                    nullable: true
+              - column:
+                  name: region
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: subregion
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: continents
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: flag_png
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: flag_svg
+                  type: varchar(200)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: modified_date_time
+                  type: date
+                  constraints:
+                    nullable: true

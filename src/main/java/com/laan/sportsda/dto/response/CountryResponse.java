@@ -13,7 +13,7 @@ public class CountryResponse {
     private String cca3;
     private String ccn3;
     private String capitals;
-    private Long area;
+    private Double area;
     private Long population;
     private String region;
     private String subregion;

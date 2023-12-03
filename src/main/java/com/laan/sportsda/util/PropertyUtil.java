@@ -27,4 +27,7 @@ public class PropertyUtil {
 
     @Value("${country.api.base.url}")
     private String countryApiBaseUrl;
+
+    @Value("${country.api.update.interval.days}")
+    private Long countryApiUpdateInterval;
 }

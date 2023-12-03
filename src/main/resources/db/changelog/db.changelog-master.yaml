@@ -27,3 +27,5 @@ databaseChangeLog:
       file: db/changelog/create-member-feature-table.yaml
   - include:
       file: db/changelog/create-member-department-table.yaml
+  - include:
+      file: db/changelog/create-country-table.yaml
