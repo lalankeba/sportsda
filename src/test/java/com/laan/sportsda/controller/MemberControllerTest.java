@@ -35,6 +35,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.*;
 
 import static org.hamcrest.Matchers.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
@@ -187,7 +189,8 @@ class MemberControllerTest {
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint())
+                                preprocessResponse(prettyPrint()),
+                                requestHeaders(headerWithName(ConstantsUtil.AUTH_TOKEN_HEADER).description("Bearer token details"))
                         )
                 );
     }

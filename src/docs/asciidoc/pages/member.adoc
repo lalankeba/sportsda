@@ -21,7 +21,7 @@ include::{snippets}/register/response-fields.adoc[]
 
 === Login member
 
-Member can login to the system by providing credentials
+Member can log in to the system by providing credentials
 
 .curl request
 include::{snippets}/login/curl-request.adoc[]
@@ -38,10 +38,13 @@ include::{snippets}/login/response-fields.adoc[]
 
 === Logout member
 
-Member can logout from the system
+Member can log out from the system
 
 .curl request
 include::{snippets}/logout/curl-request.adoc[]
+
+.headers
+include::{snippets}/logout/request-headers.adoc[]
 
 .response
 include::{snippets}/logout/http-response.adoc[]
