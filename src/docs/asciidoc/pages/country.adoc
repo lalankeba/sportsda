@@ -12,3 +12,5 @@ include::{snippets}/get-countries/curl-request.adoc[]
 .response
 include::{snippets}/get-countries/http-response.adoc[]
 
+.Response Description
+include::{snippets}/get-countries/response-fields.adoc[]
