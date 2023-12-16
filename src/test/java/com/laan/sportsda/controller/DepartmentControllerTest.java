@@ -9,6 +9,7 @@ import com.laan.sportsda.util.ConstantsUtil;
 import com.laan.sportsda.util.PathUtil;
 import com.laan.sportsda.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -42,6 +43,12 @@ class DepartmentControllerTest {
 
     @Autowired
     private TestUtils testUtils;
+
+    @BeforeEach
+    void initBefore() {
+        testUtils.deleteAllDepartments();
+        testUtils.deleteAllFaculties();
+    }
 
     @AfterEach
     void initAfter() {
