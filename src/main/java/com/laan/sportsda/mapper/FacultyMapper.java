@@ -9,6 +9,7 @@ import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.entity.FacultyEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -30,14 +31,26 @@ public interface FacultyMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departmentEntities", ignore = true)
     @Mapping(target = "version", constant = "0L")
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     FacultyEntity mapAddRequestToEntity(FacultyAddRequest addRequest);
 
-    @Mapping(target = "id", source = "facultyId")
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "departmentEntities", ignore = true)
-    FacultyEntity mapUpdateRequestToEntity(FacultyUpdateRequest updateRequest, String facultyId);
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
+    FacultyEntity updateEntityFromUpdateRequest(FacultyUpdateRequest updateRequest, @MappingTarget FacultyEntity facultyEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departmentEntities", ignore = true)
     @Mapping(target = "version", constant = "0L")
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     FacultyEntity mapDetailsToEntity(String name);
 }

@@ -70,9 +70,13 @@ public class FacultyServiceImpl implements FacultyService {
         Optional<FacultyEntity> optionalFacultyEntityByName = facultyRepository.findByNameAndIdNotContains(facultyUpdateRequest.getName(), id);
         facultyValidator.validateDuplicateFacultyEntity(optionalFacultyEntityByName);
 
-        FacultyEntity facultyEntity = facultyMapper.mapUpdateRequestToEntity(facultyUpdateRequest, id);
-        FacultyEntity updatedFacultyEntity =  facultyRepository.saveAndFlush(facultyEntity);
-        return facultyMapper.mapEntityToFacultyResponse(updatedFacultyEntity);
+        FacultyResponse facultyResponse = null;
+        if (optionalFacultyEntity.isPresent()) {
+            FacultyEntity facultyEntity = facultyMapper.updateEntityFromUpdateRequest(facultyUpdateRequest, optionalFacultyEntity.get());
+            FacultyEntity updatedFacultyEntity = facultyRepository.saveAndFlush(facultyEntity);
+            facultyResponse = facultyMapper.mapEntityToFacultyResponse(updatedFacultyEntity);
+        }
+        return facultyResponse;
     }
 
     @Override
