@@ -26,7 +26,6 @@ public interface DepartmentMapper {
     @Mapping(target = "name", source = "departmentAddRequest.name")
     @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
     @Mapping(target = "memberEntities", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)

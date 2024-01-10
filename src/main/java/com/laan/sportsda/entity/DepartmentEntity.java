@@ -29,7 +29,4 @@ public class DepartmentEntity extends AuditMetadata {
     @ToString.Exclude
     private List<MemberEntity> memberEntities;
 
-    @Column(name = "version")
-    @Version
-    private Long version;
 }

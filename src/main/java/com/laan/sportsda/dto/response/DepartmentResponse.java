@@ -13,6 +13,4 @@ public class DepartmentResponse {
 
     private String facultyId;
 
-    private Long version;
-
 }
