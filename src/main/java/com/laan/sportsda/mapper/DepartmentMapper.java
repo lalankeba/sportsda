@@ -8,6 +8,7 @@ import com.laan.sportsda.entity.DepartmentEntity;
 import com.laan.sportsda.entity.FacultyEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -26,13 +27,19 @@ public interface DepartmentMapper {
     @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
     @Mapping(target = "memberEntities", ignore = true)
     @Mapping(target = "version", constant = "0L")
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     DepartmentEntity mapAddRequestToEntity(DepartmentAddRequest departmentAddRequest, FacultyEntity existingFacultyEntity);
 
-    @Mapping(target = "id", source = "departmentId")
-    @Mapping(target = "name", source = "departmentUpdateRequest.name")
-    @Mapping(target = "facultyEntity", source = "existingFacultyEntity")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "facultyEntity", ignore = true)
     @Mapping(target = "memberEntities", ignore = true)
-    @Mapping(target = "version", source = "departmentUpdateRequest.version")
-    DepartmentEntity mapUpdateRequestToEntity(DepartmentUpdateRequest departmentUpdateRequest, String departmentId, FacultyEntity existingFacultyEntity);
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
+    DepartmentEntity updateEntityFromUpdateRequest(DepartmentUpdateRequest departmentUpdateRequest, @MappingTarget DepartmentEntity departmentEntity);
 
 }

@@ -31,3 +31,23 @@ databaseChangeLog:
                   defaultValue: 0
                   constraints:
                     nullable: false
+              - column:
+                  name: created_by
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_date
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: last_modified_by
+                  type: varchar(50)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: last_modified_date
+                  type: timestamp
+                  constraints:
+                    nullable: true
