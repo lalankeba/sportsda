@@ -24,8 +24,4 @@ public class FacultyEntity extends AuditMetadata {
     @ToString.Exclude
     private List<DepartmentEntity> departmentEntities;
 
-    @Column(name = "version")
-    @Version
-    private Long version;
-
 }

@@ -15,5 +15,4 @@ public class FacultyResponse {
 
     private List<DepartmentResponse> departments;
 
-    private Long version;
 }

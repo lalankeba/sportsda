@@ -30,7 +30,6 @@ public interface FacultyMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departmentEntities", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
@@ -47,7 +46,6 @@ public interface FacultyMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departmentEntities", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     @Mapping(target = "createdBy", ignore = true)
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
