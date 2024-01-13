@@ -25,7 +25,6 @@ public interface SportMapper {
     List<SportShortResponse> mapEntitiesToShortResponses(List<SportEntity> entities);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     @Mapping(target = "featureEntities", ignore = true)
     @Mapping(target = "memberEntities", ignore = true)
     SportEntity mapAddRequestToEntity(SportAddRequest addRequest);

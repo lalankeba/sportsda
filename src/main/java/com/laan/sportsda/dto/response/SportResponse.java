@@ -15,5 +15,4 @@ public class SportResponse {
 
     private List<FeatureResponse> features;
 
-    private Long version;
 }

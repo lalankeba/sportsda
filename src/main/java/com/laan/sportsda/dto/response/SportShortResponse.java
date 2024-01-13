@@ -11,5 +11,4 @@ public class SportShortResponse {
 
     private String name;
 
-    private Long version;
 }

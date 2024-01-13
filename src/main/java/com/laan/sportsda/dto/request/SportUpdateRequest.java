@@ -14,6 +14,4 @@ public class SportUpdateRequest {
     @Size(min = 2, max = 150, message = MessagesUtil.AnnotationSupported.INVALID_SPORT_NAME_SIZE)
     private String name;
 
-    @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_VERSION)
-    private Long version;
 }

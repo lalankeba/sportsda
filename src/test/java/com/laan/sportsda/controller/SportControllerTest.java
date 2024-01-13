@@ -69,7 +69,6 @@ class SportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").exists())
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),
@@ -81,7 +80,6 @@ class SportControllerTest {
                                         .and(fieldWithPath("features[].id").description("Id of the feature"))
                                         .and(fieldWithPath("features[].name").description("Name of the feature"))
                                         .and(fieldWithPath("features[].featureValueType").description("Value type of the feature"))
-                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
     }
@@ -97,7 +95,6 @@ class SportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
-                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint())
@@ -119,7 +116,6 @@ class SportControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(sportName)))
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -128,7 +124,6 @@ class SportControllerTest {
                                 responseFields(
                                         fieldWithPath("id").description("Created Id for the sport"))
                                         .and(fieldWithPath("name").description("Name of the sport"))
-                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
     }
@@ -140,7 +135,6 @@ class SportControllerTest {
         String updatedName = "Football";
         SportUpdateRequest sportUpdateRequest = new SportUpdateRequest();
         sportUpdateRequest.setName(updatedName);
-        sportUpdateRequest.setVersion(sportShortResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.SPORTS + PathUtil.ID_PLACEHOLDER, sportShortResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -150,17 +144,14 @@ class SportControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(containsString(sportShortResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
                                 preprocessResponse(prettyPrint()),
                                 pathParameters(parameterWithName("id").description("Id of the sport that needs to be updated")),
-                                requestFields(fieldWithPath("name").description("Name to be updated for the sport. Should be unique throughout the system."))
-                                        .and(fieldWithPath("version").description("Version of the existing sport")),
+                                requestFields(fieldWithPath("name").description("Name to be updated for the sport. Should be unique throughout the system.")),
                                 responseFields(fieldWithPath("id").description("Id of the sport"))
                                         .and(fieldWithPath("name").description("Updated name of the sport"))
-                                        .and(fieldWithPath("version").description("Updated version number").optional())
                         )
                 );
     }
