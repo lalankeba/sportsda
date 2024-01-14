@@ -73,7 +73,7 @@ public class SportServiceImpl implements SportService {
         SportShortResponse sportShortResponse = null;
         if (optionalSportEntity.isPresent()) {
             SportEntity sportEntity = sportMapper.updateEntityFromUpdateRequest(sportUpdateRequest, optionalSportEntity.get());
-            SportEntity updatedSportEntity = sportRepository.saveAndFlush(sportEntity);
+            SportEntity updatedSportEntity = sportRepository.save(sportEntity);
             sportShortResponse = sportMapper.mapEntityToShortResponse(updatedSportEntity);
         }
         return sportShortResponse;
