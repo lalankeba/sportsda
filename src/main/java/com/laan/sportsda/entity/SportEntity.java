@@ -12,7 +12,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "sport")
-public class SportEntity {
+public class SportEntity extends AuditMetadata {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

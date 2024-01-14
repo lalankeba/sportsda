@@ -70,9 +70,13 @@ public class SportServiceImpl implements SportService {
         Optional<SportEntity> optionalSportEntityByName = sportRepository.findByNameAndIdNotContains(sportUpdateRequest.getName(), id);
         sportValidator.validateDuplicateSportEntity(optionalSportEntityByName);
 
-        SportEntity sportEntity = sportMapper.mapUpdateRequestToEntity(sportUpdateRequest, id);
-        SportEntity updatedSportEntity =  sportRepository.saveAndFlush(sportEntity);
-        return sportMapper.mapEntityToShortResponse(updatedSportEntity);
+        SportShortResponse sportShortResponse = null;
+        if (optionalSportEntity.isPresent()) {
+            SportEntity sportEntity = sportMapper.updateEntityFromUpdateRequest(sportUpdateRequest, optionalSportEntity.get());
+            SportEntity updatedSportEntity = sportRepository.saveAndFlush(sportEntity);
+            sportShortResponse = sportMapper.mapEntityToShortResponse(updatedSportEntity);
+        }
+        return sportShortResponse;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.laan.sportsda.entity.PossibleValueEntity;
 import com.laan.sportsda.entity.SportEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -27,12 +28,20 @@ public interface SportMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "featureEntities", ignore = true)
     @Mapping(target = "memberEntities", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     SportEntity mapAddRequestToEntity(SportAddRequest addRequest);
 
-    @Mapping(target = "id", source = "sportId")
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "featureEntities", ignore = true)
     @Mapping(target = "memberEntities", ignore = true)
-    SportEntity mapUpdateRequestToEntity(SportUpdateRequest updateRequest, String sportId);
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
+    SportEntity updateEntityFromUpdateRequest(SportUpdateRequest updateRequest, @MappingTarget SportEntity sportEntity);
 
     List<FeatureResponse> mapEntitiesToFeatureResponses(List<FeatureEntity> featureEntities);
 
