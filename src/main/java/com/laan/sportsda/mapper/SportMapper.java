@@ -41,7 +41,7 @@ public interface SportMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "lastModifiedDate", ignore = true)
-    SportEntity updateEntityFromUpdateRequest(SportUpdateRequest updateRequest, @MappingTarget SportEntity sportEntity);
+    void updateEntityFromUpdateRequest(SportUpdateRequest updateRequest, @MappingTarget SportEntity sportEntity);
 
     List<FeatureResponse> mapEntitiesToFeatureResponses(List<FeatureEntity> featureEntities);
 

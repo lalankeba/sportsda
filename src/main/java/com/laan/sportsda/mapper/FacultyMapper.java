@@ -42,7 +42,7 @@ public interface FacultyMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "lastModifiedDate", ignore = true)
-    FacultyEntity updateEntityFromUpdateRequest(FacultyUpdateRequest updateRequest, @MappingTarget FacultyEntity facultyEntity);
+    void updateEntityFromUpdateRequest(FacultyUpdateRequest updateRequest, @MappingTarget FacultyEntity facultyEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "departmentEntities", ignore = true)

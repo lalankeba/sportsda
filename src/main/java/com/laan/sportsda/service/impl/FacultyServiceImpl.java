@@ -72,7 +72,8 @@ public class FacultyServiceImpl implements FacultyService {
 
         FacultyResponse facultyResponse = null;
         if (optionalFacultyEntity.isPresent()) {
-            FacultyEntity facultyEntity = facultyMapper.updateEntityFromUpdateRequest(facultyUpdateRequest, optionalFacultyEntity.get());
+            FacultyEntity facultyEntity = optionalFacultyEntity.get();
+            facultyMapper.updateEntityFromUpdateRequest(facultyUpdateRequest, facultyEntity);
             FacultyEntity updatedFacultyEntity = facultyRepository.save(facultyEntity);
             facultyResponse = facultyMapper.mapEntityToFacultyResponse(updatedFacultyEntity);
         }

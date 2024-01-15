@@ -39,6 +39,6 @@ public interface DepartmentMapper {
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "lastModifiedBy", ignore = true)
     @Mapping(target = "lastModifiedDate", ignore = true)
-    DepartmentEntity updateEntityFromUpdateRequest(DepartmentUpdateRequest departmentUpdateRequest, @MappingTarget DepartmentEntity departmentEntity);
+    void updateEntityFromUpdateRequest(DepartmentUpdateRequest departmentUpdateRequest, @MappingTarget DepartmentEntity departmentEntity);
 
 }
