@@ -26,5 +26,4 @@ public class FeatureResponse {
 
     private List<PossibleValueResponse> possibleValues;
 
-    private Long version;
 }

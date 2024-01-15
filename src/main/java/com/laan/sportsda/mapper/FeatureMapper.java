@@ -9,6 +9,7 @@ import com.laan.sportsda.entity.PossibleValueEntity;
 import com.laan.sportsda.entity.SportEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -26,18 +27,16 @@ public interface FeatureMapper {
     @Mapping(target = "sportEntity", source = "existingSportEntity")
     @Mapping(target = "possibleValueEntities", ignore = true)
     @Mapping(target = "memberFeatureEntities", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     FeatureEntity mapAddRequestToEntity(FeatureAddRequest featureAddRequest, SportEntity existingSportEntity);
 
     List<PossibleValueResponse> mapEntitiesToPossibleValueResponses(List<PossibleValueEntity> entities);
 
     PossibleValueResponse mapEntityToPossibleValueResponse(PossibleValueEntity possibleValueEntity);
 
-    @Mapping(target = "id", source = "featureId")
-    @Mapping(target = "name", source = "featureUpdateRequest.name")
-    @Mapping(target = "sportEntity", source = "existingSportEntity")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "sportEntity", ignore = true)
     @Mapping(target = "possibleValueEntities", ignore = true)
     @Mapping(target = "memberFeatureEntities", ignore = true)
-    @Mapping(target = "version", source = "featureUpdateRequest.version")
-    FeatureEntity mapUpdateRequestToEntity(FeatureUpdateRequest featureUpdateRequest, String featureId, SportEntity existingSportEntity);
+    void updateEntityFromUpdateRequest(FeatureUpdateRequest featureUpdateRequest, @MappingTarget FeatureEntity featureEntity);
+
 }

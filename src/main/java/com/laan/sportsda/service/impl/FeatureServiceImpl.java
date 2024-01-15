@@ -109,11 +109,11 @@ public class FeatureServiceImpl implements FeatureService {
                     possibleValueRepository.deleteAll(existingFeatureEntity.getPossibleValueEntities());
                 }
 
-                FeatureEntity featureEntity = featureMapper.mapUpdateRequestToEntity(featureUpdateRequest, id, sportEntity);
-                List<PossibleValueEntity> possibleValueEntities = possibleValueMapper.mapStringsAndEntityToEntities(featureUpdateRequest.getPossibleValues(), featureEntity);
-                featureEntity.setPossibleValueEntities(possibleValueEntities);
+                featureMapper.updateEntityFromUpdateRequest(featureUpdateRequest, existingFeatureEntity);
+                List<PossibleValueEntity> possibleValueEntities = possibleValueMapper.mapStringsAndEntityToEntities(featureUpdateRequest.getPossibleValues(), existingFeatureEntity);
+                existingFeatureEntity.setPossibleValueEntities(possibleValueEntities);
 
-                FeatureEntity updatedFeatureEntity = featureRepository.saveAndFlush(featureEntity);
+                FeatureEntity updatedFeatureEntity = featureRepository.save(existingFeatureEntity);
                 featureResponse = featureMapper.mapEntityToResponse(updatedFeatureEntity);
             }
         }

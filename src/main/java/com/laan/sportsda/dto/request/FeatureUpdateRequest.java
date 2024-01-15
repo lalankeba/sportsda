@@ -25,7 +25,4 @@ public class FeatureUpdateRequest {
     private String measurement;
     private List<String> possibleValues;
 
-    @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_VERSION)
-    private Long version;
-
 }

@@ -68,7 +68,6 @@ class FeatureControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").exists())
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint()),
@@ -82,7 +81,6 @@ class FeatureControllerTest {
                                         .and(fieldWithPath("measurement").description("Measurement of the value"))
                                         .and(fieldWithPath("sportId").description("Sport id of the feature"))
                                         .and(fieldWithPath("possibleValues").description("Possible values for the feature"))
-                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
     }
@@ -100,7 +98,6 @@ class FeatureControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[*].id").exists())
                 .andExpect(jsonPath("$.[*].name").exists())
-                .andExpect(jsonPath("$.[*].version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessResponse(prettyPrint())
@@ -126,7 +123,6 @@ class FeatureControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(featureName)))
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -150,7 +146,6 @@ class FeatureControllerTest {
                                         .and(subsectionWithPath("possibleValues").description("Possible values for the feature"))
                                         .and(fieldWithPath("possibleValues[].id").description("Id of the possible value"))
                                         .and(fieldWithPath("possibleValues[].attributeValue").description("Attribute name of the possible value"))
-                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
     }
@@ -167,7 +162,6 @@ class FeatureControllerTest {
         featureUpdateRequest.setMinValue("40");
         featureUpdateRequest.setMaxValue("250");
         featureUpdateRequest.setMeasurement("kg");
-        featureUpdateRequest.setVersion(featureResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.FEATURES + PathUtil.ID_PLACEHOLDER, featureResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -177,7 +171,6 @@ class FeatureControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(containsString(featureResponse.getId())))
                 .andExpect(jsonPath("$.name").value(containsString(updatedName)))
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -189,8 +182,7 @@ class FeatureControllerTest {
                                         .and(fieldWithPath("minValue").description("Minimum value that is allowed for the feature"))
                                         .and(fieldWithPath("maxValue").description("Maximum value that is allowed for the feature"))
                                         .and(fieldWithPath("measurement").description("Measurement of the value"))
-                                        .and(fieldWithPath("possibleValues").description("Possible values for the feature"))
-                                        .and(fieldWithPath("version").description("Version of the existing sport")),
+                                        .and(fieldWithPath("possibleValues").description("Possible values for the feature")),
                                 responseFields(
                                         fieldWithPath("id").description("Id of the sport"))
                                         .and(fieldWithPath("name").description("Updated name of the feature"))
@@ -200,7 +192,6 @@ class FeatureControllerTest {
                                         .and(fieldWithPath("measurement").description("Measurement of the value"))
                                         .and(fieldWithPath("sportId").description("Sport id of the feature"))
                                         .and(fieldWithPath("possibleValues").description("Possible values for the feature"))
-                                        .and(fieldWithPath("version").description("Updated version number").optional())
                         )
                 );
     }

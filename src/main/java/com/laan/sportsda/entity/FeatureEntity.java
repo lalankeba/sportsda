@@ -45,8 +45,4 @@ public class FeatureEntity {
     @ToString.Exclude
     private List<MemberFeatureEntity> memberFeatureEntities;
 
-    @Column(name = "version")
-    @Version
-    private Long version;
-
 }
