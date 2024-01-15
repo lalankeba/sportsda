@@ -76,7 +76,6 @@ class RoleControllerTest {
                                         .and(fieldWithPath("name").description("Name of the role"))
                                         .and(fieldWithPath("description").description("Description of the role"))
                                         .and(subsectionWithPath("permissions").description("List of permissions granted for the role"))
-                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
     }
@@ -119,7 +118,6 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(roleName)))
                 .andExpect(jsonPath("$.description").value(containsString(roleDescription)))
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -133,7 +131,6 @@ class RoleControllerTest {
                                         .and(fieldWithPath("name").description("Name of the role"))
                                         .and(fieldWithPath("description").description("Description for the role"))
                                         .and(subsectionWithPath("permissions").description("List of permissions granted for the role"))
-                                        .and(fieldWithPath("version").description("Version number").optional())
                         )
                 );
 
@@ -150,7 +147,6 @@ class RoleControllerTest {
         roleUpdateRequest.setName(updatedRoleName);
         roleUpdateRequest.setDescription(updatedRoleDescription);
         roleUpdateRequest.setPermissionIds(updatedPermissionIds);
-        roleUpdateRequest.setVersion(roleResponse.getVersion());
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.ROLES + PathUtil.ID_PLACEHOLDER, roleResponse.getId())
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + ConstantsUtil.TOKEN_VALUE_SAMPLE)
@@ -161,7 +157,6 @@ class RoleControllerTest {
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.name").value(containsString(updatedRoleName)))
                 .andExpect(jsonPath("$.description").value(containsString(updatedRoleDescription)))
-                .andExpect(jsonPath("$.version").exists())
                 .andDo(
                         document("{method-name}",
                                 preprocessRequest(prettyPrint()),
@@ -169,14 +164,12 @@ class RoleControllerTest {
                                 requestFields(
                                         fieldWithPath("name").description("Name to be updated for the role. Should be unique throughout the system."))
                                         .and(fieldWithPath("description").description("Description to be updated for the role"))
-                                        .and(fieldWithPath("permissionIds").description("Updated list of permission IDs to be attached with role"))
-                                        .and(fieldWithPath("version").description("Version of the existing role")),
+                                        .and(fieldWithPath("permissionIds").description("Updated list of permission IDs to be attached with role")),
                                 responseFields(
                                         fieldWithPath("id").description("Id for the role"))
                                         .and(fieldWithPath("name").description("Updated name of the role"))
                                         .and(fieldWithPath("description").description("Updated description for the role"))
                                         .and(subsectionWithPath("permissions").description("Updated list of permissions granted for the role"))
-                                        .and(fieldWithPath("version").description("New version number").optional())
                         )
                 );
     }

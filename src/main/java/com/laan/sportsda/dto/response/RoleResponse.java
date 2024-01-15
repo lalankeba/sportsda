@@ -19,5 +19,4 @@ public class RoleResponse {
     @ToString.Exclude
     private List<PermissionResponse> permissions;
 
-    private Long version;
 }

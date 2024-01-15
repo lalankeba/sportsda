@@ -22,6 +22,4 @@ public class RoleUpdateRequest {
 
     private List<String> permissionIds;
 
-    @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_VERSION)
-    private Long version;
 }

@@ -23,9 +23,3 @@ databaseChangeLog:
                   type: varchar(300)
                   constraints:
                     nullable: true
-              - column:
-                  name: version
-                  type: bigint
-                  defaultValue: 0
-                  constraints:
-                    nullable: false

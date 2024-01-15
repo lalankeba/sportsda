@@ -8,6 +8,7 @@ import com.laan.sportsda.entity.PermissionEntity;
 import com.laan.sportsda.entity.RoleEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -23,15 +24,13 @@ public interface RoleMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "permissionEntities", source = "permissionIds")
-    @Mapping(target = "version", constant = "0L")
     RoleEntity mapAddRequestToEntity(RoleAddRequest addRequest);
 
-    @Mapping(target = "id", source = "roleId")
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "permissionEntities", source = "updateRequest.permissionIds")
-    RoleEntity mapUpdateRequestToEntity(RoleUpdateRequest updateRequest, String roleId);
+    void updateEntityFromUpdateRequest(RoleUpdateRequest updateRequest, @MappingTarget RoleEntity roleEntity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "version", constant = "0L")
     RoleEntity mapDetailsToEntity(String name, String description, List<PermissionEntity> permissionEntities);
 
 }

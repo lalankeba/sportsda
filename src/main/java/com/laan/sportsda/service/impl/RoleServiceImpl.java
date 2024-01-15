@@ -83,9 +83,14 @@ public class RoleServiceImpl implements RoleService {
         List<PermissionEntity> permissionEntities = permissionRepository.findAll();
         permissionValidator.validateNonExistingPermissionEntities(roleUpdateRequest.getPermissionIds(), permissionEntities);
 
-        RoleEntity roleEntity = roleMapper.mapUpdateRequestToEntity(roleUpdateRequest, id);
-        RoleEntity updatedRoleEntity = roleRepository.saveAndFlush(roleEntity);
-        return roleMapper.mapEntityToRoleResponse(updatedRoleEntity);
+        RoleResponse roleResponse = null;
+        if (optionalRoleEntity.isPresent()) {
+            RoleEntity roleEntity = optionalRoleEntity.get();
+            roleMapper.updateEntityFromUpdateRequest(roleUpdateRequest, roleEntity);
+            RoleEntity updatedRoleEntity = roleRepository.save(roleEntity);
+            roleResponse = roleMapper.mapEntityToRoleResponse(updatedRoleEntity);
+        }
+        return roleResponse;
     }
 
     @Override
