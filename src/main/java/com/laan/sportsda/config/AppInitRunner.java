@@ -53,7 +53,9 @@ public class AppInitRunner implements ApplicationRunner {
 
     private void initializeFaculties() {
         List<FacultyEntity> savedFacultyEntities = saveFaculties();
-        log.info("saved {} new faculty/ies", savedFacultyEntities.size());
+        int size = savedFacultyEntities.size();
+        String postFix = (size == 1) ? "y" : "ies";
+        log.info("Saved {} new facult{}", size, postFix);
     }
 
     private List<FacultyEntity> saveFaculties() {
@@ -63,6 +65,7 @@ public class AppInitRunner implements ApplicationRunner {
         Optional<FacultyEntity> optionalFacultyEntity = facultyRepository.findByName(basicFacultyName);
         if (optionalFacultyEntity.isEmpty()) {
             FacultyEntity basicFacultyEntity = facultyMapper.mapDetailsToEntity(basicFacultyName);
+            basicFacultyEntity.setCreatedBy("SYSTEM");
             FacultyEntity savedBasicFacultyEntity = facultyRepository.save(basicFacultyEntity);
             savedFacultyEntities.add(savedBasicFacultyEntity);
         }
@@ -72,10 +75,14 @@ public class AppInitRunner implements ApplicationRunner {
 
     private void initializeRolesAndPermissions() {
         List<PermissionEntity> savedPermissionEntities = savePermissions();
-        log.info("saved {} new permission/s", savedPermissionEntities.size());
+        int listSize = savedPermissionEntities.size();
+        String postFix = (listSize == 1) ? "" : "s";
+        log.info("Saved {} new permission{}", listSize, postFix);
 
         List<RoleEntity> savedRoleEntities = saveRoles();
-        log.info("saved {} new role/s", savedRoleEntities.size());
+        listSize = savedRoleEntities.size();
+        postFix = (listSize == 1) ? "" : "s";
+        log.info("Saved {} new role{}", listSize, postFix);
     }
 
     private List<PermissionEntity> savePermissions() {
@@ -90,7 +97,7 @@ public class AppInitRunner implements ApplicationRunner {
                 PermissionEntity savedPermissionEntity = permissionRepository.save(permissionEntity);
                 savedPermissionEntities.add(savedPermissionEntity);
                 permissionIdsInEnum.add(savedPermissionEntity.getId());
-                log.info("New permission: {} added to the database.", savedPermissionEntity);
+                log.info("New permission: {} added to the database.", savedPermissionEntity.getDescription());
             } else {
                 permissionIdsInEnum.add(optionalPermissionEntity.get().getId());
             }
@@ -112,27 +119,26 @@ public class AppInitRunner implements ApplicationRunner {
         List<RoleEntity> savedRoleEntities = new ArrayList<>();
 
         String adminRoleName = propertyUtil.getAdminRoleName();
-        RoleEntity adminRoleEntity = saveRole(adminRoleName, "Has all access", permissionRepository.findAll());
-        savedRoleEntities.add(adminRoleEntity);
+        Optional<RoleEntity> optionalAdminRoleEntity = saveRole(adminRoleName, "Has all access", permissionRepository.findAll());
+        optionalAdminRoleEntity.ifPresent(savedRoleEntities::add);
 
         String basicRoleName = propertyUtil.getBasicRoleName();
-        RoleEntity basicRoleEntity = saveRole(basicRoleName, "Has limited access", List.of());
-        savedRoleEntities.add(basicRoleEntity);
+        Optional<RoleEntity> optionalBasicRoleEntity = saveRole(basicRoleName, "Has limited access", List.of());
+        optionalBasicRoleEntity.ifPresent(savedRoleEntities::add);
 
         return savedRoleEntities;
     }
 
-    private RoleEntity saveRole(String roleName, String roleDescription, List<PermissionEntity> permissionEntities) {
+    private Optional<RoleEntity> saveRole(String roleName, String roleDescription, List<PermissionEntity> permissionEntities) {
         Optional<RoleEntity> optionalRoleEntity = roleRepository.findByName(roleName);
 
         if (optionalRoleEntity.isEmpty()) {
             RoleEntity roleEntity = roleMapper.mapDetailsToEntity(roleName, roleDescription, permissionEntities);
             roleEntity.setCreatedBy("SYSTEM");
-            return roleRepository.save(roleEntity);
-        } else {
-            RoleEntity existingRoleEntity = optionalRoleEntity.get();
-            existingRoleEntity.setPermissionEntities(permissionEntities);
-            return roleRepository.save(existingRoleEntity);
+            RoleEntity savedRoleEntity = roleRepository.save(roleEntity);
+            log.info("New role: {} added to the database.", savedRoleEntity.getName());
+            return Optional.of(savedRoleEntity);
         }
+        return Optional.empty();
     }
 }
