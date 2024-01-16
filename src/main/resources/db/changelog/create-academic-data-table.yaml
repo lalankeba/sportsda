@@ -90,9 +90,3 @@ databaseChangeLog:
                     foreignKeyName: fk_academic_data_member_id
                     referencedTableName: member
                     referencedColumnNames: id
-              - column:
-                  name: version
-                  type: int
-                  defaultValue: 0
-                  constraints:
-                    nullable: false
