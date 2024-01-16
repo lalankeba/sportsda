@@ -24,13 +24,25 @@ public interface RoleMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "permissionEntities", source = "permissionIds")
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     RoleEntity mapAddRequestToEntity(RoleAddRequest addRequest);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "permissionEntities", source = "updateRequest.permissionIds")
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     void updateEntityFromUpdateRequest(RoleUpdateRequest updateRequest, @MappingTarget RoleEntity roleEntity);
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdBy", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "lastModifiedBy", ignore = true)
+    @Mapping(target = "lastModifiedDate", ignore = true)
     RoleEntity mapDetailsToEntity(String name, String description, List<PermissionEntity> permissionEntities);
 
 }

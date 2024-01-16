@@ -127,6 +127,7 @@ public class AppInitRunner implements ApplicationRunner {
 
         if (optionalRoleEntity.isEmpty()) {
             RoleEntity roleEntity = roleMapper.mapDetailsToEntity(roleName, roleDescription, permissionEntities);
+            roleEntity.setCreatedBy("SYSTEM");
             return roleRepository.save(roleEntity);
         } else {
             RoleEntity existingRoleEntity = optionalRoleEntity.get();
