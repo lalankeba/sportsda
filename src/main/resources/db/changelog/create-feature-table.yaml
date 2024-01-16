@@ -45,9 +45,3 @@ databaseChangeLog:
                     foreignKeyName: fk_feature_sport_id
                     referencedTableName: sport
                     referencedColumnNames: id
-              - column:
-                  name: version
-                  type: int
-                  defaultValue: 0
-                  constraints:
-                    nullable: false
