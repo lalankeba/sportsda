@@ -304,7 +304,6 @@ class MemberControllerTest {
         memberUpdateRequest.setDistrict(district);
         memberUpdateRequest.setFacultyId(facultyResponse.getId());
         memberUpdateRequest.setDepartmentIds(departmentResponses.stream().map(DepartmentResponse::getId).toList());
-        memberUpdateRequest.setVersion(0L);
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.put(PathUtil.MEMBERS + PathUtil.CURRENT)
                         .header(ConstantsUtil.AUTH_TOKEN_HEADER, ConstantsUtil.AUTH_TOKEN_PREFIX + loginResponse.getToken())
@@ -339,7 +338,6 @@ class MemberControllerTest {
                                         .and(fieldWithPath("district").description("District to be updated for the member."))
                                         .and(fieldWithPath("facultyId").description("Faculty id which is attached to the member."))
                                         .and(fieldWithPath("departmentIds").description("Department ids which is attached to the member."))
-                                        .and(fieldWithPath("version").description("Version of the existing member"))
                         )
                 );
     }

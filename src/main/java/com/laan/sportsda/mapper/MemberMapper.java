@@ -129,7 +129,6 @@ public abstract class MemberMapper {
     @Mapping(target = "roleEntity", ignore = true)
     @Mapping(target = "sportEntities", ignore = true)
     @Mapping(target = "memberFeatureEntities", ignore = true)
-    @Mapping(target = "version", source = "memberUpdateRequest.version")
     public abstract void updateEntityFromUpdateRequest(MemberUpdateRequest memberUpdateRequest, FacultyEntity facultyEntity, List<DepartmentEntity> departmentEntities, @MappingTarget MemberEntity memberEntity);
 
     @Mapping(target = "id", ignore = true)
@@ -154,6 +153,5 @@ public abstract class MemberMapper {
     @Mapping(target = "roleEntity", source = "roleEntity")
     @Mapping(target = "sportEntities", ignore = true)
     @Mapping(target = "memberFeatureEntities", ignore = true)
-    @Mapping(target = "version", ignore = true)
     public abstract void updateEntityFromRoleRequest(RoleEntity roleEntity, @MappingTarget MemberEntity memberEntity);
 }

@@ -50,6 +50,4 @@ public class MemberUpdateRequest {
 
     private List<String> departmentIds;
 
-    @NotNull(message = MessagesUtil.AnnotationSupported.MANDATORY_VERSION)
-    private Long version;
 }

@@ -113,9 +113,3 @@ databaseChangeLog:
                     foreignKeyName: fk_member_role_id
                     referencedTableName: role
                     referencedColumnNames: id
-              - column:
-                  name: version
-                  type: int
-                  defaultValue: 0
-                  constraints:
-                    nullable: false

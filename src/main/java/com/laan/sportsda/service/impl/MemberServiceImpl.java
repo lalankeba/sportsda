@@ -157,7 +157,7 @@ public class MemberServiceImpl implements MemberService {
                 }
                 memberMapper.updateEntityFromUpdateRequest(memberUpdateRequest, facultyEntity, departmentEntities, memberEntity);
 
-                MemberEntity updatedMemberEntity = memberRepository.saveAndFlush(memberEntity);
+                MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
                 memberResponse = memberMapper.mapEntityToResponse(updatedMemberEntity);
             }
         }
@@ -182,7 +182,7 @@ public class MemberServiceImpl implements MemberService {
 
                 memberMapper.updateEntityFromRoleRequest(roleEntity, memberEntity);
 
-                MemberEntity updatedMemberEntity = memberRepository.saveAndFlush(memberEntity);
+                MemberEntity updatedMemberEntity = memberRepository.save(memberEntity);
                 memberResponse = memberMapper.mapEntityToResponse(updatedMemberEntity);
             }
         }
