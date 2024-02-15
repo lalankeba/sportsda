@@ -4,6 +4,7 @@ import com.laan.sportsda.client.CountryClient;
 import com.laan.sportsda.client.response.CountryClientResponse;
 import com.laan.sportsda.dto.response.CountryResponse;
 import com.laan.sportsda.entity.CountryEntity;
+import com.laan.sportsda.exception.ElementNotFoundException;
 import com.laan.sportsda.mapper.CountryMapper;
 import com.laan.sportsda.repository.CountryRepository;
 import com.laan.sportsda.service.CountryService;
@@ -38,30 +39,36 @@ public class CountryServiceImpl implements CountryService {
         List<CountryEntity> countryEntities = countryRepository.findAll();
         if (countryEntities.isEmpty()) { // no countries in db, needs to call external service
             log.info("No country information in DB. Requesting country details from external service");
-            try {
-                List<CountryClientResponse> countryClientResponses = countryClient.getAllCountries();
-                log.info("{} countries received from external country service", countryClientResponses.size());
-                countryResponses = countryMapper.mapClientResponsesToResponses(countryClientResponses);
-
-                List<CountryEntity> newCountryEntities = countryMapper.mapClientResponsesToEntities(countryClientResponses, LocalDateTime.now());
-                countryRepository.saveAll(newCountryEntities);
-            } catch (Exception e) {
-                log.error("Exception occurred when calling external country service", e);
-                countryResponses = List.of();
-            }
+            countryResponses = getCountriesAndSave();
         } else { // has countries in db, but needs to check whether they are upto date
-            log.info("Has country information in DB. Will request country details external service if they need to be updated.");
-            countryResponses = countryMapper.mapEntitiesToResponses(countryEntities);
-
-            LocalDateTime lastModifiedDateTime = countryEntities.get(0).getModifiedDateTime();
-            LocalDateTime nextDateTime = lastModifiedDateTime.plusDays(propertyUtil.getCountryApiUpdateInterval());
-            if (nextDateTime.isBefore(LocalDateTime.now())) {
-                countryTask.getCountriesAndSave();
+            LocalDateTime lastModifiedDateTime = countryEntities.getFirst().getModifiedDateTime();
+            if (needsToRenewCountries(lastModifiedDateTime)) {
+                log.info("Has country information in DB, but needs to be updated.");
+                countryResponses = getCountriesAndSave();
             } else {
-                log.info("Didn't update the country information. Last updated date: {}, Next update date: {}", lastModifiedDateTime, nextDateTime);
+                countryResponses = countryMapper.mapEntitiesToResponses(countryEntities);
             }
-
         }
         return countryResponses.stream().sorted(Comparator.comparing(CountryResponse::getCommonName)).toList();
+    }
+
+    private List<CountryResponse> getCountriesAndSave() {
+        List<CountryClientResponse> countryClientResponses = getCountriesFromExternalService();
+        countryTask.saveCountries(countryClientResponses);
+        return countryMapper.mapClientResponsesToResponses(countryClientResponses);
+    }
+
+    private List<CountryClientResponse> getCountriesFromExternalService() {
+        try {
+            return countryClient.getAllCountries();
+        } catch (Exception e) {
+            throw new ElementNotFoundException("Cannot download countries. " + e.getMessage());
+        }
+    }
+
+    private boolean needsToRenewCountries(final LocalDateTime lastModifiedDateTime) {
+        LocalDateTime nextDateTime = lastModifiedDateTime.plusDays(propertyUtil.getCountryApiUpdateInterval());
+        log.info("Country update information. Last updated date: {}, Next update date: {}", lastModifiedDateTime, nextDateTime);
+        return nextDateTime.isBefore(LocalDateTime.now());
     }
 }
