@@ -20,11 +20,15 @@
             <pattern>%date %5level [%thread] %X{mdcId} | %-28.46logger | %method:%line | %msg%n</pattern>
         </encoder>
     </appender>
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <includeCallerData>true</includeCallerData>
+        <appender-ref ref="FILE" />
+    </appender>
 
     <logger name="com.laan" level="INFO"/>
 
     <root level="INFO">
-        <appender-ref ref="FILE" />
+        <appender-ref ref="ASYNC" />
         <appender-ref ref="CONSOLE" />
     </root>
 </configuration>
