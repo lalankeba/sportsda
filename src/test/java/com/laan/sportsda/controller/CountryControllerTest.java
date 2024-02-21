@@ -1,19 +1,24 @@
 package com.laan.sportsda.controller;
 
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.laan.sportsda.util.PathUtil;
 import com.laan.sportsda.utils.CountryLimitingContentModifier;
+import com.laan.sportsda.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.operation.preprocess.ContentModifyingOperationPreprocessor;
 import org.springframework.restdocs.operation.preprocess.OperationPreprocessor;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -23,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc(addFilters = false)
 @AutoConfigureRestDocs
+@WireMockTest(httpPort = 8181)
 class CountryControllerTest {
 
     @Autowired
@@ -31,8 +37,18 @@ class CountryControllerTest {
     @Autowired
     private CountryLimitingContentModifier countryLimitingContentModifier;
 
+    @Autowired
+    private TestUtils testUtils;
+
     @Test
     void getCountries() throws Exception {
+        stubFor(get(urlEqualTo("/v3.1/all"))
+                .willReturn(aResponse()
+                        .withBody(testUtils.readJson("classpath:country-response.json"))
+                        .withHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                        .withStatus(200)
+                )
+        );
 
         this.mockMvc.perform(RestDocumentationRequestBuilders.get(PathUtil.COUNTRIES))
                 .andExpect(status().isOk())

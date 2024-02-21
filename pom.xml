@@ -27,6 +27,7 @@
 		<io.jsonwebtoken-jjwt-version>0.11.5</io.jsonwebtoken-jjwt-version>
 		<jacoco-maven-plugin-version>0.8.11</jacoco-maven-plugin-version>
 		<sonar-maven-plugin-version>3.10.0.2594</sonar-maven-plugin-version>
+		<org.wiremock.version>3.4.1</org.wiremock.version>
 
 		<docs.snippets.directory>${project.build.directory}/generated-snippets</docs.snippets.directory>
 		<docs.source.directory>src/docs/asciidoc</docs.source.directory>
@@ -91,6 +92,13 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.wiremock</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<version>${org.wiremock.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.mapstruct</groupId>

@@ -15,7 +15,10 @@ import com.laan.sportsda.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -170,6 +173,15 @@ public class TestUtils {
         featureAddRequest.setPossibleValues(possibleValues);
         featureAddRequest.setSportId(sportId);
         return featureService.addFeature(featureAddRequest);
+    }
+
+    public String readJson(String filePath) {
+        try {
+            var file = ResourceUtils.getFile(filePath);
+            return new String(Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
